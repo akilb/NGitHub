@@ -55,11 +55,6 @@ namespace NGitHub.Models {
         public PullRequest PullRequest { get; set; }
     }
 
-    public enum IssueState {
-        Open,
-        Closed
-    }
-
     [JsonObject]
     public class IssueResults {
         public IssueResults() {

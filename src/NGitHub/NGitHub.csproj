@@ -45,8 +45,12 @@
     <Compile Include="Constants.cs" />
     <Compile Include="GitHubClient.cs" />
     <Compile Include="IGitHubClient.cs" />
+    <Compile Include="IIssueService.cs" />
+    <Compile Include="IssueService.cs" />
     <Compile Include="IUserService.cs" />
+    <Compile Include="Models\APICallParameters.cs" />
     <Compile Include="Models\Comment.cs" />
+    <Compile Include="Models\Extensions.cs" />
     <Compile Include="Models\Issue.cs" />
     <Compile Include="Models\Label.cs" />
     <Compile Include="Models\Milestone.cs" />
