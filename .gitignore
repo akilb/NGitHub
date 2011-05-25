@@ -15,6 +15,9 @@
 *.pdb 
 *.msi 
 
+# NuGet files
+*.nupkg
+
 # Project Files
 *.user
 *.suo

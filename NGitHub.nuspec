@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>NGitHub</id>
+    <version>0.1</version>
+    <title>NGitHub</title>
+    <authors>Akil Burgess</authors>
+    <owners>Akil Burgess</owners>
+    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
+    <projectUrl>https://github.com/akilb/NGitHub</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Simple GitHub API Wrapper for .NET, Silverlight and Windows Phone</description>
+    <summary />
+    <language>en-US</language>
+    <tags>GITHUB GIT</tags>
+    <dependencies>
+      <dependency id="RestSharp" version="101.3" />
+    </dependencies>
+  </metadata>
+
+  <files>
+    <file src="src\NGitHub\bin\Release\NGitHub.dll" target="lib\net40"/>
+    <file src="src\NGitHub\bin\Release\NGitHub.pdb" target="lib\net40"/>
+    <file src="src\NGitHub.SL4\bin\Release\NGitHub.SL4.dll" target="lib\sl4"/>
+    <file src="src\NGitHub.SL4\bin\Release\NGitHub.SL4.pdb" target="lib\sl4"/>
+    <file src="src\NGitHub.WindowsPhone\bin\Release\NGitHub.WindowsPhone.dll" target="lib\sl3-wp"/>
+    <file src="src\NGitHub.WindowsPhone\bin\Release\NGitHub.WindowsPhone.pdb" target="lib\sl3-wp"/>
+  </files>
+</package>
