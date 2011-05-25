@@ -49,13 +49,16 @@
     <Compile Include="IssueService.cs" />
     <Compile Include="IUserService.cs" />
     <Compile Include="Models\APICallParameters.cs" />
+    <Compile Include="Models\Branch.cs" />
     <Compile Include="Models\Comment.cs" />
+    <Compile Include="Models\Commit.cs" />
     <Compile Include="Models\Extensions.cs" />
     <Compile Include="Models\Issue.cs" />
     <Compile Include="Models\Label.cs" />
     <Compile Include="Models\Milestone.cs" />
     <Compile Include="Models\Plan.cs" />
     <Compile Include="Models\PullRequest.cs" />
+    <Compile Include="Models\Repository.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserService.cs" />
