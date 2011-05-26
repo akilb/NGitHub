@@ -48,20 +48,12 @@ namespace NGitHub.Models {
         [JsonProperty(PropertyName = "milestone")]
         public Milestone Milestone { get; set; }
 
-        [JsonProperty(PropertyName = "labels")]
+        // TODO: deserialize this.
+        //[JsonProperty(PropertyName = "labels")]
+        [JsonIgnore]
         public List<Label> Labels { get; set; }
 
         [JsonProperty(PropertyName = "pull_request")]
         public PullRequest PullRequest { get; set; }
-    }
-
-    [JsonObject]
-    public class IssueResults {
-        public IssueResults() {
-            Issues = new List<Issue>();
-        }
-
-        [JsonProperty(PropertyName = "issues")]
-        public List<Issue> Issues { get; set; }
     }
 }

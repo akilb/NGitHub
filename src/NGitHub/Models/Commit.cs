@@ -5,7 +5,8 @@ using Newtonsoft.Json;
 namespace NGitHub.Models {
     [JsonObject]
     public class Commit {
-        [JsonProperty(PropertyName = "parents")]
+        // TODO: deserialize this...
+        [JsonIgnore]
         public List<string> Parents { get; set; }
 
         [JsonProperty(PropertyName = "author")]

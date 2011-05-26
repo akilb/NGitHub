@@ -20,14 +20,4 @@ namespace NGitHub.Models {
         [JsonProperty(PropertyName = "user")]
         public User User { get; set; }
     }
-
-    [JsonObject]
-    public class CommentResults {
-        public CommentResults() {
-            Comments = new List<Comment>();
-        }
-
-        [JsonProperty(PropertyName = "comments")]
-        public List<Comment> Comments { get; set; }
-    }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace NGitHub.Models {
@@ -8,7 +7,10 @@ namespace NGitHub.Models {
         [JsonProperty(PropertyName = "login")]
         public string Login { get; set; }
 
-        [JsonProperty(PropertyName = "id")]
+        //[JsonProperty(PropertyName = "id")]
+        // TODO: Ignoring Id for now since API V2 returns a string but API v3
+        // returns an int...
+        [JsonIgnore]
         public int Id { get; set; }
 
         [JsonProperty(PropertyName = "name")]
@@ -16,6 +18,10 @@ namespace NGitHub.Models {
 
         [JsonProperty(PropertyName = "gravatar_url")]
         public string GravatarUrl { get; set; }
+
+        // NOTE: API V2 only uses gravatar id's
+        [JsonProperty(PropertyName = "gravatar_id")]
+        public string GravatarId { get; set; }
 
         [JsonProperty(PropertyName = "url")]
         public string Url { get; set; }
@@ -84,41 +90,5 @@ namespace NGitHub.Models {
 
         [JsonProperty(PropertyName = "plan")]
         public Plan Plan { get; set; }
-    }
-
-    [JsonObject]
-    public class UserResults {
-        public UserResults() {
-            Users = new List<User>();
-        }
-
-        [JsonProperty(PropertyName = "users")]
-        public List<User> Users { get; set; }
-    }
-
-    [JsonObject]
-    public class UserResult {
-        [JsonProperty(PropertyName = "user")]
-        public User User { get; set; }
-    }
-
-    [JsonObject]
-    public class WatcherResults {
-        public WatcherResults() {
-            Watchers = new List<User>();
-        }
-
-        [JsonProperty(PropertyName = "watchers")]
-        public List<User> Watchers { get; set; }
-    }
-
-    [JsonObject]
-    public class OrganizationResults {
-        public OrganizationResults() {
-            Organizations = new List<User>();
-        }
-
-        [JsonProperty(PropertyName = "organizations")]
-        public List<User> Organizations { get; set; }
     }
 }
