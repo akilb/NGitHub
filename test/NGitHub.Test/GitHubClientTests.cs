@@ -20,9 +20,49 @@ namespace NGitHub.Test {
                 It.IsAny<Action<RestResponse<object>>>()));
             var githubClient = new GitHubClient(mockFactory.Object);
 
-            githubClient.CallApiAsync<object>(expectedResource, expectedMethod, o => { }, e => { });
+            githubClient.CallApiAsync<object>(expectedResource, API.Version3, expectedMethod, o => { }, e => { });
 
             mockRestClient.VerifyAll();
+        }
+
+        [TestMethod]
+        public void CallApiAsync_ShouldExecuteUseV2BaseUrl_WhenVersion2IsSpecified() {
+            var expectedBaseUrl = Constants.ApiV2Url;
+            var expectedResource = "foo/bar";
+            var expectedMethod = Method.POST;
+            var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+            var mockFactory = new Mock<GitHubClient.IRestClientFactory>(MockBehavior.Strict);
+            mockFactory.Setup<IRestClient>(f => f.CreateRestClient(expectedBaseUrl))
+                       .Returns(mockRestClient.Object);
+            mockRestClient.Setup(c => c.ExecuteAsync<object>(
+                It.Is<RestRequest>(r => (r.Resource == expectedResource) &&
+                                        (r.Method == expectedMethod)),
+                It.IsAny<Action<RestResponse<object>>>()));
+            var githubClient = new GitHubClient(mockFactory.Object);
+
+            githubClient.CallApiAsync<object>(expectedResource, API.Version2, expectedMethod, o => { }, e => { });
+
+            mockFactory.VerifyAll();
+        }
+
+        [TestMethod]
+        public void CallApiAsync_ShouldExecuteUseV3BaseUrl_WhenVersion3IsSpecified() {
+            var expectedBaseUrl = Constants.ApiV3Url;
+            var expectedResource = "foo/bar";
+            var expectedMethod = Method.POST;
+            var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+            var mockFactory = new Mock<GitHubClient.IRestClientFactory>(MockBehavior.Strict);
+            mockFactory.Setup<IRestClient>(f => f.CreateRestClient(expectedBaseUrl))
+                       .Returns(mockRestClient.Object);
+            mockRestClient.Setup(c => c.ExecuteAsync<object>(
+                It.Is<RestRequest>(r => (r.Resource == expectedResource) &&
+                                        (r.Method == expectedMethod)),
+                It.IsAny<Action<RestResponse<object>>>()));
+            var githubClient = new GitHubClient(mockFactory.Object);
+
+            githubClient.CallApiAsync<object>(expectedResource, API.Version3, expectedMethod, o => { }, e => { });
+
+            mockFactory.VerifyAll();
         }
 
         [TestMethod]
@@ -40,6 +80,7 @@ namespace NGitHub.Test {
             var callbackInvoked = false;
             client.CallApiAsync<object>(
                 "foo",
+                API.Version3,
                 Method.GET,
                 o => callbackInvoked = true,
                 e => { });
@@ -64,6 +105,7 @@ namespace NGitHub.Test {
             var client = new GitHubClient(mockFactory.Object);
             client.CallApiAsync<object>(
                 "foo",
+                API.Version3,
                 Method.GET,
                 o => Assert.AreEqual(expectedData, o),
                 e => { });

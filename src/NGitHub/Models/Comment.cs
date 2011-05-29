@@ -1,10 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace NGitHub.Models {
     [JsonObject]
     public class Comment {
+        [JsonProperty(PropertyName = "id")]
+        public int Id { get; set; }
+
         [JsonProperty(PropertyName = "url")]
         public string Url { get; set; }
 

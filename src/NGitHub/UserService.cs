@@ -18,7 +18,7 @@ namespace NGitHub {
             Requires.ArgumentNotNull(callback, "callback");
 
             var resource = string.Format("/users/{0}", user);
-            _gitHubClient.CallApiAsync<User>(resource, Method.GET, callback, onError);
+            _gitHubClient.CallApiAsync<User>(resource, API.Version3, Method.GET, callback, onError);
         }
     }
 }

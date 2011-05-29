@@ -41,11 +41,14 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API.cs" />
     <Compile Include="APICallError.cs" />
+    <Compile Include="CommentService.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="GitHubClient.cs" />
     <Compile Include="Http\CustomHttp.Async.cs" />
     <Compile Include="Http\CustomHttp.cs" />
+    <Compile Include="ICommentService.cs" />
     <Compile Include="IGitHubClient.cs" />
     <Compile Include="IIssueService.cs" />
     <Compile Include="IssueService.cs" />

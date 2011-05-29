@@ -1,5 +1,4 @@
-﻿
-namespace NGitHub.Models {
+﻿namespace NGitHub.Models {
     public enum State {
         Open,
         Closed

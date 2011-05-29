@@ -8,6 +8,7 @@ namespace NGitHub {
         private readonly IRestClientFactory _factory;
         private readonly IUserService _users;
         private readonly IIssueService _issues;
+        private readonly ICommentService _comments;
 
         public GitHubClient()
             : this(new RestClientFactory()) {
@@ -19,6 +20,7 @@ namespace NGitHub {
             _factory = factory;
             _users = new UserService(this);
             _issues = new IssueService(this);
+            _comments = new CommentService(this);
         }
 
         public IUserService Users {
@@ -33,7 +35,14 @@ namespace NGitHub {
             }
         }
 
+        public ICommentService Comments {
+            get {
+                return _comments;
+            }
+        }
+
         public void CallApiAsync<TJsonResponse>(string resource,
+                                                API version,
                                                 Method method,
                                                 Action<TJsonResponse> callback,
                                                 Action<APICallError> onError) where TJsonResponse : new() {
@@ -41,8 +50,9 @@ namespace NGitHub {
             Requires.ArgumentNotNull(callback, "callback");
             Requires.ArgumentNotNull(onError, "onError");
 
+            var baseUrl = (version == API.Version3) ? Constants.ApiV3Url : Constants.ApiV2Url;
             var request = new RestRequest(resource, method);
-            var restClient = _factory.CreateRestClient(Constants.ApiV3Url);
+            var restClient = _factory.CreateRestClient(baseUrl);
             restClient.ExecuteAsync<TJsonResponse>(
                 request,
                 r => {
