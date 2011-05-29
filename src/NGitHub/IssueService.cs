@@ -37,8 +37,8 @@ namespace NGitHub {
                            repo,
                            page,
                            state,
-                           SortBy.Created,
-                           OrderBy.Descending,
+                           Constants.DefaultSortBy,
+                           Constants.DefaultOrderBy,
                            callback,
                            onError);
         }
@@ -56,13 +56,10 @@ namespace NGitHub {
             Requires.IsTrue(page > 0, "page");
 
             var resource
-                = string.Format("/repos/{0}/{1}/issues?page={1}&state={2}&sort={3}&direction={4}",
+                = string.Format("/repos/{0}/{1}/issues?{2}",
                                 user,
                                 repo,
-                                page,
-                                state.GetText(),
-                                sort.GetText(),
-                                direction.GetText());
+                                ApiHelpers.GetParametersString(page, state, sort, direction));
 
             _client.CallApiAsync<List<Issue>>(resource,
                                               API.Version3,

@@ -24,8 +24,8 @@ namespace NGitHub {
                                   repo,
                                   issueNumber,
                                   page,
-                                  SortBy.Created,
-                                  OrderBy.Descending,
+                                  Constants.DefaultSortBy,
+                                  Constants.DefaultOrderBy,
                                   callback,
                                   onError);
         }
@@ -43,13 +43,11 @@ namespace NGitHub {
             Requires.IsTrue(page > 0, "page");
 
             var resource
-                = string.Format("/repos/{0}/{1}/issues/{2}/comments?page={3}&sort={4}&direction={5}",
+                = string.Format("/repos/{0}/{1}/issues/{2}/comments?{3}",
                                 user,
                                 repo,
                                 issueNumber,
-                                page,
-                                sort.GetText(),
-                                direction.GetText());
+                                ApiHelpers.GetParametersString(page, sort, direction));
             GetCommentsAsync(resource, callback, onError);
         }
 
@@ -57,7 +55,12 @@ namespace NGitHub {
                                          int page,
                                          Action<IEnumerable<Comment>> callback,
                                          Action<APICallError> onError) {
-            GetGistCommentsAsync(gistId, page, SortBy.Created, OrderBy.Descending, callback, onError);
+            GetGistCommentsAsync(gistId,
+                                 page,
+                                 Constants.DefaultSortBy,
+                                 Constants.DefaultOrderBy,
+                                 callback,
+                                 onError);
         }
 
         public void GetGistCommentsAsync(string gistId,
@@ -69,11 +72,10 @@ namespace NGitHub {
             Requires.ArgumentNotNull(gistId, "gistId");
             Requires.IsTrue(page > 0, "page");
 
-            var resource = string.Format("/gists/{0}/comments?page={1}&sort={2}&direction={3}",
+            var resource = string.Format("/gists/{0}/comments?{1}",
                                          gistId,
                                          page,
-                                         sort.GetText(),
-                                         direction.GetText());
+                                         ApiHelpers.GetParametersString(page, sort, direction));
             GetCommentsAsync(resource, callback, onError);
         }
 
