@@ -1,4 +1,5 @@
 ﻿using System;
+using NGitHub.Http;
 using NGitHub.Utility;
 using RestSharp;
 
@@ -60,7 +61,16 @@ namespace NGitHub {
 
         private class RestClientFactory : IRestClientFactory {
             public IRestClient CreateRestClient(string baseUrl) {
-                return new RestClient(baseUrl);
+                // RestSharp.WindowsPhone currently only executes callbacks on
+                // the UI thread.
+                // See https://github.com/johnsheehan/RestSharp/pull/126.
+                //
+                // To workaround this, we'll use a custom Http object that does
+                // not explicitly callback on the UI thread...
+                var restClient = new RestClient(baseUrl);
+                restClient.HttpFactory = new SimpleFactory<CustomHttp>();
+
+                return restClient;
             }
         }
     }

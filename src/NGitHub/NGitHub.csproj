@@ -18,7 +18,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;FRAMEWORK;FRAMEWORK4</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -26,7 +26,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;FRAMEWORK;FRAMEWORK4</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -44,6 +44,8 @@
     <Compile Include="APICallError.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="GitHubClient.cs" />
+    <Compile Include="Http\CustomHttp.Async.cs" />
+    <Compile Include="Http\CustomHttp.cs" />
     <Compile Include="IGitHubClient.cs" />
     <Compile Include="IIssueService.cs" />
     <Compile Include="IssueService.cs" />
