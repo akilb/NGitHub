@@ -23,49 +23,44 @@ namespace NGitHub {
             Requires.ArgumentNotNull(repo, "repo");
             Requires.ArgumentNotNull(issueId, "issueId");
 
-            var resource = string.Format("/repos/{0}/{1}/issues/{2}", user, repo, issueId);
-            _client.CallApiAsync<Issue>(resource, API.v3, Method.GET, callback, onError);
+            var resource = string.Format("/issues/show/{0}/{1}/{2}", user, repo, issueId);
+            _client.CallApiAsync<IssueResult>(resource, API.v2, Method.GET, i => callback(i.Issue), onError);
         }
 
         public void GetIssuesAsync(string user,
                                    string repo,
-                                   int page,
                                    State state,
-                                   Action<IEnumerable<Models.Issue>> callback,
-                                   Action<APICallError> onError) {
-            GetIssuesAsync(user,
-                           repo,
-                           page,
-                           state,
-                           Constants.DefaultSortBy,
-                           Constants.DefaultOrderBy,
-                           callback,
-                           onError);
-        }
-
-        public void GetIssuesAsync(string user,
-                                   string repo,
-                                   int page,
-                                   State state,
-                                   SortBy sort,
-                                   OrderBy direction,
-                                   Action<IEnumerable<Models.Issue>> callback,
+                                   Action<IEnumerable<Issue>> callback,
                                    Action<APICallError> onError) {
             Requires.ArgumentNotNull(user, "user");
             Requires.ArgumentNotNull(repo, "repo");
-            Requires.IsTrue(page > 0, "page");
 
-            var resource
-                = string.Format("/repos/{0}/{1}/issues?{2}",
-                                user,
-                                repo,
-                                ApiHelpers.GetParametersString(page, state, sort, direction));
+            var resource = string.Format("/issues/list/{0}/{1}/{2}", user, repo, state.GetText());
 
-            _client.CallApiAsync<List<Issue>>(resource,
-                                              API.v3,
-                                              Method.GET,
-                                              issues => callback(issues),
-                                              onError);
+            _client.CallApiAsync<IssuesResult>(resource,
+                                               API.v2,
+                                               Method.GET,
+                                               i => callback(i.Issues),
+                                               onError);
+        }
+
+        public void GetCommentsAsync(string user,
+                                     string repo,
+                                     int issueNumber,
+                                     Action<IEnumerable<Comment>> callback,
+                                     Action<APICallError> onError) {
+            Requires.ArgumentNotNull(user, "user");
+            Requires.ArgumentNotNull(repo, "repo");
+
+            var resource = string.Format("/issues/comments/{0}/{1}/{2}",
+                                         user,
+                                         repo,
+                                         issueNumber);
+            _client.CallApiAsync<CommentsResult>(resource,
+                                                 API.v2,
+                                                 Method.GET,
+                                                 c => callback(c.Comments),
+                                                 onError);
         }
     }
 }

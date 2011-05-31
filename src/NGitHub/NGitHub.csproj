@@ -43,14 +43,12 @@
   <ItemGroup>
     <Compile Include="API.cs" />
     <Compile Include="APICallError.cs" />
-    <Compile Include="CommentService.cs" />
     <Compile Include="CommitService.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="CustomRestSharp\CustomJsonDeserializer.cs" />
     <Compile Include="GitHubClient.cs" />
     <Compile Include="CustomRestSharp\CustomHttp.Async.cs" />
     <Compile Include="CustomRestSharp\CustomHttp.cs" />
-    <Compile Include="ICommentService.cs" />
     <Compile Include="ICommitService.cs" />
     <Compile Include="IGitHubClient.cs" />
     <Compile Include="IIssueService.cs" />

@@ -3,7 +3,6 @@ using RestSharp;
 
 namespace NGitHub {
     public interface IGitHubClient {
-        ICommentService Comments { get; }
         ICommitService Commits { get; }
         IIssueService Issues { get; }
         IUserService Users { get; }

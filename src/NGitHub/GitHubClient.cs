@@ -8,7 +8,6 @@ namespace NGitHub {
         private readonly IRestClientFactory _factory;
         private readonly IUserService _users;
         private readonly IIssueService _issues;
-        private readonly ICommentService _comments;
         private readonly ICommitService _commits;
         private readonly IOrganizationService _organizations;
         private readonly IRepositoryService _repositories;
@@ -27,7 +26,6 @@ namespace NGitHub {
             _authenticator = new NullAuthenticator();
             _users = new UserService(this);
             _issues = new IssueService(this);
-            _comments = new CommentService(this);
             _commits = new CommitService(this);
             _repositories = new RepositoryService(this);
             _organizations = new OrganizationService(this);
@@ -48,12 +46,6 @@ namespace NGitHub {
         public IIssueService Issues {
             get {
                 return _issues;
-            }
-        }
-
-        public ICommentService Comments {
-            get {
-                return _comments;
             }
         }
 
@@ -84,17 +76,17 @@ namespace NGitHub {
 
             _authenticator = new NullAuthenticator();
             var authenticator = new HttpBasicAuthenticator(login, password);
-            CallApiAsync<User>("/user",
-                               API.v3,
-                               Method.GET,
-                               authenticator,
-                               u => {
-                                   _authenticator = authenticator;
-                                   callback();
-                               },
-                               e => {
-                                   onError(e);
-                               });
+            CallApiAsync<UserResult>("/user/show/",
+                                     API.v2,
+                                     Method.GET,
+                                     authenticator,
+                                     u => {
+                                         _authenticator = authenticator;
+                                         callback();
+                                     },
+                                     e => {
+                                         onError(e);
+                                     });
         }
 
         public void Logout() {

@@ -11,17 +11,13 @@ namespace NGitHub {
                            Action<APICallError> onError);
         void GetIssuesAsync(string user,
                             string repo,
-                            int page,
                             State state,
                             Action<IEnumerable<Issue>> callback,
                             Action<APICallError> onError);
-        void GetIssuesAsync(string user,
-                            string repo,
-                            int page,
-                            State state,
-                            SortBy sort,
-                            OrderBy direction,
-                            Action<IEnumerable<Issue>> callback,
-                            Action<APICallError> onError);
+        void GetCommentsAsync(string user,
+                              string repo,
+                              int issueNumber,
+                              Action<IEnumerable<Comment>> callback,
+                              Action<APICallError> onError);
     }
 }

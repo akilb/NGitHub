@@ -8,23 +8,9 @@ namespace NGitHub {
         void GetAuthenticatedUserAsync(Action<User> callback, Action<APICallError> onError);
 
         void GetFollowersAsync(string user,
-                               int page,
-                               Action<IEnumerable<User>> callback,
-                               Action<APICallError> onError);
-        void GetFollowersAsync(string user,
-                               int page,
-                               SortBy sort,
-                               OrderBy direction,
                                Action<IEnumerable<User>> callback,
                                Action<APICallError> onError);
         void GetFollowingAsync(string user,
-                               int page,
-                               Action<IEnumerable<User>> callback,
-                               Action<APICallError> onError);
-        void GetFollowingAsync(string user,
-                               int page,
-                               SortBy sort,
-                               OrderBy direction,
                                Action<IEnumerable<User>> callback,
                                Action<APICallError> onError);
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace NGitHub.Models {
@@ -21,5 +22,11 @@ namespace NGitHub.Models {
 
         [JsonProperty(PropertyName = "user")]
         public User User { get; set; }
+    }
+
+    [JsonObject]
+    public class CommentsResult {
+        [JsonProperty(PropertyName = "comments")]
+        public List<Comment> Comments { get; set; }
     }
 }
