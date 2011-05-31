@@ -31,10 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
+    <Reference Include="Newtonsoft.Json, Version=4.0.2.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.4.0.2\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="RestSharp">
+    <Reference Include="RestSharp, Version=101.3.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\RestSharp.101.3\lib\net4\RestSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -44,13 +44,18 @@
     <Compile Include="API.cs" />
     <Compile Include="APICallError.cs" />
     <Compile Include="CommentService.cs" />
+    <Compile Include="CommitService.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="CustomRestSharp\CustomJsonDeserializer.cs" />
     <Compile Include="GitHubClient.cs" />
-    <Compile Include="Http\CustomHttp.Async.cs" />
-    <Compile Include="Http\CustomHttp.cs" />
+    <Compile Include="CustomRestSharp\CustomHttp.Async.cs" />
+    <Compile Include="CustomRestSharp\CustomHttp.cs" />
     <Compile Include="ICommentService.cs" />
+    <Compile Include="ICommitService.cs" />
     <Compile Include="IGitHubClient.cs" />
     <Compile Include="IIssueService.cs" />
+    <Compile Include="IOrganizationService.cs" />
+    <Compile Include="IRepositoryService.cs" />
     <Compile Include="IssueService.cs" />
     <Compile Include="IUserService.cs" />
     <Compile Include="Models\APICallParameters.cs" />
@@ -65,7 +70,9 @@
     <Compile Include="Models\PullRequest.cs" />
     <Compile Include="Models\Repository.cs" />
     <Compile Include="Models\User.cs" />
+    <Compile Include="OrganizationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RepositoryService.cs" />
     <Compile Include="UserService.cs" />
     <Compile Include="Utility\ApiHelpers.cs" />
     <Compile Include="Utility\Requires.cs" />

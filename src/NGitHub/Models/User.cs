@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace NGitHub.Models {
@@ -90,5 +91,17 @@ namespace NGitHub.Models {
 
         [JsonProperty(PropertyName = "plan")]
         public Plan Plan { get; set; }
+    }
+
+    [JsonObject]
+    public class UsersResult {
+        [JsonProperty(PropertyName = "users")]
+        public List<User> Users { get; set; }
+    }
+
+    [JsonObject]
+    public class OrganizationsResult {
+        [JsonProperty(PropertyName = "organizations")]
+        public List<User> Organizations { get; set; }
     }
 }

@@ -18,74 +18,112 @@ namespace NGitHub {
             Requires.ArgumentNotNull(user, "user");
 
             var resource = string.Format("/users/{0}", user);
-            _gitHubClient.CallApiAsync<User>(resource, API.Version3, Method.GET, callback, onError);
+            _gitHubClient.CallApiAsync<User>(resource, API.v3, Method.GET, callback, onError);
         }
 
         public void GetAuthenticatedUserAsync(Action<User> callback, Action<APICallError> onError) {
-            _gitHubClient.CallApiAsync<User>("/user", API.Version3, Method.GET, callback, onError);
+            _gitHubClient.CallApiAsync<User>("/user", API.v3, Method.GET, callback, onError);
         }
 
-        public void GetUserFollowersAsync(string user,
-                                          int page,
-                                          Action<IEnumerable<User>> callback,
-                                          Action<APICallError> onError) {
-            GetUserFollowersAsync(user,
-                                  page,
-                                  Constants.DefaultSortBy,
-                                  Constants.DefaultOrderBy,
-                                  callback,
-                                  onError);
+        public void GetFollowersAsync(string user,
+                                      int page,
+                                      Action<IEnumerable<User>> callback,
+                                      Action<APICallError> onError) {
+            GetFollowersAsync(user,
+                              page,
+                              Constants.DefaultSortBy,
+                              Constants.DefaultOrderBy,
+                              callback,
+                              onError);
         }
 
-        public void GetUserFollowersAsync(string user,
-                                          int page,
-                                          SortBy sort,
-                                          OrderBy direction,
-                                          Action<IEnumerable<User>> callback,
-                                          Action<APICallError> onError) {
+        public void GetFollowersAsync(string user,
+                                      int page,
+                                      SortBy sort,
+                                      OrderBy direction,
+                                      Action<IEnumerable<User>> callback,
+                                      Action<APICallError> onError) {
             Requires.ArgumentNotNull(user, "user");
 
-            var resource = string.Format("/users/{0}/followers/?{1}",
+            var resource = string.Format("/users/{0}/followers?{1}",
                                          user,
                                          ApiHelpers.GetParametersString(page, sort, direction));
-            GetUsersAsync(resource, API.Version3, callback, onError);
-        }
-
-        public void GetUserFollowingAsync(string user,
-                                          int page,
-                                          Action<IEnumerable<User>> callback,
-                                          Action<APICallError> onError) {
-            GetUserFollowingAsync(user,
-                                  page,
-                                  Constants.DefaultSortBy,
-                                  Constants.DefaultOrderBy,
-                                  callback,
-                                  onError);
-        }
-
-        public void GetUserFollowingAsync(string user,
-                                          int page,
-                                          SortBy sort,
-                                          OrderBy direction,
-                                          Action<IEnumerable<User>> callback,
-                                          Action<APICallError> onError) {
-            Requires.ArgumentNotNull(user, "user");
-
-            var resource = string.Format("/users/{0}/following/?{1}",
-                                         user,
-                                         ApiHelpers.GetParametersString(page, sort, direction));
-            GetUsersAsync(resource, API.Version3, callback, onError);
-        }
-
-        private void GetUsersAsync(string resource,
-                                   API version,
-                                   Action<IEnumerable<User>> callback,
-                                   Action<APICallError> onError) {
             _gitHubClient.CallApiAsync<List<User>>(resource,
-                                                   version,
+                                                   API.v3,
                                                    Method.GET,
                                                    users => callback(users),
                                                    onError);
+        }
+
+        public void GetFollowingAsync(string user,
+                                      int page,
+                                      Action<IEnumerable<User>> callback,
+                                      Action<APICallError> onError) {
+            GetFollowingAsync(user,
+                              page,
+                              Constants.DefaultSortBy,
+                              Constants.DefaultOrderBy,
+                              callback,
+                              onError);
+        }
+
+        public void GetFollowingAsync(string user,
+                                          int page,
+                                          SortBy sort,
+                                          OrderBy direction,
+                                          Action<IEnumerable<User>> callback,
+                                          Action<APICallError> onError) {
+            Requires.ArgumentNotNull(user, "user");
+
+            var resource = string.Format("/users/{0}/following?{1}",
+                                         user,
+                                         ApiHelpers.GetParametersString(page, sort, direction));
+            _gitHubClient.CallApiAsync<List<User>>(resource,
+                                                   API.v3,
+                                                   Method.GET,
+                                                   users => callback(users),
+                                                   onError);
+        }
+
+        public void SearchAsync(string query,
+                                Action<IEnumerable<User>> callback,
+                                Action<APICallError> onError) {
+            Requires.ArgumentNotNull(query, "query");
+
+            var resource = string.Format("/user/search/{0}", query.Replace(' ', '+'));
+            _gitHubClient.CallApiAsync<UsersResult>(resource,
+                                                    API.v2,
+                                                    Method.GET,
+                                                    u => callback(u.Users),
+                                                    onError);
+        }
+
+        public void GetRepositoriesAsync(string user,
+                                         Action<IEnumerable<Repository>> callback,
+                                         Action<APICallError> onError) {
+            Requires.ArgumentNotNull(user, "user");
+
+            var resource = string.Format("/repos/show/{0}", user);
+            GetRepositoriesAsyncInternal(resource, callback, onError);
+        }
+
+        public void GetWatchedRepositoriesAsync(string user,
+                                                Action<IEnumerable<Repository>> callback,
+                                                Action<APICallError> onError) {
+            Requires.ArgumentNotNull(user, "user");
+
+            var resource = string.Format("/repos/watched/{0}", user);
+            GetRepositoriesAsyncInternal(resource, callback, onError);
+        }
+
+        private void GetRepositoriesAsyncInternal(string resource,
+                                                  Action<IEnumerable<Repository>> callback,
+                                                  Action<APICallError> onError) {
+            _gitHubClient.CallApiAsync<RepositoriesResult>(resource,
+                                                           API.v2,
+                                                           Method.GET,
+                                                           r => callback(r.Repositories),
+                                                           onError);
         }
     }
 }

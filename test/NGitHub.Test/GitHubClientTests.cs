@@ -18,9 +18,10 @@ namespace NGitHub.Test {
                 It.Is<RestRequest>(r => (r.Resource == expectedResource) &&
                                         (r.Method == expectedMethod)),
                 It.IsAny<Action<RestResponse<object>>>()));
+            mockRestClient.SetupSet(c => c.Authenticator = It.IsAny<IAuthenticator>());
             var githubClient = new GitHubClient(mockFactory.Object);
 
-            githubClient.CallApiAsync<object>(expectedResource, API.Version3, expectedMethod, o => { }, e => { });
+            githubClient.CallApiAsync<object>(expectedResource, API.v3, expectedMethod, o => { }, e => { });
 
             mockRestClient.VerifyAll();
         }
@@ -38,9 +39,10 @@ namespace NGitHub.Test {
                 It.Is<RestRequest>(r => (r.Resource == expectedResource) &&
                                         (r.Method == expectedMethod)),
                 It.IsAny<Action<RestResponse<object>>>()));
+            mockRestClient.SetupSet(c => c.Authenticator = It.IsAny<IAuthenticator>());
             var githubClient = new GitHubClient(mockFactory.Object);
 
-            githubClient.CallApiAsync<object>(expectedResource, API.Version2, expectedMethod, o => { }, e => { });
+            githubClient.CallApiAsync<object>(expectedResource, API.v2, expectedMethod, o => { }, e => { });
 
             mockFactory.VerifyAll();
         }
@@ -58,9 +60,10 @@ namespace NGitHub.Test {
                 It.Is<RestRequest>(r => (r.Resource == expectedResource) &&
                                         (r.Method == expectedMethod)),
                 It.IsAny<Action<RestResponse<object>>>()));
+            mockRestClient.SetupSet(c => c.Authenticator = It.IsAny<IAuthenticator>());
             var githubClient = new GitHubClient(mockFactory.Object);
 
-            githubClient.CallApiAsync<object>(expectedResource, API.Version3, expectedMethod, o => { }, e => { });
+            githubClient.CallApiAsync<object>(expectedResource, API.v3, expectedMethod, o => { }, e => { });
 
             mockFactory.VerifyAll();
         }
@@ -72,6 +75,7 @@ namespace NGitHub.Test {
             mockRestClient
                 .Setup(c => c.ExecuteAsync<object>(It.IsAny<RestRequest>(), It.IsAny<Action<RestResponse<object>>>()))
                 .Callback<RestRequest, Action<RestResponse<object>>>((r, c) => c(response));
+            mockRestClient.SetupSet(c => c.Authenticator = It.IsAny<IAuthenticator>());
             var mockFactory = new Mock<GitHubClient.IRestClientFactory>(MockBehavior.Strict);
             mockFactory.Setup<IRestClient>(f => f.CreateRestClient(Constants.ApiV3Url)).Returns(mockRestClient.Object);
 
@@ -80,7 +84,7 @@ namespace NGitHub.Test {
             var callbackInvoked = false;
             client.CallApiAsync<object>(
                 "foo",
-                API.Version3,
+                API.v3,
                 Method.GET,
                 o => callbackInvoked = true,
                 e => { });
@@ -99,16 +103,24 @@ namespace NGitHub.Test {
             mockRestClient
                 .Setup(c => c.ExecuteAsync<object>(It.IsAny<RestRequest>(), It.IsAny<Action<RestResponse<object>>>()))
                 .Callback<RestRequest, Action<RestResponse<object>>>((r, c) => c(response));
+            mockRestClient.SetupSet(c => c.Authenticator = It.IsAny<IAuthenticator>());
             var mockFactory = new Mock<GitHubClient.IRestClientFactory>(MockBehavior.Strict);
             mockFactory.Setup<IRestClient>(f => f.CreateRestClient(Constants.ApiV3Url)).Returns(mockRestClient.Object);
 
             var client = new GitHubClient(mockFactory.Object);
             client.CallApiAsync<object>(
                 "foo",
-                API.Version3,
+                API.v3,
                 Method.GET,
                 o => Assert.AreEqual(expectedData, o),
                 e => { });
+        }
+
+        [TestMethod]
+        public void LoggedIn_ShouldBeFalse_WhenClientHasNotTriedToLogInYet() {
+            var client = new GitHubClient();
+
+            Assert.IsFalse(client.LoggedIn);
         }
     }
 }

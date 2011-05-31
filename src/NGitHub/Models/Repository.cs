@@ -1,5 +1,6 @@
 ﻿using System;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace NGitHub.Models {
     [JsonObject]
@@ -83,5 +84,29 @@ namespace NGitHub.Models {
                 _masterBranch = value;
             }
         }
+    }
+
+    [JsonObject]
+    public class RepositoriesResult {
+        [JsonProperty(PropertyName = "repositories")]
+        public List<Repository> Repositories { get; set; }
+    }
+
+    [JsonObject]
+    public class WatchersResult {
+        [JsonProperty(PropertyName = "watchers")]
+        public List<Repository> Watchers { get; set; }
+    }
+
+    [JsonObject]
+    public class NetworkResult {
+        [JsonProperty(PropertyName = "network")]
+        public List<Repository> Forks { get; set; }
+    }
+
+    [JsonObject]
+    public class RepositoryResult {
+        [JsonProperty(PropertyName = "repository")]
+        public Repository Repository { get; set; }
     }
 }

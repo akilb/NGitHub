@@ -46,4 +46,11 @@ namespace NGitHub.Models {
         [JsonProperty(PropertyName = "committer")]
         public User Committer { get; set; }
     }
+
+
+    [JsonObject]
+    public class CommitsResult {
+        [JsonProperty(PropertyName = "commits")]
+        public List<Commit> Commits { get; set; }
+    }
 }

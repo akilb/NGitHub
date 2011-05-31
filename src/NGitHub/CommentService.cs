@@ -83,7 +83,7 @@ namespace NGitHub {
                                       Action<IEnumerable<Comment>> callback,
                                       Action<APICallError> onError) {
             _client.CallApiAsync<List<Comment>>(resource,
-                                                API.Version3,
+                                                API.v3,
                                                 Method.GET,
                                                 commments => callback(commments),
                                                 onError);

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace NGitHub.Models {
     [JsonObject]
@@ -8,5 +9,15 @@ namespace NGitHub.Models {
 
         [JsonProperty(PropertyName = "hash")]
         public string Hash { get; set; }
+    }
+
+    [JsonObject]
+    public class BranchesResult {
+        public BranchesResult() {
+            Branches = new Dictionary<string, string>();
+        }
+
+        [JsonProperty(PropertyName = "branches")]
+        public Dictionary<string, string> Branches { get; set; }
     }
 }

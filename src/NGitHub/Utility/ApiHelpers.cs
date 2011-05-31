@@ -10,7 +10,7 @@ namespace NGitHub.Utility {
         }
 
         public static string GetParametersString(int page, State state, SortBy sort, OrderBy direction) {
-            return GetParametersString(page, sort, direction) + "state=" + state.GetText();
+            return GetParametersString(page, sort, direction) + "&state=" + state.GetText();
         }
     }
 }

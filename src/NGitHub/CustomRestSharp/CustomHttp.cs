@@ -26,12 +26,12 @@ using System.Text;
 using RestSharp;
 using RestSharp.Extensions;
 
-namespace NGitHub.Http
+namespace NGitHub.CustomRestSharp
 {
     /// <summary>
     /// HttpWebRequest wrapper
     /// </summary>
-    public partial class CustomHttp : IHttp
+    internal partial class CustomHttp : IHttp
     {
         /// <summary>
         /// True if this HTTP request has any HTTP parameters

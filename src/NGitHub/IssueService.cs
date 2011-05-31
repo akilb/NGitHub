@@ -24,7 +24,7 @@ namespace NGitHub {
             Requires.ArgumentNotNull(issueId, "issueId");
 
             var resource = string.Format("/repos/{0}/{1}/issues/{2}", user, repo, issueId);
-            _client.CallApiAsync<Issue>(resource, API.Version3, Method.GET, callback, onError);
+            _client.CallApiAsync<Issue>(resource, API.v3, Method.GET, callback, onError);
         }
 
         public void GetIssuesAsync(string user,
@@ -62,7 +62,7 @@ namespace NGitHub {
                                 ApiHelpers.GetParametersString(page, state, sort, direction));
 
             _client.CallApiAsync<List<Issue>>(resource,
-                                              API.Version3,
+                                              API.v3,
                                               Method.GET,
                                               issues => callback(issues),
                                               onError);

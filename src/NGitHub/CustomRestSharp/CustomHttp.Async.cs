@@ -44,12 +44,12 @@ using System.Windows;
 using RestSharp;
 //#endif
 
-namespace NGitHub.Http
+namespace NGitHub.CustomRestSharp
 {
     /// <summary>
     /// HttpWebRequest wrapper (async methods)
     /// </summary>
-    public partial class CustomHttp
+    internal partial class CustomHttp
     {
         private TimeOutState timeoutState = null;
 
