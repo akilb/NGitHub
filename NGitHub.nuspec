@@ -1,8 +1,8 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
-  <metadata>
+  <metadata schemaVersion="2">
     <id>NGitHub</id>
-    <version>0.2</version>
+    <version>0.2.1</version>
     <title>NGitHub</title>
     <authors>Akil Burgess</authors>
     <owners>Akil Burgess</owners>
@@ -16,11 +16,16 @@
     <dependencies>
       <dependency id="RestSharp" version="101.3" />
     </dependencies>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System.ServiceModel.dll" targetFramework="net40" />
+      <frameworkAssembly assemblyName="System.ServiceModel.Syndication.dll" targetFramework="sl4" />
+    </frameworkAssemblies>
   </metadata>
 
   <files>
     <file src="src\NGitHub\bin\Release\NGitHub.dll" target="lib\net40"/>
     <file src="src\NGitHub.SL4\bin\Release\NGitHub.SL4.dll" target="lib\sl4"/>
     <file src="src\NGitHub.WindowsPhone\bin\Release\NGitHub.WindowsPhone.dll" target="lib\sl3-wp"/>
+    <file src="lib\sl3-wp\System.ServiceModel.Syndication.dll" target="lib\sl3-wp"/>
   </files>
 </package>

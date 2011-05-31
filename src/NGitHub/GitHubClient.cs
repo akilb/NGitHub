@@ -7,6 +7,7 @@ namespace NGitHub {
     public class GitHubClient : IGitHubClient {
         private readonly IRestClientFactory _factory;
         private readonly IUserService _users;
+        private readonly IFeedService _feeds;
         private readonly IIssueService _issues;
         private readonly ICommitService _commits;
         private readonly IOrganizationService _organizations;
@@ -29,6 +30,8 @@ namespace NGitHub {
             _commits = new CommitService(this);
             _repositories = new RepositoryService(this);
             _organizations = new OrganizationService(this);
+
+            _feeds = new FeedService(_factory, () => _authenticator);
         }
 
         public IUserService Users {
@@ -46,6 +49,12 @@ namespace NGitHub {
         public IIssueService Issues {
             get {
                 return _issues;
+            }
+        }
+
+        public IFeedService Feeds {
+            get {
+                return _feeds;
             }
         }
 

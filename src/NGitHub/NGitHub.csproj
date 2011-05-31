@@ -39,6 +39,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="API.cs" />
@@ -46,16 +48,19 @@
     <Compile Include="CommitService.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="CustomRestSharp\CustomJsonDeserializer.cs" />
+    <Compile Include="FeedService.cs" />
     <Compile Include="GitHubClient.cs" />
     <Compile Include="CustomRestSharp\CustomHttp.Async.cs" />
     <Compile Include="CustomRestSharp\CustomHttp.cs" />
     <Compile Include="ICommitService.cs" />
+    <Compile Include="IFeedService.cs" />
     <Compile Include="IGitHubClient.cs" />
     <Compile Include="IIssueService.cs" />
     <Compile Include="IOrganizationService.cs" />
     <Compile Include="IRepositoryService.cs" />
     <Compile Include="IssueService.cs" />
     <Compile Include="IUserService.cs" />
+    <Compile Include="Models\FeedItem.cs" />
     <Compile Include="Models\APICallParameters.cs" />
     <Compile Include="Models\Branch.cs" />
     <Compile Include="Models\Comment.cs" />
