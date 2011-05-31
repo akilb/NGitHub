@@ -11,7 +11,7 @@ namespace NGitHub.Test {
             var expectedResource = "foo/bar";
             var expectedMethod = Method.POST;
             var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
-            var mockFactory = new Mock<GitHubClient.IRestClientFactory>(MockBehavior.Strict);
+            var mockFactory = new Mock<IRestClientFactory>(MockBehavior.Strict);
             mockFactory.Setup<IRestClient>(f => f.CreateRestClient(Constants.ApiV3Url))
                        .Returns(mockRestClient.Object);
             mockRestClient.Setup(c => c.ExecuteAsync<object>(
@@ -32,7 +32,7 @@ namespace NGitHub.Test {
             var expectedResource = "foo/bar";
             var expectedMethod = Method.POST;
             var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
-            var mockFactory = new Mock<GitHubClient.IRestClientFactory>(MockBehavior.Strict);
+            var mockFactory = new Mock<IRestClientFactory>(MockBehavior.Strict);
             mockFactory.Setup<IRestClient>(f => f.CreateRestClient(expectedBaseUrl))
                        .Returns(mockRestClient.Object);
             mockRestClient.Setup(c => c.ExecuteAsync<object>(
@@ -53,7 +53,7 @@ namespace NGitHub.Test {
             var expectedResource = "foo/bar";
             var expectedMethod = Method.POST;
             var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
-            var mockFactory = new Mock<GitHubClient.IRestClientFactory>(MockBehavior.Strict);
+            var mockFactory = new Mock<IRestClientFactory>(MockBehavior.Strict);
             mockFactory.Setup<IRestClient>(f => f.CreateRestClient(expectedBaseUrl))
                        .Returns(mockRestClient.Object);
             mockRestClient.Setup(c => c.ExecuteAsync<object>(
@@ -76,7 +76,7 @@ namespace NGitHub.Test {
                 .Setup(c => c.ExecuteAsync<object>(It.IsAny<RestRequest>(), It.IsAny<Action<RestResponse<object>>>()))
                 .Callback<RestRequest, Action<RestResponse<object>>>((r, c) => c(response));
             mockRestClient.SetupSet(c => c.Authenticator = It.IsAny<IAuthenticator>());
-            var mockFactory = new Mock<GitHubClient.IRestClientFactory>(MockBehavior.Strict);
+            var mockFactory = new Mock<IRestClientFactory>(MockBehavior.Strict);
             mockFactory.Setup<IRestClient>(f => f.CreateRestClient(Constants.ApiV3Url)).Returns(mockRestClient.Object);
 
             var client = new GitHubClient(mockFactory.Object);
@@ -104,7 +104,7 @@ namespace NGitHub.Test {
                 .Setup(c => c.ExecuteAsync<object>(It.IsAny<RestRequest>(), It.IsAny<Action<RestResponse<object>>>()))
                 .Callback<RestRequest, Action<RestResponse<object>>>((r, c) => c(response));
             mockRestClient.SetupSet(c => c.Authenticator = It.IsAny<IAuthenticator>());
-            var mockFactory = new Mock<GitHubClient.IRestClientFactory>(MockBehavior.Strict);
+            var mockFactory = new Mock<IRestClientFactory>(MockBehavior.Strict);
             mockFactory.Setup<IRestClient>(f => f.CreateRestClient(Constants.ApiV3Url)).Returns(mockRestClient.Object);
 
             var client = new GitHubClient(mockFactory.Object);

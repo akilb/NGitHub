@@ -5,7 +5,7 @@ using NGitHub.Utility;
 using RestSharp;
 
 namespace NGitHub {
-    class UserService : IUserService {
+    public class UserService : IUserService {
         private readonly IGitHubClient _gitHubClient;
 
         public UserService(IGitHubClient gitHubClient) {

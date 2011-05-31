@@ -5,7 +5,7 @@ using NGitHub.Utility;
 using RestSharp;
 
 namespace NGitHub {
-    class CommitService : ICommitService {
+    public class CommitService : ICommitService {
         private readonly IGitHubClient _client;
 
         public CommitService(GitHubClient gitHubClient) {
