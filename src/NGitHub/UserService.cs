@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using NGitHub.Models;
 using NGitHub.Utility;
 using RestSharp;
@@ -31,6 +32,34 @@ namespace NGitHub {
                                                    Method.GET,
                                                    u => callback(u.User),
                                                    onError);
+        }
+
+        public void IsFollowingAsync(string user,
+                                     Action<bool> callback,
+                                     Action<APICallError> onError) {
+            Requires.ArgumentNotNull(user, "user");
+
+            // API v3 has a dedicated resource for this functionality. For now
+            // we can just do a bit more work with API v2 methods...
+            GetAuthenticatedUserAsync(
+                authenticated => {
+                    GetFollowersAsync(user,
+                                      f => callback(f.Where(u => u.Login == authenticated.Login).Count() > 0),
+                                      onError);
+                },
+                onError);
+        }
+
+        public void FollowAsync(string user,
+                                Action callback,
+                                Action<APICallError> onError) {
+            throw new NotImplementedException();
+        }
+
+        public void UnfollowAsync(string user,
+                                  Action callback,
+                                  Action<APICallError> onError) {
+            throw new NotImplementedException();
         }
 
         public void GetFollowersAsync(string user,
