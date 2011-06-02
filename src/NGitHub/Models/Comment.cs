@@ -8,6 +8,9 @@ namespace NGitHub.Models {
         [JsonProperty(PropertyName = "id")]
         public int Id { get; set; }
 
+        [JsonProperty(PropertyName = "gravatar_id")]
+        public string GravatarId { get; set; }
+
         [JsonProperty(PropertyName = "url")]
         public string Url { get; set; }
 
@@ -21,7 +24,7 @@ namespace NGitHub.Models {
         public string Body { get; set; }
 
         [JsonProperty(PropertyName = "user")]
-        public User User { get; set; }
+        public string User { get; set; }
     }
 
     [JsonObject]

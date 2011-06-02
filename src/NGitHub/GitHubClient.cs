@@ -83,7 +83,8 @@ namespace NGitHub {
             Requires.ArgumentNotNull(login, "login");
             Requires.ArgumentNotNull(password, "password");
 
-            _authenticator = new NullAuthenticator();
+            Logout();
+
             var authenticator = new HttpBasicAuthenticator(login, password);
             CallApiAsync<UserResult>("/user/show/",
                                      API.v2,
