@@ -53,13 +53,25 @@ namespace NGitHub {
         public void FollowAsync(string user,
                                 Action callback,
                                 Action<APICallError> onError) {
-            throw new NotImplementedException();
+            Requires.ArgumentNotNull(user, "user");
+
+            var resource = string.Format("/user/follow/{0}", user);
+            _gitHubClient.CallApiAsync<object>(resource,
+                                               API.v2,
+                                               Method.POST,
+                                               s => callback(),
+                                               onError);
         }
 
         public void UnfollowAsync(string user,
                                   Action callback,
                                   Action<APICallError> onError) {
-            throw new NotImplementedException();
+            var resource = string.Format("/user/unfollow/{0}", user);
+            _gitHubClient.CallApiAsync<object>(resource,
+                                               API.v2,
+                                               Method.POST,
+                                               s => callback(),
+                                               onError);
         }
 
         public void GetFollowersAsync(string user,
