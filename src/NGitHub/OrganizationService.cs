@@ -21,9 +21,9 @@ namespace NGitHub {
 
             var resource = string.Format("/organizations/{0}/public_members",
                                          organization);
-            _client.CallApiAsync<UsersResult>(resource,
+            var request = new RestRequest(resource, Method.GET);
+            _client.CallApiAsync<UsersResult>(request,
                                               API.v2,
-                                              Method.GET,
                                               u => callback(u.Users),
                                               onError);
         }
@@ -34,9 +34,9 @@ namespace NGitHub {
             Requires.ArgumentNotNull(user, "user");
 
             var resource = string.Format("/user/show/{0}/organizations", user);
-            _client.CallApiAsync<OrganizationsResult>(resource,
+            var request = new RestRequest(resource, Method.GET);
+            _client.CallApiAsync<OrganizationsResult>(request,
                                                       API.v2,
-                                                      Method.GET,
                                                       o => callback(o.Organizations),
                                                       onError);
         }

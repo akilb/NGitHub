@@ -17,10 +17,9 @@ namespace NGitHub {
                         Action<APICallError> onError);
         void Logout();
 
-        void CallApiAsync<TJsonResponse>(string resource,
+        void CallApiAsync<TResponseData>(RestRequest request,
                                          API version,
-                                         Method method,
-                                         Action<TJsonResponse> callback,
-                                         Action<APICallError> onError) where TJsonResponse : new();
+                                         Action<TResponseData> callback,
+                                         Action<APICallError> onError) where TResponseData : new();
     }
 }

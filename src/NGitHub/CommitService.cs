@@ -30,9 +30,9 @@ namespace NGitHub {
                                          repo,
                                          branch,
                                          pageNo);
-            _client.CallApiAsync<CommitsResult>(resource,
+            var request = new RestRequest(resource, Method.GET);
+            _client.CallApiAsync<CommitsResult>(request,
                                                 API.v2,
-                                                Method.GET,
                                                 c => callback(c.Commits),
                                                 onError);
         }

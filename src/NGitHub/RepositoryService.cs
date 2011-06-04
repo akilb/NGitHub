@@ -22,9 +22,9 @@ namespace NGitHub {
             Requires.ArgumentNotNull(repo, "repo");
 
             var resource = string.Format("/repos/show/{0}/{1}", user, repo);
-            _client.CallApiAsync<RepositoryResult>(resource,
+            var request = new RestRequest(resource, Method.GET);
+            _client.CallApiAsync<RepositoryResult>(request,
                                                    API.v2,
-                                                   Method.GET,
                                                    r => callback(r.Repository),
                                                    onError);
         }
@@ -37,9 +37,9 @@ namespace NGitHub {
             Requires.ArgumentNotNull(repo, "repo");
 
             var resource = string.Format("/repos/show/{0}/{1}/watchers?full=1", user, repo);
-            _client.CallApiAsync<WatchersResult>(resource,
+            var request = new RestRequest(resource, Method.GET);
+            _client.CallApiAsync<WatchersResult>(request,
                                                  API.v2,
-                                                 Method.GET,
                                                  w => callback(w.Watchers),
                                                  onError);
         }
@@ -52,9 +52,9 @@ namespace NGitHub {
             Requires.ArgumentNotNull(repo, "repo");
 
             var resource = string.Format("/repos/show/{0}/{1}/branches", user, repo);
-            _client.CallApiAsync<BranchesResult>(resource,
+            var request = new RestRequest(resource, Method.GET);
+            _client.CallApiAsync<BranchesResult>(request,
                                                  API.v2,
-                                                 Method.GET,
                                                  b => {
                                                      var branches = new List<Branch>();
                                                      foreach (var pair in b.Branches) {
@@ -77,9 +77,9 @@ namespace NGitHub {
             Requires.ArgumentNotNull(repo, "repo");
 
             var resource = string.Format("/repos/show/{0}/{1}/network", user, repo);
-            _client.CallApiAsync<NetworkResult>(resource,
+            var request = new RestRequest(resource);
+            _client.CallApiAsync<NetworkResult>(request,
                                                 API.v2,
-                                                Method.GET,
                                                 r => callback(r.Forks),
                                                 onError);
         }
@@ -90,9 +90,9 @@ namespace NGitHub {
             Requires.ArgumentNotNull(query, "query");
 
             var resource = string.Format("/repos/search/{0}", query.Replace(' ', '+'));
-            _client.CallApiAsync<RepositoriesResult>(resource,
+            var request = new RestRequest(resource, Method.GET);
+            _client.CallApiAsync<RepositoriesResult>(request,
                                                      API.v2,
-                                                     Method.GET,
                                                      r => callback(r.Repositories),
                                                      onError);
         }

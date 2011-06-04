@@ -24,7 +24,8 @@ namespace NGitHub {
             Requires.ArgumentNotNull(issueId, "issueId");
 
             var resource = string.Format("/issues/show/{0}/{1}/{2}", user, repo, issueId);
-            _client.CallApiAsync<IssueResult>(resource, API.v2, Method.GET, i => callback(i.Issue), onError);
+            var request = new RestRequest(resource, Method.GET);
+            _client.CallApiAsync<IssueResult>(request, API.v2, i => callback(i.Issue), onError);
         }
 
         public void GetIssuesAsync(string user,
@@ -36,10 +37,10 @@ namespace NGitHub {
             Requires.ArgumentNotNull(repo, "repo");
 
             var resource = string.Format("/issues/list/{0}/{1}/{2}", user, repo, state.GetText());
+            var request = new RestRequest(resource, Method.GET);
 
-            _client.CallApiAsync<IssuesResult>(resource,
+            _client.CallApiAsync<IssuesResult>(request,
                                                API.v2,
-                                               Method.GET,
                                                i => callback(i.Issues),
                                                onError);
         }
@@ -56,9 +57,9 @@ namespace NGitHub {
                                          user,
                                          repo,
                                          issueNumber);
-            _client.CallApiAsync<CommentsResult>(resource,
+            var request = new RestRequest(resource, Method.GET);
+            _client.CallApiAsync<CommentsResult>(request,
                                                  API.v2,
-                                                 Method.GET,
                                                  c => callback(c.Comments),
                                                  onError);
         }

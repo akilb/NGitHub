@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Net;
 using NGitHub.Models;
 using NGitHub.Utility;
 using RestSharp;
-using System.Net;
 
 namespace NGitHub {
     public class GitHubClient : IGitHubClient {
@@ -87,9 +87,8 @@ namespace NGitHub {
             Logout();
 
             var authenticator = new HttpBasicAuthenticator(login, password);
-            CallApiAsync<UserResult>("/user/show/",
+            CallApiAsync<UserResult>(new RestRequest("/user/show/", Method.GET),
                                      API.v2,
-                                     Method.GET,
                                      authenticator,
                                      u => {
                                          _authenticator = authenticator;
@@ -104,26 +103,19 @@ namespace NGitHub {
             _authenticator = new NullAuthenticator();
         }
 
-        public void CallApiAsync<TJsonResponse>(string resource,
+        public void CallApiAsync<TResponseData>(RestRequest request,
                                                 API version,
-                                                Method method,
-                                                Action<TJsonResponse> callback,
-                                                Action<APICallError> onError) where TJsonResponse : new() {
-            CallApiAsync<TJsonResponse>(resource,
-                                        version,
-                                        method,
-                                        _authenticator,
-                                        callback,
-                                        onError);
+                                                Action<TResponseData> callback,
+                                                Action<APICallError> onError) where TResponseData : new() {
+            CallApiAsync<TResponseData>(request, version, _authenticator, callback, onError);
         }
 
-        private void CallApiAsync<TJsonResponse>(string resource,
+        private void CallApiAsync<TResponseData>(RestRequest request,
                                                  API version,
-                                                 Method method,
                                                  IAuthenticator authenticator,
-                                                 Action<TJsonResponse> callback,
-                                                 Action<APICallError> onError) where TJsonResponse : new() {
-            Requires.ArgumentNotNull(resource, "resource");
+                                                 Action<TResponseData> callback,
+                                                 Action<APICallError> onError) where TResponseData : new() {
+            Requires.ArgumentNotNull(request, "request");
             Requires.ArgumentNotNull(callback, "callback");
             Requires.ArgumentNotNull(authenticator, "authenticator");
             Requires.ArgumentNotNull(onError, "onError");
@@ -132,8 +124,7 @@ namespace NGitHub {
             var restClient = _factory.CreateRestClient(baseUrl);
             restClient.Authenticator = authenticator;
 
-            var request = new RestRequest(resource, method);
-            restClient.ExecuteAsync<TJsonResponse>(
+            restClient.ExecuteAsync<TResponseData>(
                 request,
                 r => {
                     if (r.StatusCode != HttpStatusCode.OK) {
