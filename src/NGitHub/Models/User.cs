@@ -106,6 +106,12 @@ namespace NGitHub.Models {
     }
 
     [JsonObject]
+    public class WatchersResult {
+        [JsonProperty(PropertyName = "watchers")]
+        public List<User> Watchers { get; set; }
+    }
+
+    [JsonObject]
     public class OrganizationsResult {
         [JsonProperty(PropertyName = "organizations")]
         public List<User> Organizations { get; set; }

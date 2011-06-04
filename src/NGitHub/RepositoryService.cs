@@ -37,11 +37,11 @@ namespace NGitHub {
             Requires.ArgumentNotNull(repo, "repo");
 
             var resource = string.Format("/repos/show/{0}/{1}/watchers?full=1", user, repo);
-            _client.CallApiAsync<List<User>>(resource,
-                                             API.v2,
-                                             Method.GET,
-                                             watchers => callback(watchers),
-                                             onError);
+            _client.CallApiAsync<WatchersResult>(resource,
+                                                 API.v2,
+                                                 Method.GET,
+                                                 w => callback(w.Watchers),
+                                                 onError);
         }
 
         public void GetBranchesAsync(string user,

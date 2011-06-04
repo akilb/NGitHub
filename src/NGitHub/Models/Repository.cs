@@ -93,12 +93,6 @@ namespace NGitHub.Models {
     }
 
     [JsonObject]
-    public class WatchersResult {
-        [JsonProperty(PropertyName = "watchers")]
-        public List<Repository> Watchers { get; set; }
-    }
-
-    [JsonObject]
     public class NetworkResult {
         [JsonProperty(PropertyName = "network")]
         public List<Repository> Forks { get; set; }
