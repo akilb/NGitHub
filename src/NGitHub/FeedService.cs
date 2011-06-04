@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.ServiceModel.Syndication;
 using System.Xml;
 using NGitHub.Models;
@@ -49,9 +50,8 @@ namespace NGitHub {
             var request = new RestRequest(resource, Method.GET);
             client.ExecuteAsync(request,
                                 r => {
-                                    if (r.ResponseStatus != ResponseStatus.Completed) {
-                                        // TODO: Error handling...
-                                        onError(new APICallError());
+                                    if (r.StatusCode != HttpStatusCode.OK) {
+                                        onError(new APICallError(r));
                                         return;
                                     }
 

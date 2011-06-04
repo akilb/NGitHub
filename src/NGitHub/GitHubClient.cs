@@ -2,6 +2,7 @@
 using NGitHub.Models;
 using NGitHub.Utility;
 using RestSharp;
+using System.Net;
 
 namespace NGitHub {
     public class GitHubClient : IGitHubClient {
@@ -135,8 +136,8 @@ namespace NGitHub {
             restClient.ExecuteAsync<TJsonResponse>(
                 request,
                 r => {
-                    if (r.ResponseStatus != ResponseStatus.Completed) {
-                        // TODO: Error handling...
+                    if (r.StatusCode != HttpStatusCode.OK) {
+                        onError(new APICallError(r));
                         return;
                     }
 
