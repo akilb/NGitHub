@@ -14,6 +14,12 @@ namespace NGitHub {
                             State state,
                             Action<IEnumerable<Issue>> callback,
                             Action<APICallError> onError);
+        void CreateCommentAsync(string user,
+                                string repo,
+                                int issueNumber,
+                                string comment,
+                                Action<Comment> callback,
+                                Action<APICallError> onError);
         void GetCommentsAsync(string user,
                               string repo,
                               int issueNumber,

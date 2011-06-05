@@ -28,6 +28,12 @@ namespace NGitHub.Models {
     }
 
     [JsonObject]
+    public class CommentResult {
+        [JsonProperty(PropertyName = "comment")]
+        public Comment Comment { get; set; }
+    }
+
+    [JsonObject]
     public class CommentsResult {
         [JsonProperty(PropertyName = "comments")]
         public List<Comment> Comments { get; set; }

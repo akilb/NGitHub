@@ -127,7 +127,8 @@ namespace NGitHub {
             restClient.ExecuteAsync<TResponseData>(
                 request,
                 r => {
-                    if (r.StatusCode != HttpStatusCode.OK) {
+                    if (r.StatusCode != HttpStatusCode.OK &&
+                        r.StatusCode != HttpStatusCode.Created) {
                         onError(new APICallError(r));
                         return;
                     }

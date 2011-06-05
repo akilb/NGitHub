@@ -45,6 +45,26 @@ namespace NGitHub {
                                                onError);
         }
 
+        public void CreateCommentAsync(string user,
+                                       string repo,
+                                       int issueNumber,
+                                       string comment,
+                                       Action<Comment> callback,
+                                       Action<APICallError> onError) {
+            Requires.ArgumentNotNull(user, "user");
+            Requires.ArgumentNotNull(repo, "repo");
+            Requires.ArgumentNotNull(comment, "comment");
+
+            var resource = string.Format("/issues/comment/{0}/{1}/{2}",
+                                         user,
+                                         repo,
+                                         issueNumber);
+            var request = new RestRequest(resource, Method.POST);
+            request.AddParameter("comment", comment);
+
+            _client.CallApiAsync<CommentResult>(request, API.v2, c => callback(c.Comment), onError);
+        }
+
         public void GetCommentsAsync(string user,
                                      string repo,
                                      int issueNumber,

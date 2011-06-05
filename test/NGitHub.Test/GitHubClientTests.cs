@@ -85,6 +85,29 @@ namespace NGitHub.Test {
         }
 
         [TestMethod]
+        public void CallApiAsync_ShouldInvokeCallBackMethod_WhenRequestHasCreatedStatus() {
+            var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+            var response = new RestResponse<object>() { StatusCode = HttpStatusCode.Created };
+            mockRestClient
+                .Setup(c => c.ExecuteAsync<object>(It.IsAny<RestRequest>(), It.IsAny<Action<RestResponse<object>>>()))
+                .Callback<RestRequest, Action<RestResponse<object>>>((r, c) => c(response));
+            mockRestClient.SetupSet(c => c.Authenticator = It.IsAny<IAuthenticator>());
+            var mockFactory = new Mock<IRestClientFactory>(MockBehavior.Strict);
+            mockFactory.Setup<IRestClient>(f => f.CreateRestClient(Constants.ApiV3Url)).Returns(mockRestClient.Object);
+
+            var client = new GitHubClient(mockFactory.Object);
+
+            var callbackInvoked = false;
+            client.CallApiAsync<object>(
+                new RestRequest(),
+                API.v3,
+                o => callbackInvoked = true,
+                e => { });
+
+            Assert.IsTrue(callbackInvoked);
+        }
+
+        [TestMethod]
         public void CallApiAsync_ShouldPassResponseDataToCallback_WhenRestRequestCompletesSuccessfully() {
             var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
             var expectedData = new object();
