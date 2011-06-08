@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using NGitHub.Models;
 using NGitHub.Utility;
 using RestSharp;
@@ -95,6 +96,71 @@ namespace NGitHub {
                                                      API.v2,
                                                      r => callback(r.Repositories),
                                                      onError);
+        }
+
+        public void ForkAsync(string user,
+                              string repo,
+                              Action callback,
+                              Action<APICallError> onError) {
+            Requires.ArgumentNotNull(user, "user");
+            Requires.ArgumentNotNull(repo, "repo");
+
+            var resource = string.Format("repos/fork/{0}/{1}", user, repo);
+            var request = new RestRequest(resource, Method.POST);
+            _client.CallApiAsync<object>(request,
+                                         API.v2,
+                                         o => callback(),
+                                         onError);
+        }
+
+        public void WatchAsync(string user,
+                               string repo,
+                               Action callback,
+                               Action<APICallError> onError) {
+            Requires.ArgumentNotNull(user, "user");
+            Requires.ArgumentNotNull(repo, "repo");
+
+            var resource = string.Format("repos/watch/{0}/{1}", user, repo);
+            var request = new RestRequest(resource, Method.POST);
+            _client.CallApiAsync<object>(request,
+                                         API.v2,
+                                         o => callback(),
+                                         onError);
+        }
+
+        public void UnwatchAsync(string user,
+                            string repo,
+                            Action callback,
+                            Action<APICallError> onError) {
+            Requires.ArgumentNotNull(user, "user");
+            Requires.ArgumentNotNull(repo, "repo");
+
+            var resource = string.Format("repos/unwatch/{0}/{1}", user, repo);
+            var request = new RestRequest(resource, Method.POST);
+            _client.CallApiAsync<object>(request,
+                                         API.v2,
+                                         o => callback(),
+                                         onError);
+        }
+
+        public void IsWatchingAsync(string user,
+                                    string repo,
+                                    Action<bool> callback,
+                                    Action<APICallError> onError) {
+            Requires.ArgumentNotNull(user, "user");
+            Requires.ArgumentNotNull(repo, "repo");
+
+
+            // Hopefully API v3 will have dedicated resource for this functionality.
+            // For now we can just do a bit more work with API v2 methods...
+            _client.Users.GetAuthenticatedUserAsync(
+                authenticated => {
+                    GetWatchersAsync(user,
+                                     repo,
+                                     w => callback(w.Where(u => u.Login == authenticated.Login).Count() > 0),
+                                     onError);
+                },
+                onError);
         }
     }
 }

@@ -4,6 +4,23 @@ using NGitHub.Models;
 
 namespace NGitHub {
     public interface IRepositoryService {
+        void ForkAsync(string user,
+                       string repo,
+                       Action callback,
+                       Action<APICallError> onError);
+        void WatchAsync(string user,
+                        string repo,
+                        Action callback,
+                        Action<APICallError> onError);
+        void UnwatchAsync(string user,
+                          string repo,
+                          Action callback,
+                          Action<APICallError> onError);
+        void IsWatchingAsync(string user,
+                             string repo,
+                             Action<bool> callback,
+                             Action<APICallError> onError);
+
         void GetRepositoryAsync(string user,
                                 string repo,
                                 Action<Repository> callback,
