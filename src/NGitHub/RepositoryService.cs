@@ -100,17 +100,17 @@ namespace NGitHub {
 
         public void ForkAsync(string user,
                               string repo,
-                              Action callback,
+                              Action<Repository> callback,
                               Action<APICallError> onError) {
             Requires.ArgumentNotNull(user, "user");
             Requires.ArgumentNotNull(repo, "repo");
 
             var resource = string.Format("repos/fork/{0}/{1}", user, repo);
             var request = new RestRequest(resource, Method.POST);
-            _client.CallApiAsync<object>(request,
-                                         API.v2,
-                                         o => callback(),
-                                         onError);
+            _client.CallApiAsync<RepositoryResult>(request,
+                                                   API.v2,
+                                                   r => callback(r.Repository),
+                                                   onError);
         }
 
         public void WatchAsync(string user,

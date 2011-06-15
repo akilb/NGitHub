@@ -6,7 +6,7 @@ namespace NGitHub {
     public interface IRepositoryService {
         void ForkAsync(string user,
                        string repo,
-                       Action callback,
+                       Action<Repository> callback,
                        Action<APICallError> onError);
         void WatchAsync(string user,
                         string repo,
