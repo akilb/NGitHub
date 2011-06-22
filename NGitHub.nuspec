@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata schemaVersion="2">
     <id>NGitHub</id>
-    <version>0.3.1</version>
+    <version>0.3.2</version>
     <title>NGitHub</title>
     <authors>Akil Burgess</authors>
     <owners>Akil Burgess</owners>
@@ -19,6 +19,9 @@
     <frameworkAssemblies>
       <frameworkAssembly assemblyName="System.ServiceModel.dll" targetFramework="net40" />
       <frameworkAssembly assemblyName="System.ServiceModel.Syndication.dll" targetFramework="sl4" />
+
+      <!-- NOOP to work-around NuGet bug -->
+      <frameworkAssembly assemblyName="System.Core.dll" targetFramework="sl3-wp" />
     </frameworkAssemblies>
   </metadata>
 

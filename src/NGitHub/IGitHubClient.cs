@@ -1,4 +1,5 @@
 ﻿using System;
+using NGitHub.Models;
 using RestSharp;
 
 namespace NGitHub {
@@ -13,7 +14,7 @@ namespace NGitHub {
         bool LoggedIn { get; }
         void LoginAsync(string login,
                         string password,
-                        Action callback,
+                        Action<User> callback,
                         Action<APICallError> onError);
         void Logout();
 

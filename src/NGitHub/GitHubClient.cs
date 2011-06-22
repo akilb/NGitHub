@@ -79,7 +79,7 @@ namespace NGitHub {
 
         public void LoginAsync(string login,
                                string password,
-                               Action callback,
+                               Action<User> callback,
                                Action<APICallError> onError) {
             Requires.ArgumentNotNull(login, "login");
             Requires.ArgumentNotNull(password, "password");
@@ -92,7 +92,7 @@ namespace NGitHub {
                                      authenticator,
                                      u => {
                                          _authenticator = authenticator;
-                                         callback();
+                                         callback(u.User);
                                      },
                                      e => {
                                          onError(e);
