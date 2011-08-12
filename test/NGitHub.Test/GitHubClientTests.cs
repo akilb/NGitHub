@@ -8,19 +8,39 @@ namespace NGitHub.Test {
     [TestClass]
     public class GitHubClientTests {
         [TestMethod]
-        public void CallApiAsync_ShouldExecuteRestRequestWithGivenRequest() {
-            var expectedRequest = new RestRequest("foo/bar", Method.OPTIONS);
+        public void CallApiAsync_ShouldExecuteRestRequestWithGivenRequestResource() {
+            var expectedResource = "foo/bar";
+            var request = new GitHubRequest(expectedResource, API.v3, Method.OPTIONS);
             var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
             var mockFactory = new Mock<IRestClientFactory>(MockBehavior.Strict);
             mockFactory.Setup<IRestClient>(f => f.CreateRestClient(Constants.ApiV3Url))
                        .Returns(mockRestClient.Object);
             mockRestClient.Setup(c => c.ExecuteAsync<object>(
-                expectedRequest,
+                It.Is<RestRequest>(r => r.Resource == expectedResource),
                 It.IsAny<Action<RestResponse<object>>>()));
             mockRestClient.SetupSet(c => c.Authenticator = It.IsAny<IAuthenticator>());
             var githubClient = new GitHubClient(mockFactory.Object);
 
-            githubClient.CallApiAsync<object>(expectedRequest, API.v3, o => { }, e => { });
+            githubClient.CallApiAsync<object>(request, o => { }, e => { });
+
+            mockRestClient.VerifyAll();
+        }
+
+        [TestMethod]
+        public void CallApiAsync_ShouldExecuteRestRequestWithGivenRequestMethod() {
+            var expectedMethod = Method.OPTIONS;
+            var request = new GitHubRequest("foo/bar", API.v3, expectedMethod);
+            var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+            var mockFactory = new Mock<IRestClientFactory>(MockBehavior.Strict);
+            mockFactory.Setup<IRestClient>(f => f.CreateRestClient(Constants.ApiV3Url))
+                       .Returns(mockRestClient.Object);
+            mockRestClient.Setup(c => c.ExecuteAsync<object>(
+                It.Is<RestRequest>(r => r.Method == expectedMethod.ToRestSharpMethod()),
+                It.IsAny<Action<RestResponse<object>>>()));
+            mockRestClient.SetupSet(c => c.Authenticator = It.IsAny<IAuthenticator>());
+            var githubClient = new GitHubClient(mockFactory.Object);
+
+            githubClient.CallApiAsync<object>(request, o => { }, e => { });
 
             mockRestClient.VerifyAll();
         }
@@ -38,7 +58,9 @@ namespace NGitHub.Test {
             mockRestClient.SetupSet(c => c.Authenticator = It.IsAny<IAuthenticator>());
             var githubClient = new GitHubClient(mockFactory.Object);
 
-            githubClient.CallApiAsync<object>(new RestRequest(), API.v2, o => { }, e => { });
+            githubClient.CallApiAsync<object>(new GitHubRequest("foo", API.v2, Method.GET),
+                                              o => { },
+                                              e => { });
 
             mockFactory.VerifyAll();
         }
@@ -56,7 +78,9 @@ namespace NGitHub.Test {
             mockRestClient.SetupSet(c => c.Authenticator = It.IsAny<IAuthenticator>());
             var githubClient = new GitHubClient(mockFactory.Object);
 
-            githubClient.CallApiAsync<object>(new RestRequest(), API.v3, o => { }, e => { });
+            githubClient.CallApiAsync<object>(new GitHubRequest("foo", API.v3, Method.GET),
+                                              o => { },
+                                              e => { });
 
             mockFactory.VerifyAll();
         }
@@ -76,8 +100,7 @@ namespace NGitHub.Test {
 
             var callbackInvoked = false;
             client.CallApiAsync<object>(
-                new RestRequest(),
-                API.v3,
+                new GitHubRequest("foo", API.v3, Method.GET),
                 o => callbackInvoked = true,
                 e => { });
 
@@ -99,8 +122,7 @@ namespace NGitHub.Test {
 
             var callbackInvoked = false;
             client.CallApiAsync<object>(
-                new RestRequest(),
-                API.v3,
+                new GitHubRequest("foo", API.v3, Method.GET),
                 o => callbackInvoked = true,
                 e => { });
 
@@ -126,8 +148,7 @@ namespace NGitHub.Test {
 
             object actualData = null;
             client.CallApiAsync<object>(
-                new RestRequest(),
-                API.v3,
+                new GitHubRequest("foo", API.v3, Method.GET),
                 o => actualData = o,
                 e => { });
 
@@ -145,8 +166,11 @@ namespace NGitHub.Test {
                 .Callback<RestRequest, Action<RestResponse<object>>>((r, c) => c(errorResponse));
             mockRestClient.SetupSet(c => c.Authenticator = It.IsAny<IAuthenticator>());
             var client = new GitHubClient(mockFactory.Object);
+
             var onErrorInvoked = false;
-            client.CallApiAsync<object>(new RestRequest(), API.v2, o => { }, e => onErrorInvoked = true);
+            client.CallApiAsync<object>(new GitHubRequest("foo", API.v3, Method.GET),
+                                        o => { },
+                                        e => onErrorInvoked = true);
 
             Assert.IsTrue(onErrorInvoked);
         }
@@ -162,8 +186,11 @@ namespace NGitHub.Test {
                 .Callback<RestRequest, Action<RestResponse<object>>>((r, c) => c(expectedErrorResponse));
             mockRestClient.SetupSet(c => c.Authenticator = It.IsAny<IAuthenticator>());
             var client = new GitHubClient(mockFactory.Object);
+
             IRestResponse actualErrorResponse = null;
-            client.CallApiAsync<object>(new RestRequest(), API.v2, o => { }, e => actualErrorResponse = e.Response);
+            client.CallApiAsync<object>(new GitHubRequest("foo", API.v3, Method.GET),
+                                        o => { },
+                                        e => actualErrorResponse = e.Response);
 
             Assert.AreSame(expectedErrorResponse, actualErrorResponse);
         }

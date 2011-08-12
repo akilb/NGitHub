@@ -56,6 +56,7 @@
   <ItemGroup>
     <Compile Include="CustomRestSharp\CustomJsonDeserializerTests.cs" />
     <Compile Include="GitHubClientTests.cs" />
+    <Compile Include="GitHubResponseTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

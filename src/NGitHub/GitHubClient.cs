@@ -87,8 +87,7 @@ namespace NGitHub {
             Logout();
 
             var authenticator = new HttpBasicAuthenticator(login, password);
-            CallApiAsync<UserResult>(new RestRequest("/user/show/", Method.GET),
-                                     API.v2,
+            CallApiAsync<UserResult>(new GitHubRequest("/user/show/", API.v2, Method.GET),
                                      authenticator,
                                      u => {
                                          _authenticator = authenticator;
@@ -103,15 +102,13 @@ namespace NGitHub {
             _authenticator = new NullAuthenticator();
         }
 
-        public void CallApiAsync<TResponseData>(RestRequest request,
-                                                API version,
+        public void CallApiAsync<TResponseData>(GitHubRequest request,
                                                 Action<TResponseData> callback,
                                                 Action<APICallError> onError) where TResponseData : new() {
-            CallApiAsync<TResponseData>(request, version, _authenticator, callback, onError);
+            CallApiAsync<TResponseData>(request, _authenticator, callback, onError);
         }
 
-        private void CallApiAsync<TResponseData>(RestRequest request,
-                                                 API version,
+        private void CallApiAsync<TResponseData>(GitHubRequest request,
                                                  IAuthenticator authenticator,
                                                  Action<TResponseData> callback,
                                                  Action<APICallError> onError) where TResponseData : new() {
@@ -120,20 +117,28 @@ namespace NGitHub {
             Requires.ArgumentNotNull(authenticator, "authenticator");
             Requires.ArgumentNotNull(onError, "onError");
 
-            var baseUrl = (version == API.v3) ? Constants.ApiV3Url : Constants.ApiV2Url;
+            var restRequest = new RestRequest {
+                Resource = request.Resource,
+                Method = request.Method.ToRestSharpMethod()
+
+                // TODO: Parameters
+            };
+
+            var baseUrl = (request.Version == API.v3) ? Constants.ApiV3Url : Constants.ApiV2Url;
             var restClient = _factory.CreateRestClient(baseUrl);
             restClient.Authenticator = authenticator;
 
             restClient.ExecuteAsync<TResponseData>(
-                request,
+                restRequest,
                 r => {
-                    if (r.StatusCode != HttpStatusCode.OK &&
-                        r.StatusCode != HttpStatusCode.Created) {
+                    var response = new GitHubResponse<TResponseData>(r);
+
+                    if (response.IsError) {
                         onError(new APICallError(r));
                         return;
                     }
 
-                    callback(r.Data);
+                    callback(response.Data);
                 });
         }
 

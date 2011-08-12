@@ -47,7 +47,7 @@ namespace NGitHub {
             var client = _factory.CreateRestClient(Constants.GitHubUrl);
             client.Authenticator = _currentAuthenticator();
 
-            var request = new RestRequest(resource, Method.GET);
+            var request = new RestRequest(resource,RestSharp.Method.GET);
             client.ExecuteAsync(request,
                                 r => {
                                     if (r.StatusCode != HttpStatusCode.OK) {

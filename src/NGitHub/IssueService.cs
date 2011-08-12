@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using NGitHub.Models;
 using NGitHub.Utility;
-using RestSharp;
 
 namespace NGitHub {
     public class IssueService : IIssueService {
@@ -24,8 +23,8 @@ namespace NGitHub {
             Requires.ArgumentNotNull(issueId, "issueId");
 
             var resource = string.Format("/issues/show/{0}/{1}/{2}", user, repo, issueId);
-            var request = new RestRequest(resource, Method.GET);
-            _client.CallApiAsync<IssueResult>(request, API.v2, i => callback(i.Issue), onError);
+            var request = new GitHubRequest(resource, API.v2, Method.GET);
+            _client.CallApiAsync<IssueResult>(request, i => callback(i.Issue), onError);
         }
 
         public void GetIssuesAsync(string user,
@@ -37,10 +36,9 @@ namespace NGitHub {
             Requires.ArgumentNotNull(repo, "repo");
 
             var resource = string.Format("/issues/list/{0}/{1}/{2}", user, repo, state.GetText());
-            var request = new RestRequest(resource, Method.GET);
+            var request = new GitHubRequest(resource, API.v2, Method.GET);
 
             _client.CallApiAsync<IssuesResult>(request,
-                                               API.v2,
                                                i => callback(i.Issues),
                                                onError);
         }
@@ -59,10 +57,9 @@ namespace NGitHub {
                                          user,
                                          repo,
                                          issueNumber);
-            var request = new RestRequest(resource, Method.POST);
-            request.AddParameter("comment", comment);
+            var request = new GitHubRequest(resource, API.v2, Method.POST, new Parameter("comment", comment));
 
-            _client.CallApiAsync<CommentResult>(request, API.v2, c => callback(c.Comment), onError);
+            _client.CallApiAsync<CommentResult>(request, c => callback(c.Comment), onError);
         }
 
         public void GetCommentsAsync(string user,
@@ -77,9 +74,8 @@ namespace NGitHub {
                                          user,
                                          repo,
                                          issueNumber);
-            var request = new RestRequest(resource, Method.GET);
+            var request = new GitHubRequest(resource, API.v2, Method.GET);
             _client.CallApiAsync<CommentsResult>(request,
-                                                 API.v2,
                                                  c => callback(c.Comments),
                                                  onError);
         }

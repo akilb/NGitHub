@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using NGitHub.Models;
 using NGitHub.Utility;
-using RestSharp;
 
 namespace NGitHub {
     public class RepositoryService : IRepositoryService {
@@ -23,9 +22,8 @@ namespace NGitHub {
             Requires.ArgumentNotNull(repo, "repo");
 
             var resource = string.Format("/repos/show/{0}/{1}", user, repo);
-            var request = new RestRequest(resource, Method.GET);
+            var request = new GitHubRequest(resource, API.v2, Method.GET);
             _client.CallApiAsync<RepositoryResult>(request,
-                                                   API.v2,
                                                    r => callback(r.Repository),
                                                    onError);
         }
@@ -38,9 +36,8 @@ namespace NGitHub {
             Requires.ArgumentNotNull(repo, "repo");
 
             var resource = string.Format("/repos/show/{0}/{1}/watchers?full=1", user, repo);
-            var request = new RestRequest(resource, Method.GET);
+            var request = new GitHubRequest(resource, API.v2, Method.GET);
             _client.CallApiAsync<WatchersResult>(request,
-                                                 API.v2,
                                                  w => callback(w.Watchers),
                                                  onError);
         }
@@ -53,9 +50,8 @@ namespace NGitHub {
             Requires.ArgumentNotNull(repo, "repo");
 
             var resource = string.Format("/repos/show/{0}/{1}/branches", user, repo);
-            var request = new RestRequest(resource, Method.GET);
+            var request = new GitHubRequest(resource, API.v2, Method.GET);
             _client.CallApiAsync<BranchesResult>(request,
-                                                 API.v2,
                                                  b => {
                                                      var branches = new List<Branch>();
                                                      foreach (var pair in b.Branches) {
@@ -78,9 +74,8 @@ namespace NGitHub {
             Requires.ArgumentNotNull(repo, "repo");
 
             var resource = string.Format("/repos/show/{0}/{1}/network", user, repo);
-            var request = new RestRequest(resource);
+            var request = new GitHubRequest(resource, API.v2, Method.GET);
             _client.CallApiAsync<NetworkResult>(request,
-                                                API.v2,
                                                 r => callback(r.Forks),
                                                 onError);
         }
@@ -91,9 +86,8 @@ namespace NGitHub {
             Requires.ArgumentNotNull(query, "query");
 
             var resource = string.Format("/repos/search/{0}", query.Replace(' ', '+'));
-            var request = new RestRequest(resource, Method.GET);
+            var request = new GitHubRequest(resource, API.v2, Method.GET);
             _client.CallApiAsync<RepositoriesResult>(request,
-                                                     API.v2,
                                                      r => callback(r.Repositories),
                                                      onError);
         }
@@ -106,9 +100,8 @@ namespace NGitHub {
             Requires.ArgumentNotNull(repo, "repo");
 
             var resource = string.Format("repos/fork/{0}/{1}", user, repo);
-            var request = new RestRequest(resource, Method.POST);
+            var request = new GitHubRequest(resource, API.v2, Method.POST);
             _client.CallApiAsync<RepositoryResult>(request,
-                                                   API.v2,
                                                    r => callback(r.Repository),
                                                    onError);
         }
@@ -121,9 +114,8 @@ namespace NGitHub {
             Requires.ArgumentNotNull(repo, "repo");
 
             var resource = string.Format("repos/watch/{0}/{1}", user, repo);
-            var request = new RestRequest(resource, Method.POST);
+            var request = new GitHubRequest(resource, API.v2, Method.POST);
             _client.CallApiAsync<object>(request,
-                                         API.v2,
                                          o => callback(),
                                          onError);
         }
@@ -136,9 +128,8 @@ namespace NGitHub {
             Requires.ArgumentNotNull(repo, "repo");
 
             var resource = string.Format("repos/unwatch/{0}/{1}", user, repo);
-            var request = new RestRequest(resource, Method.POST);
+            var request = new GitHubRequest(resource, API.v2, Method.POST);
             _client.CallApiAsync<object>(request,
-                                         API.v2,
                                          o => callback(),
                                          onError);
         }

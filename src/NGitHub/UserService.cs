@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using NGitHub.Models;
 using NGitHub.Utility;
-using RestSharp;
 
 namespace NGitHub {
     public class UserService : IUserService {
@@ -19,16 +18,15 @@ namespace NGitHub {
             Requires.ArgumentNotNull(user, "user");
 
             var resource = string.Format("/user/show/{0}", user);
-            var request = new RestRequest(resource, Method.GET);
+            var request = new GitHubRequest(resource, API.v2, Method.GET);
             _gitHubClient.CallApiAsync<UserResult>(request,
-                                                   API.v2,
                                                    u => callback(u.User),
                                                    onError);
         }
 
         public void GetAuthenticatedUserAsync(Action<User> callback, Action<APICallError> onError) {
-            _gitHubClient.CallApiAsync<UserResult>(new RestRequest("/user/show/", Method.GET),
-                                                   API.v2,
+            var request = new GitHubRequest("/user/show/", API.v2, Method.GET);
+            _gitHubClient.CallApiAsync<UserResult>(request,
                                                    u => callback(u.User),
                                                    onError);
         }
@@ -55,9 +53,8 @@ namespace NGitHub {
             Requires.ArgumentNotNull(user, "user");
 
             var resource = string.Format("/user/follow/{0}", user);
-            var request = new RestRequest(resource, Method.POST);
+            var request = new GitHubRequest(resource, API.v2, Method.POST);
             _gitHubClient.CallApiAsync<object>(request,
-                                               API.v2,
                                                s => callback(),
                                                onError);
         }
@@ -66,9 +63,8 @@ namespace NGitHub {
                                   Action callback,
                                   Action<APICallError> onError) {
             var resource = string.Format("/user/unfollow/{0}", user);
-            var request = new RestRequest(resource, Method.POST);
+            var request = new GitHubRequest(resource, API.v2, Method.POST);
             _gitHubClient.CallApiAsync<object>(request,
-                                               API.v2,
                                                s => callback(),
                                                onError);
         }
@@ -79,9 +75,8 @@ namespace NGitHub {
             Requires.ArgumentNotNull(user, "user");
 
             var resource = string.Format("/user/show/{0}/followers?full=1", user);
-            var request = new RestRequest(resource, Method.GET);
+            var request = new GitHubRequest(resource, API.v2, Method.GET);
             _gitHubClient.CallApiAsync<UsersResult>(request,
-                                                    API.v2,
                                                     u => callback(u.Users),
                                                     onError);
         }
@@ -92,9 +87,8 @@ namespace NGitHub {
             Requires.ArgumentNotNull(user, "user");
 
             var resource = string.Format("/user/show/{0}/following?full=1", user);
-            var request = new RestRequest(resource, Method.GET);
+            var request = new GitHubRequest(resource, API.v2, Method.GET);
             _gitHubClient.CallApiAsync<UsersResult>(request,
-                                                    API.v2,
                                                     u => callback(u.Users),
                                                     onError);
         }
@@ -105,9 +99,8 @@ namespace NGitHub {
             Requires.ArgumentNotNull(query, "query");
 
             var resource = string.Format("/user/search/{0}", query.Replace(' ', '+'));
-            var request = new RestRequest(resource, Method.GET);
+            var request = new GitHubRequest(resource, API.v2, Method.GET);
             _gitHubClient.CallApiAsync<UsersResult>(request,
-                                                    API.v2,
                                                     u => callback(u.Users),
                                                     onError);
         }
@@ -133,9 +126,8 @@ namespace NGitHub {
         private void GetRepositoriesAsyncInternal(string resource,
                                                   Action<IEnumerable<Repository>> callback,
                                                   Action<APICallError> onError) {
-            var request = new RestRequest(resource, Method.GET);
+            var request = new GitHubRequest(resource, API.v2, Method.GET);
             _gitHubClient.CallApiAsync<RepositoriesResult>(request,
-                                                           API.v2,
                                                            r => callback(r.Repositories),
                                                            onError);
         }

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using NGitHub.Models;
 using NGitHub.Utility;
-using RestSharp;
 
 namespace NGitHub {
     public class OrganizationService : IOrganizationService {
@@ -21,9 +20,8 @@ namespace NGitHub {
 
             var resource = string.Format("/organizations/{0}/public_members",
                                          organization);
-            var request = new RestRequest(resource, Method.GET);
+            var request = new GitHubRequest(resource, API.v2, Method.GET);
             _client.CallApiAsync<UsersResult>(request,
-                                              API.v2,
                                               u => callback(u.Users),
                                               onError);
         }
@@ -34,9 +32,8 @@ namespace NGitHub {
             Requires.ArgumentNotNull(user, "user");
 
             var resource = string.Format("/user/show/{0}/organizations", user);
-            var request = new RestRequest(resource, Method.GET);
+            var request = new GitHubRequest(resource, API.v2, Method.GET);
             _client.CallApiAsync<OrganizationsResult>(request,
-                                                      API.v2,
                                                       o => callback(o.Organizations),
                                                       onError);
         }
