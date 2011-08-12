@@ -3,8 +3,16 @@ using NGitHub.Utility;
 
 namespace NGitHub {
     public class Parameter {
-        private readonly string _key;
+        private readonly string _name;
         private readonly string _value;
+
+        public Parameter(string name, string value) {
+            Requires.ArgumentNotNull(name, "key");
+            Requires.ArgumentNotNull(value, "value");
+
+            _name = name;
+            _value = value;
+        }
 
         public Parameter(SortBy sortby)
             : this("sortby", sortby.GetText()) {
@@ -18,17 +26,9 @@ namespace NGitHub {
             : this("direction", direction.GetText()) {
         }
 
-        public Parameter(string key, string value) {
-            Requires.ArgumentNotNull(key, "key");
-            Requires.ArgumentNotNull(value, "value");
-
-            _key = key;
-            _value = value;
-        }
-
-        public string Key {
+        public string Name {
             get {
-                return _key;
+                return _name;
             }
         }
 

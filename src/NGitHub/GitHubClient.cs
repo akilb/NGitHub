@@ -3,6 +3,8 @@ using System.Net;
 using NGitHub.Models;
 using NGitHub.Utility;
 using RestSharp;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace NGitHub {
     public class GitHubClient : IGitHubClient {
@@ -120,9 +122,10 @@ namespace NGitHub {
             var restRequest = new RestRequest {
                 Resource = request.Resource,
                 Method = request.Method.ToRestSharpMethod()
-
-                // TODO: Parameters
             };
+            foreach (var p in request.Parameters) {
+                restRequest.AddParameter(p.Name, p.Value);
+            }
 
             var baseUrl = (request.Version == API.v3) ? Constants.ApiV3Url : Constants.ApiV2Url;
             var restClient = _factory.CreateRestClient(baseUrl);

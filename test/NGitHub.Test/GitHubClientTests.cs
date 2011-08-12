@@ -3,6 +3,7 @@ using System.Net;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using RestSharp;
+using System.Linq;
 
 namespace NGitHub.Test {
     [TestClass]
@@ -193,6 +194,29 @@ namespace NGitHub.Test {
                                         e => actualErrorResponse = e.Response);
 
             Assert.AreSame(expectedErrorResponse, actualErrorResponse);
+        }
+
+        [TestMethod]
+        public void CallApiAsync_ShouldPassRequestParameters_ToRestRequest() {
+            var expectedKey = "foo";
+            var expectedValue = "bar";
+            var mockFactory = new Mock<IRestClientFactory>(MockBehavior.Strict);
+            var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+            mockFactory.Setup<IRestClient>(f => f.CreateRestClient(It.IsAny<string>())).Returns(mockRestClient.Object);
+            mockRestClient
+                .Setup(c => c.ExecuteAsync<object>(
+                    It.Is<RestRequest>(r => r.Parameters.Where(p => p.Name == expectedKey && p.Value == expectedValue)
+                                                        .Count() == 1),
+                    It.IsAny<Action<RestResponse<object>>>()))
+                .Callback<RestRequest, Action<RestResponse<object>>>((r, c) => c(new RestResponse<object>()))
+                .Verifiable();
+            mockRestClient.SetupSet(c => c.Authenticator = It.IsAny<IAuthenticator>());
+            var client = new GitHubClient(mockFactory.Object);
+
+            var request = new GitHubRequest("resource", API.v2, Method.POST, new Parameter(expectedKey, expectedValue));
+            client.CallApiAsync<object>(request, o => { }, e => { });
+
+            mockRestClient.Verify();
         }
 
         [TestMethod]
