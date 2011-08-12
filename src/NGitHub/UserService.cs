@@ -20,14 +20,14 @@ namespace NGitHub {
             var resource = string.Format("/user/show/{0}", user);
             var request = new GitHubRequest(resource, API.v2, Method.GET);
             _gitHubClient.CallApiAsync<UserResult>(request,
-                                                   u => callback(u.User),
+                                                   r => callback(r.Data.User),
                                                    onError);
         }
 
         public void GetAuthenticatedUserAsync(Action<User> callback, Action<APICallError> onError) {
             var request = new GitHubRequest("/user/show/", API.v2, Method.GET);
             _gitHubClient.CallApiAsync<UserResult>(request,
-                                                   u => callback(u.User),
+                                                   r => callback(r.Data.User),
                                                    onError);
         }
 
@@ -77,7 +77,7 @@ namespace NGitHub {
             var resource = string.Format("/user/show/{0}/followers?full=1", user);
             var request = new GitHubRequest(resource, API.v2, Method.GET);
             _gitHubClient.CallApiAsync<UsersResult>(request,
-                                                    u => callback(u.Users),
+                                                    r => callback(r.Data.Users),
                                                     onError);
         }
 
@@ -89,7 +89,7 @@ namespace NGitHub {
             var resource = string.Format("/user/show/{0}/following?full=1", user);
             var request = new GitHubRequest(resource, API.v2, Method.GET);
             _gitHubClient.CallApiAsync<UsersResult>(request,
-                                                    u => callback(u.Users),
+                                                    r => callback(r.Data.Users),
                                                     onError);
         }
 
@@ -101,7 +101,7 @@ namespace NGitHub {
             var resource = string.Format("/user/search/{0}", query.Replace(' ', '+'));
             var request = new GitHubRequest(resource, API.v2, Method.GET);
             _gitHubClient.CallApiAsync<UsersResult>(request,
-                                                    u => callback(u.Users),
+                                                    r => callback(r.Data.Users),
                                                     onError);
         }
 
@@ -128,7 +128,7 @@ namespace NGitHub {
                                                   Action<APICallError> onError) {
             var request = new GitHubRequest(resource, API.v2, Method.GET);
             _gitHubClient.CallApiAsync<RepositoriesResult>(request,
-                                                           r => callback(r.Repositories),
+                                                           r => callback(r.Data.Repositories),
                                                            onError);
         }
     }

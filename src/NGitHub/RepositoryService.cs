@@ -24,7 +24,7 @@ namespace NGitHub {
             var resource = string.Format("/repos/show/{0}/{1}", user, repo);
             var request = new GitHubRequest(resource, API.v2, Method.GET);
             _client.CallApiAsync<RepositoryResult>(request,
-                                                   r => callback(r.Repository),
+                                                   r => callback(r.Data.Repository),
                                                    onError);
         }
 
@@ -38,7 +38,7 @@ namespace NGitHub {
             var resource = string.Format("/repos/show/{0}/{1}/watchers?full=1", user, repo);
             var request = new GitHubRequest(resource, API.v2, Method.GET);
             _client.CallApiAsync<WatchersResult>(request,
-                                                 w => callback(w.Watchers),
+                                                 r => callback(r.Data.Watchers),
                                                  onError);
         }
 
@@ -52,9 +52,9 @@ namespace NGitHub {
             var resource = string.Format("/repos/show/{0}/{1}/branches", user, repo);
             var request = new GitHubRequest(resource, API.v2, Method.GET);
             _client.CallApiAsync<BranchesResult>(request,
-                                                 b => {
+                                                 r => {
                                                      var branches = new List<Branch>();
-                                                     foreach (var pair in b.Branches) {
+                                                     foreach (var pair in r.Data.Branches) {
                                                          branches.Add(new Branch {
                                                              Name = pair.Key,
                                                              Hash = pair.Value
@@ -76,7 +76,7 @@ namespace NGitHub {
             var resource = string.Format("/repos/show/{0}/{1}/network", user, repo);
             var request = new GitHubRequest(resource, API.v2, Method.GET);
             _client.CallApiAsync<NetworkResult>(request,
-                                                r => callback(r.Forks),
+                                                r => callback(r.Data.Forks),
                                                 onError);
         }
 
@@ -88,7 +88,7 @@ namespace NGitHub {
             var resource = string.Format("/repos/search/{0}", query.Replace(' ', '+'));
             var request = new GitHubRequest(resource, API.v2, Method.GET);
             _client.CallApiAsync<RepositoriesResult>(request,
-                                                     r => callback(r.Repositories),
+                                                     r => callback(r.Data.Repositories),
                                                      onError);
         }
 
@@ -102,7 +102,7 @@ namespace NGitHub {
             var resource = string.Format("repos/fork/{0}/{1}", user, repo);
             var request = new GitHubRequest(resource, API.v2, Method.POST);
             _client.CallApiAsync<RepositoryResult>(request,
-                                                   r => callback(r.Repository),
+                                                   r => callback(r.Data.Repository),
                                                    onError);
         }
 
@@ -116,7 +116,7 @@ namespace NGitHub {
             var resource = string.Format("repos/watch/{0}/{1}", user, repo);
             var request = new GitHubRequest(resource, API.v2, Method.POST);
             _client.CallApiAsync<object>(request,
-                                         o => callback(),
+                                         r => callback(),
                                          onError);
         }
 
@@ -130,7 +130,7 @@ namespace NGitHub {
             var resource = string.Format("repos/unwatch/{0}/{1}", user, repo);
             var request = new GitHubRequest(resource, API.v2, Method.POST);
             _client.CallApiAsync<object>(request,
-                                         o => callback(),
+                                         r => callback(),
                                          onError);
         }
 

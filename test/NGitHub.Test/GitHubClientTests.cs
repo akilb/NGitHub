@@ -150,7 +150,7 @@ namespace NGitHub.Test {
             object actualData = null;
             client.CallApiAsync<object>(
                 new GitHubRequest("foo", API.v3, Method.GET),
-                o => actualData = o,
+                r => actualData = r.Data,
                 e => { });
 
             Assert.AreSame(expectedData, actualData);

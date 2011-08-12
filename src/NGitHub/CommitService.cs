@@ -32,7 +32,7 @@ namespace NGitHub {
                                          pageNo);
             var request = new GitHubRequest(resource, API.v2, Method.GET);
             _client.CallApiAsync<CommitsResult>(request,
-                                                c => callback(c.Commits),
+                                                r => callback(r.Data.Commits),
                                                 onError);
         }
     }

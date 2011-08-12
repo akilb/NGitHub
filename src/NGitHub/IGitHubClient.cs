@@ -18,7 +18,7 @@ namespace NGitHub {
         void Logout();
 
         void CallApiAsync<TResponseData>(GitHubRequest request,
-                                         Action<TResponseData> callback,
+                                         Action<IGitHubResponse<TResponseData>> callback,
                                          Action<APICallError> onError) where TResponseData : new();
     }
 }

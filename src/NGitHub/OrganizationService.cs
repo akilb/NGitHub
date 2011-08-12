@@ -22,7 +22,7 @@ namespace NGitHub {
                                          organization);
             var request = new GitHubRequest(resource, API.v2, Method.GET);
             _client.CallApiAsync<UsersResult>(request,
-                                              u => callback(u.Users),
+                                              r => callback(r.Data.Users),
                                               onError);
         }
 
@@ -34,7 +34,7 @@ namespace NGitHub {
             var resource = string.Format("/user/show/{0}/organizations", user);
             var request = new GitHubRequest(resource, API.v2, Method.GET);
             _client.CallApiAsync<OrganizationsResult>(request,
-                                                      o => callback(o.Organizations),
+                                                      r => callback(r.Data.Organizations),
                                                       onError);
         }
     }

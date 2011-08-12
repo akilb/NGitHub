@@ -24,7 +24,7 @@ namespace NGitHub {
 
             var resource = string.Format("/issues/show/{0}/{1}/{2}", user, repo, issueId);
             var request = new GitHubRequest(resource, API.v2, Method.GET);
-            _client.CallApiAsync<IssueResult>(request, i => callback(i.Issue), onError);
+            _client.CallApiAsync<IssueResult>(request, r => callback(r.Data.Issue), onError);
         }
 
         public void GetIssuesAsync(string user,
@@ -39,7 +39,7 @@ namespace NGitHub {
             var request = new GitHubRequest(resource, API.v2, Method.GET);
 
             _client.CallApiAsync<IssuesResult>(request,
-                                               i => callback(i.Issues),
+                                               r => callback(r.Data.Issues),
                                                onError);
         }
 
@@ -59,7 +59,7 @@ namespace NGitHub {
                                          issueNumber);
             var request = new GitHubRequest(resource, API.v2, Method.POST, new Parameter("comment", comment));
 
-            _client.CallApiAsync<CommentResult>(request, c => callback(c.Comment), onError);
+            _client.CallApiAsync<CommentResult>(request, r => callback(r.Data.Comment), onError);
         }
 
         public void GetCommentsAsync(string user,
@@ -76,7 +76,7 @@ namespace NGitHub {
                                          issueNumber);
             var request = new GitHubRequest(resource, API.v2, Method.GET);
             _client.CallApiAsync<CommentsResult>(request,
-                                                 c => callback(c.Comments),
+                                                 r => callback(r.Data.Comments),
                                                  onError);
         }
     }

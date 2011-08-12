@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Net;
 using NGitHub.Models;
 using NGitHub.Utility;
 using RestSharp;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace NGitHub {
     public class GitHubClient : IGitHubClient {
@@ -91,9 +88,9 @@ namespace NGitHub {
             var authenticator = new HttpBasicAuthenticator(login, password);
             CallApiAsync<UserResult>(new GitHubRequest("/user/show/", API.v2, Method.GET),
                                      authenticator,
-                                     u => {
+                                     r => {
                                          _authenticator = authenticator;
-                                         callback(u.User);
+                                         callback(r.Data.User);
                                      },
                                      e => {
                                          onError(e);
@@ -105,14 +102,14 @@ namespace NGitHub {
         }
 
         public void CallApiAsync<TResponseData>(GitHubRequest request,
-                                                Action<TResponseData> callback,
+                                                Action<IGitHubResponse<TResponseData>> callback,
                                                 Action<APICallError> onError) where TResponseData : new() {
             CallApiAsync<TResponseData>(request, _authenticator, callback, onError);
         }
 
         private void CallApiAsync<TResponseData>(GitHubRequest request,
                                                  IAuthenticator authenticator,
-                                                 Action<TResponseData> callback,
+                                                 Action<IGitHubResponse<TResponseData>> callback,
                                                  Action<APICallError> onError) where TResponseData : new() {
             Requires.ArgumentNotNull(request, "request");
             Requires.ArgumentNotNull(callback, "callback");
@@ -141,7 +138,7 @@ namespace NGitHub {
                         return;
                     }
 
-                    callback(response.Data);
+                    callback(response);
                 });
         }
 
