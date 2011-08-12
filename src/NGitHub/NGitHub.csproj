@@ -55,6 +55,7 @@
     <Compile Include="CustomRestSharp\CustomHttp.cs" />
     <Compile Include="GitHubRequest.cs" />
     <Compile Include="GitHubResponse.cs" />
+    <Compile Include="GitHubResponseBase.cs" />
     <Compile Include="ICommitService.cs" />
     <Compile Include="IFeedService.cs" />
     <Compile Include="IGitHubClient.cs" />
