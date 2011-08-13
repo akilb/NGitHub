@@ -8,22 +8,22 @@ namespace NGitHub {
                            string repo,
                            string issueId,
                            Action<Issue> callback,
-                           Action<APICallError> onError);
+                           Action<GitHubException> onError);
         void GetIssuesAsync(string user,
                             string repo,
                             State state,
                             Action<IEnumerable<Issue>> callback,
-                            Action<APICallError> onError);
+                            Action<GitHubException> onError);
         void CreateCommentAsync(string user,
                                 string repo,
                                 int issueNumber,
                                 string comment,
                                 Action<Comment> callback,
-                                Action<APICallError> onError);
+                                Action<GitHubException> onError);
         void GetCommentsAsync(string user,
                               string repo,
                               int issueNumber,
                               Action<IEnumerable<Comment>> callback,
-                              Action<APICallError> onError);
+                              Action<GitHubException> onError);
     }
 }

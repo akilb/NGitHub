@@ -180,20 +180,20 @@ namespace NGitHub.Test {
         public void CallApiAsync_ShouldPassResponseInErrorCode_IfRestRequestDoesNotCompleteSuccessfully() {
             var mockFactory = new Mock<IRestClientFactory>(MockBehavior.Strict);
             var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
-            var expectedErrorResponse = new RestResponse<object>() { StatusCode = HttpStatusCode.Unauthorized };
+            var response = new RestResponse<object>() { StatusCode = HttpStatusCode.Unauthorized };
             mockFactory.Setup<IRestClient>(f => f.CreateRestClient(It.IsAny<string>())).Returns(mockRestClient.Object);
             mockRestClient
                 .Setup(c => c.ExecuteAsync<object>(It.IsAny<RestRequest>(), It.IsAny<Action<RestResponse<object>>>()))
-                .Callback<RestRequest, Action<RestResponse<object>>>((r, c) => c(expectedErrorResponse));
+                .Callback<RestRequest, Action<RestResponse<object>>>((r, c) => c(response));
             mockRestClient.SetupSet(c => c.Authenticator = It.IsAny<IAuthenticator>());
             var client = new GitHubClient(mockFactory.Object);
 
-            IRestResponse actualErrorResponse = null;
+            IGitHubResponse actualErrorResponse = null;
             client.CallApiAsync<object>(new GitHubRequest("foo", API.v3, Method.GET),
                                         o => { },
                                         e => actualErrorResponse = e.Response);
 
-            Assert.AreSame(expectedErrorResponse, actualErrorResponse);
+            Assert.IsInstanceOfType(actualErrorResponse, typeof(GitHubResponse<object>));
         }
 
         [TestMethod]

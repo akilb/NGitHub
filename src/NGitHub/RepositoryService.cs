@@ -17,7 +17,7 @@ namespace NGitHub {
         public void GetRepositoryAsync(string user,
                                        string repo,
                                        Action<Repository> callback,
-                                       Action<APICallError> onError) {
+                                       Action<GitHubException> onError) {
             Requires.ArgumentNotNull(user, "user");
             Requires.ArgumentNotNull(repo, "repo");
 
@@ -31,7 +31,7 @@ namespace NGitHub {
         public void GetWatchersAsync(string user,
                                      string repo,
                                      Action<IEnumerable<User>> callback,
-                                     Action<APICallError> onError) {
+                                     Action<GitHubException> onError) {
             Requires.ArgumentNotNull(user, "user");
             Requires.ArgumentNotNull(repo, "repo");
 
@@ -45,7 +45,7 @@ namespace NGitHub {
         public void GetBranchesAsync(string user,
                                      string repo,
                                      Action<IEnumerable<Branch>> callback,
-                                     Action<APICallError> onError) {
+                                     Action<GitHubException> onError) {
             Requires.ArgumentNotNull(user, "user");
             Requires.ArgumentNotNull(repo, "repo");
 
@@ -69,7 +69,7 @@ namespace NGitHub {
         public void GetForksAsync(string user,
                                   string repo,
                                   Action<IEnumerable<Repository>> callback,
-                                  Action<APICallError> onError) {
+                                  Action<GitHubException> onError) {
             Requires.ArgumentNotNull(user, "user");
             Requires.ArgumentNotNull(repo, "repo");
 
@@ -82,7 +82,7 @@ namespace NGitHub {
 
         public void SearchAsync(string query,
                                 Action<IEnumerable<Repository>> callback,
-                                Action<APICallError> onError) {
+                                Action<GitHubException> onError) {
             Requires.ArgumentNotNull(query, "query");
 
             var resource = string.Format("/repos/search/{0}", query.Replace(' ', '+'));
@@ -95,7 +95,7 @@ namespace NGitHub {
         public void ForkAsync(string user,
                               string repo,
                               Action<Repository> callback,
-                              Action<APICallError> onError) {
+                              Action<GitHubException> onError) {
             Requires.ArgumentNotNull(user, "user");
             Requires.ArgumentNotNull(repo, "repo");
 
@@ -109,7 +109,7 @@ namespace NGitHub {
         public void WatchAsync(string user,
                                string repo,
                                Action callback,
-                               Action<APICallError> onError) {
+                               Action<GitHubException> onError) {
             Requires.ArgumentNotNull(user, "user");
             Requires.ArgumentNotNull(repo, "repo");
 
@@ -123,7 +123,7 @@ namespace NGitHub {
         public void UnwatchAsync(string user,
                             string repo,
                             Action callback,
-                            Action<APICallError> onError) {
+                            Action<GitHubException> onError) {
             Requires.ArgumentNotNull(user, "user");
             Requires.ArgumentNotNull(repo, "repo");
 
@@ -137,7 +137,7 @@ namespace NGitHub {
         public void IsWatchingAsync(string user,
                                     string repo,
                                     Action<bool> callback,
-                                    Action<APICallError> onError) {
+                                    Action<GitHubException> onError) {
             Requires.ArgumentNotNull(user, "user");
             Requires.ArgumentNotNull(repo, "repo");
 

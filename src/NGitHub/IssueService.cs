@@ -17,7 +17,7 @@ namespace NGitHub {
                                   string repo,
                                   string issueId,
                                   Action<Issue> callback,
-                                  Action<APICallError> onError) {
+                                  Action<GitHubException> onError) {
             Requires.ArgumentNotNull(user, "user");
             Requires.ArgumentNotNull(repo, "repo");
             Requires.ArgumentNotNull(issueId, "issueId");
@@ -31,7 +31,7 @@ namespace NGitHub {
                                    string repo,
                                    State state,
                                    Action<IEnumerable<Issue>> callback,
-                                   Action<APICallError> onError) {
+                                   Action<GitHubException> onError) {
             Requires.ArgumentNotNull(user, "user");
             Requires.ArgumentNotNull(repo, "repo");
 
@@ -48,7 +48,7 @@ namespace NGitHub {
                                        int issueNumber,
                                        string comment,
                                        Action<Comment> callback,
-                                       Action<APICallError> onError) {
+                                       Action<GitHubException> onError) {
             Requires.ArgumentNotNull(user, "user");
             Requires.ArgumentNotNull(repo, "repo");
             Requires.ArgumentNotNull(comment, "comment");
@@ -66,7 +66,7 @@ namespace NGitHub {
                                      string repo,
                                      int issueNumber,
                                      Action<IEnumerable<Comment>> callback,
-                                     Action<APICallError> onError) {
+                                     Action<GitHubException> onError) {
             Requires.ArgumentNotNull(user, "user");
             Requires.ArgumentNotNull(repo, "repo");
 

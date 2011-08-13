@@ -15,7 +15,7 @@ namespace NGitHub {
 
         public void GetMembersAsync(string organization,
                                     Action<IEnumerable<User>> callback,
-                                    Action<APICallError> onError) {
+                                    Action<GitHubException> onError) {
             Requires.ArgumentNotNull(organization, "organization");
 
             var resource = string.Format("/organizations/{0}/public_members",
@@ -28,7 +28,7 @@ namespace NGitHub {
 
         public void GetOrganizationsAsync(string user,
                                           Action<IEnumerable<User>> callback,
-                                          Action<APICallError> onError) {
+                                          Action<GitHubException> onError) {
             Requires.ArgumentNotNull(user, "user");
 
             var resource = string.Format("/user/show/{0}/organizations", user);

@@ -1,5 +1,6 @@
 ﻿using NGitHub.Utility;
 using RestSharp;
+using System;
 
 namespace NGitHub {
     public class GitHubResponse<T> : GitHubResponseBase, IGitHubResponse<T> {
@@ -15,6 +16,18 @@ namespace NGitHub {
         public T Data {
             get {
                 return _response.Data;
+            }
+        }
+
+        public string ErrorMessage {
+            get {
+                return _response.ErrorMessage;
+            }
+        }
+
+        public Exception ErrorException {
+            get {
+                return _response.ErrorException;
             }
         }
     }

@@ -24,7 +24,7 @@ namespace NGitHub {
 
         public void GetUserActivityAsync(string user,
                                          Action<IEnumerable<FeedItem>> callback,
-                                         Action<APICallError> onError) {
+                                         Action<GitHubException> onError) {
             Requires.ArgumentNotNull(user, "user");
 
             GetFeedItemsAsync(string.Format("{0}.atom", user), callback, onError);
@@ -32,7 +32,7 @@ namespace NGitHub {
 
         public void GetUserNewsFeedAsync(string user,
                                          Action<IEnumerable<FeedItem>> callback,
-                                         Action<APICallError> onError) {
+                                         Action<GitHubException> onError) {
             Requires.ArgumentNotNull(user, "user");
 
             GetFeedItemsAsync(string.Format("{0}.private.atom", user), callback, onError);
@@ -40,7 +40,7 @@ namespace NGitHub {
 
         private void GetFeedItemsAsync(string resource,
                                        Action<IEnumerable<FeedItem>> callback,
-                                       Action<APICallError> onError) {
+                                       Action<GitHubException> onError) {
             Requires.ArgumentNotNull(callback, "callback");
             Requires.ArgumentNotNull(onError, "onError");
 
@@ -51,7 +51,7 @@ namespace NGitHub {
             client.ExecuteAsync(request,
                                 r => {
                                     if (r.StatusCode != HttpStatusCode.OK) {
-                                        onError(new APICallError(r));
+                                        onError(new GitHubException(new GitHubResponse(r)));
                                         return;
                                     }
 

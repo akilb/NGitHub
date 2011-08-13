@@ -7,38 +7,38 @@ namespace NGitHub {
         void ForkAsync(string user,
                        string repo,
                        Action<Repository> callback,
-                       Action<APICallError> onError);
+                       Action<GitHubException> onError);
         void WatchAsync(string user,
                         string repo,
                         Action callback,
-                        Action<APICallError> onError);
+                        Action<GitHubException> onError);
         void UnwatchAsync(string user,
                           string repo,
                           Action callback,
-                          Action<APICallError> onError);
+                          Action<GitHubException> onError);
         void IsWatchingAsync(string user,
                              string repo,
                              Action<bool> callback,
-                             Action<APICallError> onError);
+                             Action<GitHubException> onError);
 
         void GetRepositoryAsync(string user,
                                 string repo,
                                 Action<Repository> callback,
-                                Action<APICallError> onError);
+                                Action<GitHubException> onError);
         void GetWatchersAsync(string user,
                               string repo,
                               Action<IEnumerable<User>> callback,
-                              Action<APICallError> onError);
+                              Action<GitHubException> onError);
         void GetBranchesAsync(string user,
                               string repo,
                               Action<IEnumerable<Branch>> callback,
-                              Action<APICallError> onError);
+                              Action<GitHubException> onError);
         void GetForksAsync(string user,
                            string repo,
                            Action<IEnumerable<Repository>> callback,
-                           Action<APICallError> onError);
+                           Action<GitHubException> onError);
         void SearchAsync(string query,
                          Action<IEnumerable<Repository>> callback,
-                         Action<APICallError> onError);
+                         Action<GitHubException> onError);
     }
 }

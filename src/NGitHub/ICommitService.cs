@@ -9,6 +9,6 @@ namespace NGitHub {
                              string branch,
                              int pageNo,
                              Action<IEnumerable<Commit>> callback,
-                             Action<APICallError> onError);
+                             Action<GitHubException> onError);
     }
 }

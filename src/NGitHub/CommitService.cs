@@ -19,7 +19,7 @@ namespace NGitHub {
                                     string branch,
                                     int pageNo,
                                     Action<IEnumerable<Commit>> callback,
-                                    Action<APICallError> onError) {
+                                    Action<GitHubException> onError) {
             Requires.ArgumentNotNull(user, "user");
             Requires.ArgumentNotNull(repo, "repo");
             Requires.ArgumentNotNull(branch, "branch");

@@ -6,9 +6,9 @@ namespace NGitHub {
     public interface IOrganizationService {
         void GetMembersAsync(string organization,
                              Action<IEnumerable<User>> callback,
-                             Action<APICallError> onError);
+                             Action<GitHubException> onError);
         void GetOrganizationsAsync(string user,
                                    Action<IEnumerable<User>> callback,
-                                   Action<APICallError> onError);
+                                   Action<GitHubException> onError);
     }
 }

@@ -61,5 +61,27 @@ namespace NGitHub.Test {
 
             Assert.IsFalse(resp.IsError);
         }
+
+        [TestMethod]
+        public void ErrorMessage_ShouldContainTheResponseErrorMessage() {
+            var expectedErrorMessage = "foo";
+            var mockResp = new Mock<IRestResponse<object>>(MockBehavior.Strict);
+            mockResp.Setup(r => r.ErrorMessage)
+                    .Returns(expectedErrorMessage);
+            var resp = new GitHubResponse<object>(mockResp.Object);
+
+            Assert.AreEqual(expectedErrorMessage, resp.ErrorMessage);
+        }
+
+        [TestMethod]
+        public void ErrorException_ShouldContainTheResponseErrorException() {
+            var expectedException = new Exception();
+            var mockResp = new Mock<IRestResponse<object>>(MockBehavior.Strict);
+            mockResp.Setup(r => r.ErrorException)
+                    .Returns(expectedException);
+            var resp = new GitHubResponse<object>(mockResp.Object);
+
+            Assert.AreEqual<Exception>(expectedException, resp.ErrorException);
+        }
     }
 }

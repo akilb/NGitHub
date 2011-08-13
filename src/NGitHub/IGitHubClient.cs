@@ -14,11 +14,11 @@ namespace NGitHub {
         void LoginAsync(string login,
                         string password,
                         Action<User> callback,
-                        Action<APICallError> onError);
+                        Action<GitHubException> onError);
         void Logout();
 
         void CallApiAsync<TResponseData>(GitHubRequest request,
                                          Action<IGitHubResponse<TResponseData>> callback,
-                                         Action<APICallError> onError) where TResponseData : new();
+                                         Action<GitHubException> onError) where TResponseData : new();
     }
 }

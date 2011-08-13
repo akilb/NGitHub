@@ -79,7 +79,7 @@ namespace NGitHub {
         public void LoginAsync(string login,
                                string password,
                                Action<User> callback,
-                               Action<APICallError> onError) {
+                               Action<GitHubException> onError) {
             Requires.ArgumentNotNull(login, "login");
             Requires.ArgumentNotNull(password, "password");
 
@@ -103,14 +103,14 @@ namespace NGitHub {
 
         public void CallApiAsync<TResponseData>(GitHubRequest request,
                                                 Action<IGitHubResponse<TResponseData>> callback,
-                                                Action<APICallError> onError) where TResponseData : new() {
+                                                Action<GitHubException> onError) where TResponseData : new() {
             CallApiAsync<TResponseData>(request, _authenticator, callback, onError);
         }
 
         private void CallApiAsync<TResponseData>(GitHubRequest request,
                                                  IAuthenticator authenticator,
                                                  Action<IGitHubResponse<TResponseData>> callback,
-                                                 Action<APICallError> onError) where TResponseData : new() {
+                                                 Action<GitHubException> onError) where TResponseData : new() {
             Requires.ArgumentNotNull(request, "request");
             Requires.ArgumentNotNull(callback, "callback");
             Requires.ArgumentNotNull(authenticator, "authenticator");
@@ -134,7 +134,7 @@ namespace NGitHub {
                     var response = new GitHubResponse<TResponseData>(r);
 
                     if (response.IsError) {
-                        onError(new APICallError(r));
+                        onError(new GitHubException(response));
                         return;
                     }
 

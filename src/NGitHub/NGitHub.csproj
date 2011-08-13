@@ -44,7 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="API.cs" />
-    <Compile Include="APICallError.cs" />
+    <Compile Include="GitHubException.cs" />
     <Compile Include="CommitService.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="CustomRestSharp\CustomJsonDeserializer.cs" />
