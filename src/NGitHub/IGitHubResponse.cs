@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 
 namespace NGitHub {
     public interface IGitHubResponse<T> : IGitHubResponse {
@@ -6,7 +7,9 @@ namespace NGitHub {
     }
 
     public interface IGitHubResponse {
-        bool IsError { get; }
-        HttpStatusCode StatusCode { get; }
+        string ErrorMessage             { get; }
+        Exception ErrorException        { get; }
+        HttpStatusCode StatusCode       { get; }
+        ResponseStatus ResponseStatus   { get; }
     }
 }

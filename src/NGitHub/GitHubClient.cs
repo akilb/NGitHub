@@ -6,6 +6,7 @@ using RestSharp;
 namespace NGitHub {
     public class GitHubClient : IGitHubClient {
         private readonly IRestClientFactory _factory;
+        private readonly IResponseProcessor _processor;
         private readonly IUserService _users;
         private readonly IFeedService _feeds;
         private readonly IIssueService _issues;
@@ -16,13 +17,16 @@ namespace NGitHub {
         private IAuthenticator _authenticator;
 
         public GitHubClient()
-            : this(new RestClientFactory()) {
+            : this(new RestClientFactory(), new ResponseProcessor()) {
         }
 
-        public GitHubClient(IRestClientFactory factory) {
+        public GitHubClient(IRestClientFactory factory,
+                            IResponseProcessor processor) {
             Requires.ArgumentNotNull(factory, "factory");
+            Requires.ArgumentNotNull(processor, "processor");
 
             _factory = factory;
+            _processor = processor;
 
             _authenticator = new NullAuthenticator();
             _users = new UserService(this);
@@ -133,8 +137,9 @@ namespace NGitHub {
                 r => {
                     var response = new GitHubResponse<TResponseData>(r);
 
-                    if (response.IsError) {
-                        onError(new GitHubException(response));
+                    GitHubException ex = null;
+                    if (_processor.TryProcessResponseErrors(response, out ex)) {
+                        onError(ex);
                         return;
                     }
 

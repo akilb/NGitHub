@@ -98,7 +98,7 @@ namespace NGitHub.CustomRestSharp
                 var response = new HttpResponse();
                 response.ErrorMessage = ex.Message;
                 response.ErrorException = ex;
-                response.ResponseStatus = ResponseStatus.Error;
+                response.ResponseStatus = RestSharp.ResponseStatus.Error;
                 ExecuteCallback(response, callback);
             }
         }
@@ -116,7 +116,7 @@ namespace NGitHub.CustomRestSharp
                 var response = new HttpResponse();
                 response.ErrorMessage = ex.Message;
                 response.ErrorException = ex;
-                response.ResponseStatus = ResponseStatus.Error;
+                response.ResponseStatus = RestSharp.ResponseStatus.Error;
                 ExecuteCallback(response, callback);
             }
         }
@@ -252,7 +252,7 @@ namespace NGitHub.CustomRestSharp
         private void GetRawResponseAsync(IAsyncResult result, Action<HttpWebResponse> callback)
         {
             var response = new HttpResponse();
-            response.ResponseStatus = ResponseStatus.None;
+            response.ResponseStatus = RestSharp.ResponseStatus.None;
 
             HttpWebResponse raw = null;
 
@@ -276,13 +276,13 @@ namespace NGitHub.CustomRestSharp
         private void ResponseCallback(IAsyncResult result, Action<HttpResponse> callback)
         {
             var response = new HttpResponse();
-            response.ResponseStatus = ResponseStatus.None;
+            response.ResponseStatus = RestSharp.ResponseStatus.None;
 
             try
             {
                 if (timeoutState.TimedOut)
                 {
-                    response.ResponseStatus = ResponseStatus.TimedOut;
+                    response.ResponseStatus = RestSharp.ResponseStatus.TimedOut;
                     ExecuteCallback(response, callback);
                     return;
                 }
@@ -297,7 +297,7 @@ namespace NGitHub.CustomRestSharp
             {
                 response.ErrorMessage = ex.Message;
                 response.ErrorException = ex;
-                response.ResponseStatus = ResponseStatus.Error;
+                response.ResponseStatus = RestSharp.ResponseStatus.Error;
                 ExecuteCallback(response, callback);
             }
         }

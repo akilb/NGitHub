@@ -20,5 +20,20 @@ namespace NGitHub {
                     throw new InvalidOperationException();
             }
         }
+
+        public static ResponseStatus ToNGitHubResponseStatus(this RestSharp.ResponseStatus status) {
+            switch (status) {
+                case RestSharp.ResponseStatus.Completed:
+                    return ResponseStatus.Completed;
+                case RestSharp.ResponseStatus.Error:
+                    return ResponseStatus.Error;
+                case RestSharp.ResponseStatus.None:
+                    return ResponseStatus.None;
+                case RestSharp.ResponseStatus.TimedOut:
+                    return ResponseStatus.TimedOut;
+                default:
+                    throw new InvalidOperationException();
+            }
+        }
     }
 }

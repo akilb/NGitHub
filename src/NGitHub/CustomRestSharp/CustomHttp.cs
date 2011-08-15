@@ -275,7 +275,7 @@ namespace NGitHub.CustomRestSharp
                 response.StatusCode = webResponse.StatusCode;
                 response.StatusDescription = webResponse.StatusDescription;
                 response.ResponseUri = webResponse.ResponseUri;
-                response.ResponseStatus = ResponseStatus.Completed;
+                response.ResponseStatus = RestSharp.ResponseStatus.Completed;
 
                 if (webResponse.Cookies != null)
                 {

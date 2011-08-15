@@ -51,7 +51,7 @@ namespace NGitHub {
             client.ExecuteAsync(request,
                                 r => {
                                     if (r.StatusCode != HttpStatusCode.OK) {
-                                        onError(new GitHubException(new GitHubResponse(r)));
+                                        onError(new GitHubException(new GitHubResponse(r), ErrorType.Unknown));
                                         return;
                                     }
 

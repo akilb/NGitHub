@@ -33,36 +33,6 @@ namespace NGitHub.Test {
         }
 
         [TestMethod]
-        public void IsError_ShouldBeTrue_IfResponseStatusCodeIsNotOkOrCreated() {
-            var mockResp = new Mock<IRestResponse<object>>(MockBehavior.Strict);
-            mockResp.Setup(r => r.StatusCode)
-                    .Returns(HttpStatusCode.Forbidden);
-            var resp = new GitHubResponse<object>(mockResp.Object);
-
-            Assert.IsTrue(resp.IsError);
-        }
-
-        [TestMethod]
-        public void IsError_ShouldBeFalse_IfResponseStatusCodeIsOk() {
-            var mockResp = new Mock<IRestResponse<object>>(MockBehavior.Strict);
-            mockResp.Setup(r => r.StatusCode)
-                    .Returns(HttpStatusCode.OK);
-            var resp = new GitHubResponse<object>(mockResp.Object);
-
-            Assert.IsFalse(resp.IsError);
-        }
-
-        [TestMethod]
-        public void IsError_ShouldBeFalse_IfResponseStatusCodeIsCreated() {
-            var mockResp = new Mock<IRestResponse<object>>(MockBehavior.Strict);
-            mockResp.Setup(r => r.StatusCode)
-                    .Returns(HttpStatusCode.Created);
-            var resp = new GitHubResponse<object>(mockResp.Object);
-
-            Assert.IsFalse(resp.IsError);
-        }
-
-        [TestMethod]
         public void ErrorMessage_ShouldContainTheResponseErrorMessage() {
             var expectedErrorMessage = "foo";
             var mockResp = new Mock<IRestResponse<object>>(MockBehavior.Strict);
@@ -82,6 +52,39 @@ namespace NGitHub.Test {
             var resp = new GitHubResponse<object>(mockResp.Object);
 
             Assert.AreEqual<Exception>(expectedException, resp.ErrorException);
+        }
+
+        [TestMethod]
+        public void Content_ShouldReturnResponseContent() {
+            var expectedContent = "foo";
+            var mockResp = new Mock<IRestResponse<object>>(MockBehavior.Strict);
+            mockResp.Setup(r => r.Content)
+                    .Returns(expectedContent);
+            var resp = new GitHubResponse<object>(mockResp.Object);
+
+            Assert.AreEqual(expectedContent, resp.Content);
+        }
+
+        [TestMethod]
+        public void ContentType_ShouldReturnResponseContentType() {
+            var expectedContentType = "foo";
+            var mockResp = new Mock<IRestResponse<object>>(MockBehavior.Strict);
+            mockResp.Setup(r => r.ContentType)
+                    .Returns(expectedContentType);
+            var resp = new GitHubResponse<object>(mockResp.Object);
+
+            Assert.AreEqual(expectedContentType, resp.ContentType);
+        }
+
+        [TestMethod]
+        public void ResponseStatus_ShouldReturnTheConvertedResponseResponseStatus() {
+            var expectedResponseStatus = ResponseStatus.Completed;
+            var mockResp = new Mock<IRestResponse<object>>(MockBehavior.Strict);
+            mockResp.Setup(r => r.ResponseStatus)
+                    .Returns(RestSharp.ResponseStatus.Completed);
+            var resp = new GitHubResponse<object>(mockResp.Object);
+
+            Assert.AreEqual<ResponseStatus>(expectedResponseStatus, resp.ResponseStatus);
         }
     }
 }
