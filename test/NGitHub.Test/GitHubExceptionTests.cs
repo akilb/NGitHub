@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NGitHub.Web;
 
-namespace NGitHub.Test.Web {
+namespace NGitHub.Test {
     [TestClass]
     public class GitHubExceptionTests {
         [TestMethod]

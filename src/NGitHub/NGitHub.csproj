@@ -45,7 +45,7 @@
   <ItemGroup>
     <Compile Include="API.cs" />
     <Compile Include="Web\ErrorType.cs" />
-    <Compile Include="Web\GitHubException.cs" />
+    <Compile Include="GitHubException.cs" />
     <Compile Include="Services\CommitService.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="CustomRestSharp\CustomJsonDeserializer.cs" />
@@ -54,13 +54,13 @@
     <Compile Include="GitHubClient.cs" />
     <Compile Include="CustomRestSharp\CustomHttp.Async.cs" />
     <Compile Include="CustomRestSharp\CustomHttp.cs" />
-    <Compile Include="Web\GitHubRequest.cs" />
-    <Compile Include="Web\GitHubResponse.cs" />
-    <Compile Include="Web\GitHubResponseBase.cs" />
+    <Compile Include="GitHubRequest.cs" />
+    <Compile Include="GitHubResponse.cs" />
+    <Compile Include="GitHubResponseBase.cs" />
     <Compile Include="Services\ICommitService.cs" />
     <Compile Include="Services\IFeedService.cs" />
     <Compile Include="IGitHubClient.cs" />
-    <Compile Include="Web\IGitHubResponse.cs" />
+    <Compile Include="IGitHubResponse.cs" />
     <Compile Include="Services\IIssueService.cs" />
     <Compile Include="Services\IOrganizationService.cs" />
     <Compile Include="Services\IRepositoryService.cs" />

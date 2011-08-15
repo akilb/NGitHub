@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Net;
+using NGitHub.Web;
 
-namespace NGitHub.Web {
+namespace NGitHub {
     public interface IGitHubResponse<T> : IGitHubResponse {
         T Data { get; }
     }

@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using NGitHub.Utility;
+using NGitHub.Web;
 
-namespace NGitHub.Web {
+namespace NGitHub {
     public class GitHubRequest {
         private readonly string _resource;
         private readonly API _version;

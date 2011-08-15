@@ -5,7 +5,7 @@ using Moq;
 using NGitHub.Web;
 using RestSharp;
 
-namespace NGitHub.Test.Web {
+namespace NGitHub.Test {
     [TestClass]
     public class GitHubResponseTests {
         [TestMethod]

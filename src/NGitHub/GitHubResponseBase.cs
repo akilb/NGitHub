@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Net;
 using NGitHub.Utility;
+using NGitHub.Web;
 using RestSharp;
 
-namespace NGitHub.Web {
+namespace NGitHub {
     public abstract class GitHubResponseBase {
         private readonly IRestResponse _response;
 
@@ -19,7 +20,7 @@ namespace NGitHub.Web {
             }
         }
 
-        public ResponseStatus ResponseStatus {
+        public NGitHub.Web.ResponseStatus ResponseStatus {
             get {
                 return _response.ResponseStatus.ToNGitHubResponseStatus();
             }
