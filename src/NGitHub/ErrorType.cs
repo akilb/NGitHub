@@ -4,6 +4,7 @@
         ServerError,
         ApiLimitExceeded,
         ResourceNotFound,
+        Unauthorized,
         Unknown
     }
 }

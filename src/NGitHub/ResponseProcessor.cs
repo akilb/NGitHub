@@ -31,6 +31,9 @@ namespace NGitHub {
             else if (response.StatusCode == HttpStatusCode.NotFound) {
                 errorType = ErrorType.ResourceNotFound;
             }
+            else if (response.StatusCode == HttpStatusCode.Unauthorized) {
+                errorType = ErrorType.Unauthorized;
+            }
             // TODO: Other error types
 
             exception = new GitHubException(response, errorType);

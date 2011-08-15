@@ -95,5 +95,19 @@ namespace NGitHub.Test {
 
             Assert.AreEqual(ErrorType.ServerError, ex.ErrorType);
         }
+
+        [TestMethod]
+        public void TryProcessError_ShouldReturnException_WithUnauthorizedErrorType_IfResponseStatusIsUnauthorized() {
+            var mockResp = new Mock<IGitHubResponse>(MockBehavior.Strict);
+            mockResp.Setup(r => r.StatusCode).Returns(HttpStatusCode.Unauthorized);
+            mockResp.Setup(r => r.ErrorException).Returns<Exception>(null);
+            mockResp.Setup(r => r.ResponseStatus).Returns(ResponseStatus.Completed);
+            var processor = new ResponseProcessor();
+
+            GitHubException ex = null;
+            processor.TryProcessResponseErrors(mockResp.Object, out ex);
+
+            Assert.AreEqual(ErrorType.Unauthorized, ex.ErrorType);
+        }
     }
 }
