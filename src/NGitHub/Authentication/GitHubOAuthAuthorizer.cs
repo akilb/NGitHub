@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using NGitHub.Helpers;
 using NGitHub.Utility;
+using RestSharp;
 
 namespace NGitHub.Authentication {
     public class GitHubOAuthAuthorizer : IGitHubOAuthAuthorizer {
@@ -76,6 +78,49 @@ namespace NGitHub.Authentication {
             }
 
             return scopeBuilder.ToString();
+        }
+
+        public void GetAccessTokenAsync(string clientId,
+                                        string clientSecret,
+                                        string code,
+                                        Action<string> callback,
+                                        Action<GitHubException> onError) {
+            Requires.ArgumentNotNull(clientId, "clientId");
+            Requires.ArgumentNotNull(clientSecret, "clientSecret");
+            Requires.ArgumentNotNull(code, "code");
+            Requires.ArgumentNotNull(callback, "callback");
+            Requires.ArgumentNotNull(onError, "onError");
+
+            var request = new RestRequest {
+                Resource = "/access_token",
+                Method = Method.POST
+            };
+            request.AddParameter("client_id", clientId);
+            request.AddParameter("client_secret", clientSecret);
+            request.AddParameter("code", code);
+
+            var client = _factory.CreateRestClient(Constants.AuthorizeUrl);
+
+            client.ExecuteAsync(
+                request,
+                r => {
+                    var response = new GitHubResponse(r);
+
+                    GitHubException ex = null;
+                    if (_processor.TryProcessResponseErrors(response, out ex)) {
+                        onError(ex);
+                        return;
+                    }
+
+                    var parameters = response.Content.Split('&');
+                    var accessToken = parameters.Where(p => p.StartsWith("access_token="))
+                                                .Select(p => p.Substring(("access_token=").Length))
+                                                .FirstOrDefault();
+
+                    Debug.Assert(accessToken != null, "");
+
+                    callback(accessToken);
+                });
         }
     }
 }
