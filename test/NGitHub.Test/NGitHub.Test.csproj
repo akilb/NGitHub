@@ -54,6 +54,7 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Authentication\GitHubOAuthAuthorizerTests.cs" />
     <Compile Include="CustomRestSharp\CustomJsonDeserializerTests.cs" />
     <Compile Include="GitHubClientTests.cs" />
     <Compile Include="GitHubExceptionTests.cs" />
