@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NGitHub {
+namespace NGitHub.Web {
     internal static class Extensions {
         public static RestSharp.Method ToRestSharpMethod(this Method method) {
             switch (method) {

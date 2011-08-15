@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using NGitHub.Models;
+using NGitHub.Web;
 
-namespace NGitHub {
+namespace NGitHub.Services {
     public interface IUserService {
         void GetUserAsync(string user, Action<User> callback, Action<GitHubException> onError);
         void GetAuthenticatedUserAsync(Action<User> callback, Action<GitHubException> onError);

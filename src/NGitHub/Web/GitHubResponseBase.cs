@@ -3,7 +3,7 @@ using System.Net;
 using NGitHub.Utility;
 using RestSharp;
 
-namespace NGitHub {
+namespace NGitHub.Web {
     public abstract class GitHubResponseBase {
         private readonly IRestResponse _response;
 

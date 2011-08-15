@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using NGitHub.Models;
 using NGitHub.Utility;
+using NGitHub.Web;
 
-namespace NGitHub {
+namespace NGitHub.Services {
     public class OrganizationService : IOrganizationService {
         private readonly IGitHubClient _client;
 

@@ -1,5 +1,5 @@
 ﻿
-namespace NGitHub {
+namespace NGitHub.Web {
     public enum Method {
         GET = 0,
         POST = 1,

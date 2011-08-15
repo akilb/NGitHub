@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using NGitHub.Models;
 using NGitHub.Utility;
+using NGitHub.Web;
 
-namespace NGitHub {
+namespace NGitHub.Services {
     public class RepositoryService : IRepositoryService {
         private readonly IGitHubClient _client;
 

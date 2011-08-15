@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using NGitHub.Models;
+using NGitHub.Web;
 
-namespace NGitHub {
+namespace NGitHub.Services {
     public interface IIssueService {
         void GetIssueAsync(string user,
                            string repo,

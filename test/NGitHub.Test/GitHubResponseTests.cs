@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using RestSharp;
-using Moq;
 using System.Net;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using NGitHub.Web;
+using RestSharp;
 
-namespace NGitHub.Test {
+namespace NGitHub.Test.Web {
     [TestClass]
     public class GitHubResponseTests {
         [TestMethod]
@@ -78,13 +76,13 @@ namespace NGitHub.Test {
 
         [TestMethod]
         public void ResponseStatus_ShouldReturnTheConvertedResponseResponseStatus() {
-            var expectedResponseStatus = ResponseStatus.Completed;
+            var expectedResponseStatus = NGitHub.Web.ResponseStatus.Completed;
             var mockResp = new Mock<IRestResponse<object>>(MockBehavior.Strict);
             mockResp.Setup(r => r.ResponseStatus)
                     .Returns(RestSharp.ResponseStatus.Completed);
             var resp = new GitHubResponse<object>(mockResp.Object);
 
-            Assert.AreEqual<ResponseStatus>(expectedResponseStatus, resp.ResponseStatus);
+            Assert.AreEqual<NGitHub.Web.ResponseStatus>(expectedResponseStatus, resp.ResponseStatus);
         }
     }
 }

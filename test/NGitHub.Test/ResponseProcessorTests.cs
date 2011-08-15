@@ -2,8 +2,10 @@
 using System.Net;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using NGitHub.Helpers;
+using NGitHub.Web;
 
-namespace NGitHub.Test {
+namespace NGitHub.Test.Helpers {
     [TestClass]
     public class ResponseProcessorTests {
         [TestMethod]

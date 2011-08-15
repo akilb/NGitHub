@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace NGitHub.Utility {
-    public static class Requires {
+    internal static class Requires {
         public static void ArgumentNotNull(Object argument,
                                            String argumentName) {
             if (argument == null) {

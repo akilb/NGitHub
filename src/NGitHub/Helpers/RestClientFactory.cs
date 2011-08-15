@@ -1,7 +1,7 @@
 ﻿using NGitHub.CustomRestSharp;
 using RestSharp;
 
-namespace NGitHub {
+namespace NGitHub.Helpers {
     public interface IRestClientFactory {
         IRestClient CreateRestClient(string baseUrl);
     }

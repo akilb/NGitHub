@@ -1,7 +1,7 @@
 ﻿using NGitHub.Models;
 using NGitHub.Utility;
 
-namespace NGitHub {
+namespace NGitHub.Web {
     public class Parameter {
         private readonly string _name;
         private readonly string _value;

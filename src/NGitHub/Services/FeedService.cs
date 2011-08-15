@@ -5,11 +5,13 @@ using System.Linq;
 using System.Net;
 using System.ServiceModel.Syndication;
 using System.Xml;
+using NGitHub.Helpers;
 using NGitHub.Models;
 using NGitHub.Utility;
+using NGitHub.Web;
 using RestSharp;
 
-namespace NGitHub {
+namespace NGitHub.Services {
     public class FeedService : IFeedService {
         private readonly IRestClientFactory _factory;
         private readonly Func<IAuthenticator> _currentAuthenticator;

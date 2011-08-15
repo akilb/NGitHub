@@ -3,6 +3,8 @@ using System.Linq;
 using System.Net;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using NGitHub.Helpers;
+using NGitHub.Web;
 using RestSharp;
 
 namespace NGitHub.Test {
@@ -25,7 +27,7 @@ namespace NGitHub.Test {
         [TestMethod]
         public void CallApiAsync_ShouldExecuteRestRequestWithGivenRequestResource() {
             var expectedResource = "foo/bar";
-            var request = new GitHubRequest(expectedResource, API.v3, Method.OPTIONS);
+            var request = new GitHubRequest(expectedResource, API.v3, NGitHub.Web.Method.OPTIONS);
             var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
             var mockFactory = new Mock<IRestClientFactory>(MockBehavior.Strict);
             mockFactory.Setup<IRestClient>(f => f.CreateRestClient(Constants.ApiV3Url))
@@ -43,7 +45,7 @@ namespace NGitHub.Test {
 
         [TestMethod]
         public void CallApiAsync_ShouldExecuteRestRequestWithGivenRequestMethod() {
-            var expectedMethod = Method.OPTIONS;
+            var expectedMethod = NGitHub.Web.Method.OPTIONS;
             var request = new GitHubRequest("foo/bar", API.v3, expectedMethod);
             var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
             var mockFactory = new Mock<IRestClientFactory>(MockBehavior.Strict);
@@ -73,7 +75,7 @@ namespace NGitHub.Test {
             mockRestClient.SetupSet(c => c.Authenticator = It.IsAny<IAuthenticator>());
             var githubClient = CreateClient(mockFactory.Object);
 
-            githubClient.CallApiAsync<object>(new GitHubRequest("foo", API.v2, Method.GET),
+            githubClient.CallApiAsync<object>(new GitHubRequest("foo", API.v2, NGitHub.Web.Method.GET),
                                               o => { },
                                               e => { });
 
@@ -93,7 +95,7 @@ namespace NGitHub.Test {
             mockRestClient.SetupSet(c => c.Authenticator = It.IsAny<IAuthenticator>());
             var githubClient = CreateClient(mockFactory.Object);
 
-            githubClient.CallApiAsync<object>(new GitHubRequest("foo", API.v3, Method.GET),
+            githubClient.CallApiAsync<object>(new GitHubRequest("foo", API.v3, NGitHub.Web.Method.GET),
                                               o => { },
                                               e => { });
 
@@ -115,7 +117,7 @@ namespace NGitHub.Test {
 
             var callbackInvoked = false;
             client.CallApiAsync<object>(
-                new GitHubRequest("foo", API.v3, Method.GET),
+                new GitHubRequest("foo", API.v3, NGitHub.Web.Method.GET),
                 o => callbackInvoked = true,
                 e => { });
 
@@ -137,7 +139,7 @@ namespace NGitHub.Test {
 
             var callbackInvoked = false;
             client.CallApiAsync<object>(
-                new GitHubRequest("foo", API.v3, Method.GET),
+                new GitHubRequest("foo", API.v3, NGitHub.Web.Method.GET),
                 o => callbackInvoked = true,
                 e => { });
 
@@ -163,7 +165,7 @@ namespace NGitHub.Test {
 
             object actualData = null;
             client.CallApiAsync<object>(
-                new GitHubRequest("foo", API.v3, Method.GET),
+                new GitHubRequest("foo", API.v3, NGitHub.Web.Method.GET),
                 r => actualData = r.Data,
                 e => { });
 
@@ -188,7 +190,7 @@ namespace NGitHub.Test {
             var client = CreateClient(mockFactory.Object, mockProcessor.Object);
 
             var onErrorInvoked = false;
-            client.CallApiAsync<object>(new GitHubRequest("foo", API.v3, Method.GET),
+            client.CallApiAsync<object>(new GitHubRequest("foo", API.v3, NGitHub.Web.Method.GET),
                                         o => { },
                                         e => onErrorInvoked = true);
 
@@ -213,7 +215,7 @@ namespace NGitHub.Test {
             var client = CreateClient(mockFactory.Object, mockProcessor.Object);
 
             GitHubException actualException = null;
-            client.CallApiAsync<object>(new GitHubRequest("foo", API.v3, Method.GET),
+            client.CallApiAsync<object>(new GitHubRequest("foo", API.v3, NGitHub.Web.Method.GET),
                                         o => { },
                                         e => actualException = e);
 
@@ -238,7 +240,9 @@ namespace NGitHub.Test {
             mockRestClient.SetupSet(c => c.Authenticator = It.IsAny<IAuthenticator>());
             var client = CreateClient(mockFactory.Object);
 
-            var request = new GitHubRequest("resource", API.v2, Method.POST, new Parameter(expectedKey, expectedValue));
+            var request = new GitHubRequest("resource", API.v2,
+                                            NGitHub.Web.Method.POST,
+                                            new NGitHub.Web.Parameter(expectedKey, expectedValue));
             client.CallApiAsync<object>(request, o => { }, e => { });
 
             mockRestClient.Verify();

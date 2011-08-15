@@ -2,7 +2,7 @@
 using System.Collections.ObjectModel;
 using NGitHub.Utility;
 
-namespace NGitHub {
+namespace NGitHub.Web {
     public class GitHubRequest {
         private readonly string _resource;
         private readonly API _version;

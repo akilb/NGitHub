@@ -1,8 +1,9 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using NGitHub.Web;
 
-namespace NGitHub.Test {
+namespace NGitHub.Test.Web {
     [TestClass]
     public class GitHubExceptionTests {
         [TestMethod]

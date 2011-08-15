@@ -1,5 +1,4 @@
-﻿
-namespace NGitHub {
+﻿namespace NGitHub.Web {
     public enum ResponseStatus {
         None,
         Completed,

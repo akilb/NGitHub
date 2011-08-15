@@ -1,7 +1,7 @@
 ﻿using NGitHub.Utility;
 using RestSharp;
 
-namespace NGitHub {
+namespace NGitHub.Web {
     public class GitHubResponse<T> : GitHubResponseBase, IGitHubResponse<T> {
         private readonly IRestResponse<T> _response;
 

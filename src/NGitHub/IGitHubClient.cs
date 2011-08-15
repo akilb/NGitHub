@@ -1,5 +1,7 @@
 ﻿using System;
 using NGitHub.Models;
+using NGitHub.Services;
+using NGitHub.Web;
 
 namespace NGitHub {
     public interface IGitHubClient {

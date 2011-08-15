@@ -1,7 +1,7 @@
 ﻿using System;
 using NGitHub.Utility;
 
-namespace NGitHub {
+namespace NGitHub.Web {
     public class GitHubException : Exception {
         private readonly IGitHubResponse _response;
         private readonly ErrorType _errorType;

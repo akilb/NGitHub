@@ -1,7 +1,8 @@
 ﻿using System.Net;
 using NGitHub.Utility;
+using NGitHub.Web;
 
-namespace NGitHub {
+namespace NGitHub.Helpers {
     public interface IResponseProcessor {
         bool TryProcessResponseErrors(IGitHubResponse response,
                                       out GitHubException exception);

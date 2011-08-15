@@ -1,6 +1,9 @@
 ﻿using System;
+using NGitHub.Helpers;
 using NGitHub.Models;
+using NGitHub.Services;
 using NGitHub.Utility;
+using NGitHub.Web;
 using RestSharp;
 
 namespace NGitHub {
@@ -90,7 +93,7 @@ namespace NGitHub {
             Logout();
 
             var authenticator = new HttpBasicAuthenticator(login, password);
-            CallApiAsync<UserResult>(new GitHubRequest("/user/show/", API.v2, Method.GET),
+            CallApiAsync<UserResult>(new GitHubRequest("/user/show/", API.v2, NGitHub.Web.Method.GET),
                                      authenticator,
                                      r => {
                                          _authenticator = authenticator;

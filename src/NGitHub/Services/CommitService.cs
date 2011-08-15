@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using NGitHub.Models;
 using NGitHub.Utility;
-using RestSharp;
+using NGitHub.Web;
 
-namespace NGitHub {
+namespace NGitHub.Services {
     public class CommitService : ICommitService {
         private readonly IGitHubClient _client;
 
