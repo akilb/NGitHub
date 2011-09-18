@@ -1,6 +1,6 @@
 ﻿using System;
+using NGitHub.Authentication;
 using NGitHub.Helpers;
-using NGitHub.Models;
 using NGitHub.Services;
 using NGitHub.Utility;
 using NGitHub.Web;
@@ -31,14 +31,14 @@ namespace NGitHub {
             _factory = factory;
             _processor = processor;
 
-            _authenticator = new NullAuthenticator();
+            Authenticator = new NullAuthenticator();
             _users = new UserService(this);
             _issues = new IssueService(this);
             _commits = new CommitService(this);
             _repositories = new RepositoryService(this);
             _organizations = new OrganizationService(this);
 
-            _feeds = new FeedService(_factory, () => _authenticator);
+            _feeds = new FeedService(_factory, () => Authenticator);
         }
 
         public IUserService Users {
@@ -77,50 +77,20 @@ namespace NGitHub {
             }
         }
 
-        public bool LoggedIn {
+        public IAuthenticator Authenticator {
             get {
-                return !(_authenticator is NullAuthenticator);
+                return _authenticator;
             }
-        }
-
-        public void LoginAsync(string login,
-                               string password,
-                               Action<User> callback,
-                               Action<GitHubException> onError) {
-            Requires.ArgumentNotNull(login, "login");
-            Requires.ArgumentNotNull(password, "password");
-
-            Logout();
-
-            var authenticator = new HttpBasicAuthenticator(login, password);
-            CallApiAsync<UserResult>(new GitHubRequest("/user/show/", API.v2, NGitHub.Web.Method.GET),
-                                     authenticator,
-                                     r => {
-                                         _authenticator = authenticator;
-                                         callback(r.Data.User);
-                                     },
-                                     e => {
-                                         onError(e);
-                                     });
-        }
-
-        public void Logout() {
-            _authenticator = new NullAuthenticator();
+            set {
+                _authenticator = value ?? new NullAuthenticator();
+            }
         }
 
         public void CallApiAsync<TResponseData>(GitHubRequest request,
                                                 Action<IGitHubResponse<TResponseData>> callback,
                                                 Action<GitHubException> onError) where TResponseData : new() {
-            CallApiAsync<TResponseData>(request, _authenticator, callback, onError);
-        }
-
-        private void CallApiAsync<TResponseData>(GitHubRequest request,
-                                                 IAuthenticator authenticator,
-                                                 Action<IGitHubResponse<TResponseData>> callback,
-                                                 Action<GitHubException> onError) where TResponseData : new() {
             Requires.ArgumentNotNull(request, "request");
             Requires.ArgumentNotNull(callback, "callback");
-            Requires.ArgumentNotNull(authenticator, "authenticator");
             Requires.ArgumentNotNull(onError, "onError");
 
             var restRequest = new RestRequest {
@@ -133,7 +103,7 @@ namespace NGitHub {
 
             var baseUrl = (request.Version == API.v3) ? Constants.ApiV3Url : Constants.ApiV2Url;
             var restClient = _factory.CreateRestClient(baseUrl);
-            restClient.Authenticator = authenticator;
+            restClient.Authenticator = Authenticator;
 
             restClient.ExecuteAsync<TResponseData>(
                 restRequest,
@@ -148,12 +118,6 @@ namespace NGitHub {
 
                     callback(response);
                 });
-        }
-
-        private class NullAuthenticator : IAuthenticator {
-            public void Authenticate(RestClient client, RestRequest request) {
-                // NOOP
-            }
         }
     }
 }

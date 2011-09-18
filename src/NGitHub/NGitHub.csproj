@@ -46,6 +46,7 @@
     <Compile Include="API.cs" />
     <Compile Include="Authentication\GitHubOAuthAuthorizer.cs" />
     <Compile Include="Authentication\IGitHubOAuthAuthorizer.cs" />
+    <Compile Include="Authentication\NullAuthenticator.cs" />
     <Compile Include="Authentication\Scope.cs" />
     <Compile Include="Web\ErrorType.cs" />
     <Compile Include="GitHubException.cs" />

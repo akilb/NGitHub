@@ -7,7 +7,7 @@ namespace NGitHub.Web {
         private readonly string _value;
 
         public Parameter(string name, string value) {
-            Requires.ArgumentNotNull(name, "key");
+            Requires.ArgumentNotNull(name, "name");
             Requires.ArgumentNotNull(value, "value");
 
             _name = name;

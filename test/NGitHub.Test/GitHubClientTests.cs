@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using NGitHub.Authentication;
 using NGitHub.Helpers;
 using NGitHub.Web;
 using RestSharp;
@@ -249,10 +250,50 @@ namespace NGitHub.Test {
         }
 
         [TestMethod]
-        public void LoggedIn_ShouldBeFalse_WhenClientHasNotTriedToLogInYet() {
-            var client = new GitHubClient();
+        public void Authenticator_ShouldBeAssignedToNullAuthenticator_WhenClientIsCreated() {
+            var client = CreateClient();
 
-            Assert.IsFalse(client.LoggedIn);
+            Assert.IsInstanceOfType(client.Authenticator, typeof(NullAuthenticator));
+        }
+
+        [TestMethod]
+        public void Authenticator_ShouldTakeAssignedValue_WhenItIsNotNull() {
+            var expectedAuthenticator = new SimpleAuthenticator(string.Empty, string.Empty, string.Empty, string.Empty);
+            var client = CreateClient();
+
+            client.Authenticator = expectedAuthenticator;
+
+            Assert.AreSame(expectedAuthenticator, client.Authenticator);
+        }
+
+        [TestMethod]
+        public void Authenticator_ShouldDefaultToNullAuthenticator_WhenAssignedToNull() {
+            var client = CreateClient();
+
+            client.Authenticator = null;
+
+            Assert.IsInstanceOfType(client.Authenticator, typeof(NullAuthenticator));
+        }
+
+        [TestMethod]
+        public void CallApiAsync_ShouldUseGivenAuthenticator_DuringForRestClient() {
+            var expectedAuthenticator = new NullAuthenticator();
+            var mockFactory = new Mock<IRestClientFactory>(MockBehavior.Strict);
+            var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+            mockFactory.Setup<IRestClient>(f => f.CreateRestClient(It.IsAny<string>()))
+                       .Returns(mockRestClient.Object);
+            mockRestClient
+                .Setup(c => c.ExecuteAsync<object>(It.IsAny<RestRequest>(), It.IsAny<Action<RestResponse<object>>>()));
+            mockRestClient.SetupSet(c => c.Authenticator = expectedAuthenticator)
+                          .Verifiable();
+            var client = CreateClient(mockFactory.Object);
+            client.Authenticator = expectedAuthenticator;
+
+            client.CallApiAsync<object>(new GitHubRequest("foo", API.v3, NGitHub.Web.Method.GET),
+                                        o => { },
+                                        e => { });
+
+            mockRestClient.Verify();
         }
     }
 }

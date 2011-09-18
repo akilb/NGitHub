@@ -1,7 +1,6 @@
 ﻿using System;
-using NGitHub.Models;
 using NGitHub.Services;
-using NGitHub.Web;
+using RestSharp;
 
 namespace NGitHub {
     public interface IGitHubClient {
@@ -12,12 +11,7 @@ namespace NGitHub {
         IRepositoryService Repositories     { get; }
         IOrganizationService Organizations  { get; }
 
-        bool LoggedIn { get; }
-        void LoginAsync(string login,
-                        string password,
-                        Action<User> callback,
-                        Action<GitHubException> onError);
-        void Logout();
+        IAuthenticator Authenticator { get; set; }
 
         void CallApiAsync<TResponseData>(GitHubRequest request,
                                          Action<IGitHubResponse<TResponseData>> callback,
