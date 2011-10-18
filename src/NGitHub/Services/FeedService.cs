@@ -51,7 +51,7 @@ namespace NGitHub.Services {
 
             var request = new RestRequest(resource,RestSharp.Method.GET);
             client.ExecuteAsync(request,
-                                r => {
+                                (r, h) => {
                                     if (r.StatusCode != HttpStatusCode.OK) {
                                         onError(new GitHubException(new GitHubResponse(r), ErrorType.Unknown));
                                         return;

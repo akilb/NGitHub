@@ -10,6 +10,8 @@ using RestSharp;
 namespace NGitHub.Test.Authentication {
     [TestClass]
     public class GitHubOAuthAuthorizerTests {
+        private readonly RestRequestAsyncHandle _testHandle = new RestRequestAsyncHandle();
+
         private GitHubOAuthAuthorizer CreateAuthorizer(IRestClientFactory factory = null,
                                                        IResponseProcessor processor = null) {
             return new GitHubOAuthAuthorizer(factory ?? new Mock<IRestClientFactory>(MockBehavior.Strict).Object,
@@ -90,7 +92,9 @@ namespace NGitHub.Test.Authentication {
             mockFactory.Setup(f => f.CreateRestClient(expectedBaseUrl))
                        .Returns(mockClient.Object)
                        .Verifiable();
-            mockClient.Setup(c => c.ExecuteAsync(It.IsAny<RestRequest>(), It.IsAny<Action<RestResponse>>()));
+            mockClient.Setup(c => c.ExecuteAsync(It.IsAny<RestRequest>(),
+                                                 It.IsAny<Action<RestResponse, RestRequestAsyncHandle>>()))
+                      .Returns(_testHandle);
             var auth = CreateAuthorizer(mockFactory.Object);
 
             auth.GetAccessTokenAsync("foo", "bar", "baz", s => { }, e => { });
@@ -107,7 +111,8 @@ namespace NGitHub.Test.Authentication {
                        .Returns(mockClient.Object)
                        .Verifiable();
             mockClient.Setup(c => c.ExecuteAsync(It.Is<RestRequest>(r => r.Resource == expectedResource),
-                                                 It.IsAny<Action<RestResponse>>()));
+                                                 It.IsAny<Action<RestResponse, RestRequestAsyncHandle>>()))
+                      .Returns(_testHandle);
             var auth = CreateAuthorizer(mockFactory.Object);
 
             auth.GetAccessTokenAsync("foo", "bar", "baz", s => { }, e => { });
@@ -123,7 +128,8 @@ namespace NGitHub.Test.Authentication {
                        .Returns(mockClient.Object)
                        .Verifiable();
             mockClient.Setup(c => c.ExecuteAsync(It.Is<RestRequest>(r => r.Method == RestSharp.Method.POST),
-                                                 It.IsAny<Action<RestResponse>>()));
+                                                 It.IsAny<Action<RestResponse, RestRequestAsyncHandle>>()))
+                      .Returns(_testHandle);
             var auth = CreateAuthorizer(mockFactory.Object);
 
             auth.GetAccessTokenAsync("foo", "bar", "baz", s => { }, e => { });
@@ -140,7 +146,8 @@ namespace NGitHub.Test.Authentication {
                        .Returns(mockClient.Object);
             mockClient.Setup(c => c.ExecuteAsync(It.Is<RestRequest>(r => r.Parameters.Any(p => p.Name == "client_id" &&
                                                                                                (string)p.Value == expectedClientId)),
-                                                 It.IsAny<Action<RestResponse>>()))
+                                                 It.IsAny<Action<RestResponse, RestRequestAsyncHandle>>()))
+                      .Returns(_testHandle)
                       .Verifiable();
             var auth = CreateAuthorizer(mockFactory.Object);
 
@@ -158,7 +165,8 @@ namespace NGitHub.Test.Authentication {
                        .Returns(mockClient.Object);
             mockClient.Setup(c => c.ExecuteAsync(It.Is<RestRequest>(r => r.Parameters.Any(p => p.Name == "client_secret" &&
                                                                                                (string)p.Value == expectedClientSecret)),
-                                                 It.IsAny<Action<RestResponse>>()))
+                                                 It.IsAny<Action<RestResponse, RestRequestAsyncHandle>>()))
+                      .Returns(_testHandle)
                       .Verifiable();
             var auth = CreateAuthorizer(mockFactory.Object);
 
@@ -176,7 +184,8 @@ namespace NGitHub.Test.Authentication {
                        .Returns(mockClient.Object);
             mockClient.Setup(c => c.ExecuteAsync(It.Is<RestRequest>(r => r.Parameters.Any(p => p.Name == "code" &&
                                                                                                (string)p.Value == expectedCode)),
-                                                 It.IsAny<Action<RestResponse>>()))
+                                                 It.IsAny<Action<RestResponse, RestRequestAsyncHandle>>()))
+                      .Returns(_testHandle)
                       .Verifiable();
             var auth = CreateAuthorizer(mockFactory.Object);
 
@@ -195,8 +204,10 @@ namespace NGitHub.Test.Authentication {
             mockFactory.Setup(f => f.CreateRestClient(It.IsAny<string>()))
                        .Returns(mockClient.Object);
             mockClient.Setup(c => c.ExecuteAsync(It.IsAny<RestRequest>(),
-                                                 It.IsAny<Action<RestResponse>>()))
-                      .Callback<RestRequest, Action<RestResponse>>((req, c) => c(new RestResponse()));
+                                                 It.IsAny<Action<RestResponse, RestRequestAsyncHandle>>()))
+                      .Returns(_testHandle)
+                      .Callback<RestRequest, Action<RestResponse, RestRequestAsyncHandle>>(
+                            (req, c) => c(new RestResponse(), _testHandle));
             mockProcessor.Setup(p => p.TryProcessResponseErrors(It.IsAny<GitHubResponse>(), out ex))
                          .Returns(true);
             var auth = CreateAuthorizer(mockFactory.Object, mockProcessor.Object);
@@ -215,8 +226,9 @@ namespace NGitHub.Test.Authentication {
             mockFactory.Setup(f => f.CreateRestClient(It.IsAny<string>()))
                        .Returns(mockClient.Object);
             mockClient.Setup(c => c.ExecuteAsync(It.IsAny<RestRequest>(),
-                                                 It.IsAny<Action<RestResponse>>()))
-                      .Callback<RestRequest, Action<RestResponse>>((req, c) => c(new RestResponse()));
+                                                 It.IsAny<Action<RestResponse, RestRequestAsyncHandle>>()))
+                      .Returns(_testHandle)
+                      .Callback<RestRequest, Action<RestResponse, RestRequestAsyncHandle>>((req, c) => c(new RestResponse(), _testHandle));
             mockProcessor.Setup(p => p.TryProcessResponseErrors(It.IsAny<GitHubResponse>(), out expectedException))
                          .Returns(true);
             var auth = CreateAuthorizer(mockFactory.Object, mockProcessor.Object);
@@ -238,8 +250,10 @@ namespace NGitHub.Test.Authentication {
             mockFactory.Setup(f => f.CreateRestClient(It.IsAny<string>()))
                        .Returns(mockClient.Object);
             mockClient.Setup(c => c.ExecuteAsync(It.IsAny<RestRequest>(),
-                                                 It.IsAny<Action<RestResponse>>()))
-                      .Callback<RestRequest, Action<RestResponse>>((req, c) => c(new RestResponse { Content = responseContent }));
+                                                 It.IsAny<Action<RestResponse, RestRequestAsyncHandle>>()))
+                      .Returns(_testHandle)
+                      .Callback<RestRequest, Action<RestResponse, RestRequestAsyncHandle>>(
+                        (req, c) => c(new RestResponse { Content = responseContent }, _testHandle));
             mockProcessor.Setup(p => p.TryProcessResponseErrors(It.IsAny<GitHubResponse>(), out ex))
                          .Returns(false);
             var auth = CreateAuthorizer(mockFactory.Object, mockProcessor.Object);
@@ -260,8 +274,10 @@ namespace NGitHub.Test.Authentication {
             mockFactory.Setup(f => f.CreateRestClient(It.IsAny<string>()))
                        .Returns(mockClient.Object);
             mockClient.Setup(c => c.ExecuteAsync(It.IsAny<RestRequest>(),
-                                                 It.IsAny<Action<RestResponse>>()))
-                      .Callback<RestRequest, Action<RestResponse>>((req, c) => c(new RestResponse { Content = responseContent }));
+                                                 It.IsAny<Action<RestResponse, RestRequestAsyncHandle>>()))
+                      .Returns(_testHandle)
+                      .Callback<RestRequest, Action<RestResponse, RestRequestAsyncHandle>>(
+                            (req, c) => c(new RestResponse { Content = responseContent }, _testHandle));
             mockProcessor.Setup(p => p.TryProcessResponseErrors(It.IsAny<GitHubResponse>(), out ex))
                          .Returns(false);
             var auth = CreateAuthorizer(mockFactory.Object, mockProcessor.Object);

@@ -103,7 +103,7 @@ namespace NGitHub.Authentication {
 
             client.ExecuteAsync(
                 request,
-                r => {
+                (r, h) => {
                     var response = new GitHubResponse(r);
 
                     GitHubException ex = null;

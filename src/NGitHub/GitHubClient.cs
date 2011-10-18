@@ -107,7 +107,7 @@ namespace NGitHub {
 
             restClient.ExecuteAsync<TResponseData>(
                 restRequest,
-                r => {
+                (r, h) => {
                     var response = new GitHubResponse<TResponseData>(r);
 
                     GitHubException ex = null;

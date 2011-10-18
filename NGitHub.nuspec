@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata schemaVersion="2">
     <id>NGitHub</id>
-    <version>0.4.0</version>
+    <version>0.4.1</version>
     <title>NGitHub</title>
     <authors>Akil Burgess</authors>
     <owners>Akil Burgess</owners>
@@ -14,7 +14,7 @@
     <language>en-US</language>
     <tags>GITHUB GIT</tags>
     <dependencies>
-      <dependency id="RestSharp" version="101.3" />
+      <dependency id="RestSharp" version="102.2" />
     </dependencies>
     <frameworkAssemblies>
       <frameworkAssembly assemblyName="System.ServiceModel.dll" targetFramework="net40" />
