@@ -5,7 +5,6 @@ using RestSharp;
 namespace NGitHub {
     public interface IGitHubClient {
         ICommitService Commits              { get; }
-        IFeedService Feeds                  { get; }
         IIssueService Issues                { get; }
         IUserService Users                  { get; }
         IRepositoryService Repositories     { get; }
