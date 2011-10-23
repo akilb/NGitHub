@@ -17,9 +17,6 @@
       <dependency id="RestSharp" version="102.2" />
     </dependencies>
     <frameworkAssemblies>
-      <frameworkAssembly assemblyName="System.ServiceModel.dll" targetFramework="net40" />
-      <frameworkAssembly assemblyName="System.ServiceModel.Syndication.dll" targetFramework="sl4" />
-
       <!-- NOOP to work-around NuGet bug -->
       <frameworkAssembly assemblyName="System.Core.dll" targetFramework="sl3-wp" />
     </frameworkAssemblies>
@@ -29,6 +26,5 @@
     <file src="src\NGitHub\bin\Release\NGitHub.dll" target="lib\net40"/>
     <file src="src\NGitHub.SL4\bin\Release\NGitHub.SL4.dll" target="lib\sl4"/>
     <file src="src\NGitHub.WindowsPhone\bin\Release\NGitHub.WindowsPhone.dll" target="lib\sl3-wp"/>
-    <file src="lib\sl3-wp\System.ServiceModel.Syndication.dll" target="lib\sl3-wp"/>
   </files>
 </package>
