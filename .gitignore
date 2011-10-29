@@ -21,7 +21,7 @@
 # Project Files
 *.user
 *.suo
-*.db 
+*.db
 *.docstates
 *.vsmdi
 TestResult.xml
@@ -39,4 +39,5 @@ _ReSharper.*
 TestResults/
 [Dd]ebug/
 [Rr]elease/
+[Pp]ackages/
 _ReSharper.VsVim
