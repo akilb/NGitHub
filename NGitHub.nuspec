@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata schemaVersion="2">
     <id>NGitHub</id>
-    <version>0.4.3</version>
+    <version>0.4.4</version>
     <title>NGitHub</title>
     <authors>Akil Burgess</authors>
     <owners>Akil Burgess</owners>
@@ -24,7 +24,8 @@
 
   <files>
     <file src="src\NGitHub\bin\Release\NGitHub.dll" target="lib\net40"/>
-    <file src="src\NGitHub.SL4\bin\Release\NGitHub.SL4.dll" target="lib\sl4"/>
+    <file src="src\NGitHub.SL4\bin\Release\NGitHub.Silverlight.dll" target="lib\sl4"/>
     <file src="src\NGitHub.WindowsPhone\bin\Release\NGitHub.WindowsPhone.dll" target="lib\sl3-wp"/>
+    <file src="src\NGitHub.WindowsPhone.Mango\bin\Release\NGitHub.WindowsPhone.dll" target="lib\sl4-wp"/>
   </files>
 </package>
