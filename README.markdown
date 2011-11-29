@@ -2,7 +2,7 @@
 Simple GitHub API library for .NET, Silverlight and Windows Phone applications
 
 #### Hello GitHub
-'''csharp
+```csharp
 using NGitHub;
 
 var githubClient = new GitHubClient();
@@ -12,4 +12,4 @@ githubClient.Users.GetUserAsync("akilb",
                                                             user.Login,
                                                             user.PublicRepos),
                                 onError: e => { });
-'''
+```
