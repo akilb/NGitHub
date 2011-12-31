@@ -6,7 +6,7 @@ namespace NGitHub.Models {
     [JsonObject]
     public class Repository {
         [JsonProperty(PropertyName = "owner")]
-        public string Owner { get; set; }
+        public User Owner { get; set; }
 
         [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
@@ -15,7 +15,14 @@ namespace NGitHub.Models {
         [JsonIgnore]
         public string FullName {
             get {
-                var owner = Owner ?? string.Empty;
+                string owner;
+                if (Owner != null &&
+                    Owner.Login != null) {
+                    owner = Owner.Login;
+                }
+                else {
+                    owner = string.Empty;
+                }
                 var repoName = Name ?? string.Empty;
 
                 return owner + " / " + repoName;
@@ -52,8 +59,8 @@ namespace NGitHub.Models {
         [JsonProperty(PropertyName = "fork")]
         public bool IsFork { get; set; }
 
-        [JsonProperty(PropertyName = "has_issues")]
-        public bool HasIssues { get; set; }
+        [JsonProperty(PropertyName = "open_issues")]
+        public int OpenIssues { get; set; }
 
         [JsonProperty(PropertyName = "watchers")]
         public int NumberOfWatchers { get; set; }
@@ -84,23 +91,26 @@ namespace NGitHub.Models {
                 _masterBranch = value;
             }
         }
-    }
 
-    [JsonObject]
-    public class RepositoriesResult {
-        [JsonProperty(PropertyName = "repositories")]
-        public List<Repository> Repositories { get; set; }
-    }
+        [JsonProperty("html_url")]
+        public string HtmlUrl { get; set; }
 
-    [JsonObject]
-    public class NetworkResult {
-        [JsonProperty(PropertyName = "network")]
-        public List<Repository> Forks { get; set; }
-    }
+        [JsonProperty("clone_url")]
+        public string CloneUrl { get; set; }
 
-    [JsonObject]
-    public class RepositoryResult {
-        [JsonProperty(PropertyName = "repository")]
-        public Repository Repository { get; set; }
+        [JsonProperty("git_url")]
+        public string GitUrl { get; set; }
+
+        [JsonProperty("ssh_url")]
+        public string SshUrl { get; set; }
+
+        [JsonProperty("svn_url")]
+        public string SvnUrl { get; set; }
+
+        [JsonProperty("homepage")]
+        public string HomePage { get; set; }
+
+        [JsonProperty("size")]
+        public int Size { get; set; }
     }
 }

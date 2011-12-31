@@ -14,18 +14,6 @@ namespace NGitHub.Web {
             _value = value;
         }
 
-        public Parameter(SortBy sortby)
-            : this("sortby", sortby.GetText()) {
-        }
-
-        public Parameter(State state)
-            : this("state", state.GetText()) {
-        }
-
-        public Parameter(OrderBy direction)
-            : this("direction", direction.GetText()) {
-        }
-
         public string Name {
             get {
                 return _name;
@@ -36,6 +24,22 @@ namespace NGitHub.Web {
             get {
                 return _value;
             }
+        }
+
+        public static Parameter Page(int page) {
+            return new Parameter("page", page.ToString());
+        }
+
+        public static Parameter SortBy(SortBy sortby) {
+            return new Parameter("sortby", sortby.GetText());
+        }
+
+        public static Parameter State(State state) {
+            return new Parameter("state", state.GetText());
+        }
+
+        public static Parameter OrderBy(OrderBy direction) {
+            return new Parameter("direction", direction.GetText());
         }
     }
 }

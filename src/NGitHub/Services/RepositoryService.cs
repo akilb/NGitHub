@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Diagnostics;
+using System.Net;
 using NGitHub.Models;
 using NGitHub.Utility;
 using NGitHub.Web;
@@ -15,18 +16,6 @@ namespace NGitHub.Services {
             _client = gitHubClient;
         }
 
-        public void SearchAsync(string query,
-                                Action<IEnumerable<Repository>> callback,
-                                Action<GitHubException> onError) {
-            Requires.ArgumentNotNull(query, "query");
-
-            var resource = string.Format("/repos/search/{0}", query.Replace(' ', '+'));
-            var request = new GitHubRequest(resource, API.v2, Method.GET);
-            _client.CallApiAsync<RepositoriesResult>(request,
-                                                     r => callback(r.Data.Repositories),
-                                                     onError);
-        }
-
         public void GetRepositoryAsync(string user,
                                        string repo,
                                        Action<Repository> callback,
@@ -34,29 +23,31 @@ namespace NGitHub.Services {
             Requires.ArgumentNotNull(user, "user");
             Requires.ArgumentNotNull(repo, "repo");
 
-            var resource = string.Format("/repos/show/{0}/{1}", user, repo);
-            var request = new GitHubRequest(resource, API.v2, Method.GET);
-            _client.CallApiAsync<RepositoryResult>(request,
-                                                   r => callback(r.Data.Repository),
-                                                   onError);
+            var resource = string.Format("/repos/{0}/{1}", user, repo);
+            var request = new GitHubRequest(resource, API.v3, Method.GET);
+            _client.CallApiAsync<Repository>(request,
+                                             r => callback(r.Data),
+                                             onError);
         }
 
         public void GetRepositoriesAsync(string user,
+                                         int page,
                                          Action<IEnumerable<Repository>> callback,
                                          Action<GitHubException> onError) {
             Requires.ArgumentNotNull(user, "user");
 
-            var resource = string.Format("/repos/show/{0}", user);
-            GetRepositoriesAsyncInternal(resource, callback, onError);
+            var resource = string.Format("/users/{0}/repos", user);
+            GetRepositoriesAsyncInternal(resource, page, callback, onError);
         }
 
         public void GetWatchedRepositoriesAsync(string user,
+                                                int page,
                                                 Action<IEnumerable<Repository>> callback,
                                                 Action<GitHubException> onError) {
             Requires.ArgumentNotNull(user, "user");
 
-            var resource = string.Format("/repos/watched/{0}", user);
-            GetRepositoriesAsyncInternal(resource, callback, onError);
+            var resource = string.Format("/users/{0}/watched", user);
+            GetRepositoriesAsyncInternal(resource, page, callback, onError);
         }
 
         public void ForkAsync(string user,
@@ -66,25 +57,25 @@ namespace NGitHub.Services {
             Requires.ArgumentNotNull(user, "user");
             Requires.ArgumentNotNull(repo, "repo");
 
-            var resource = string.Format("repos/fork/{0}/{1}", user, repo);
-            var request = new GitHubRequest(resource, API.v2, Method.POST);
-            _client.CallApiAsync<RepositoryResult>(request,
-                                                   r => callback(r.Data.Repository),
-                                                   onError);
+            // TODO: Allow for forking into an Org...
+            var resource = string.Format("/repos/{0}/{1}/forks", user, repo);
+            var request = new GitHubRequest(resource, API.v3, Method.POST);
+            _client.CallApiAsync<Repository>(request,
+                                             r => callback(r.Data),
+                                             onError);
         }
 
         public void GetForksAsync(string user,
                                   string repo,
+                                  int page,
                                   Action<IEnumerable<Repository>> callback,
                                   Action<GitHubException> onError) {
             Requires.ArgumentNotNull(user, "user");
             Requires.ArgumentNotNull(repo, "repo");
 
-            var resource = string.Format("/repos/show/{0}/{1}/network", user, repo);
-            var request = new GitHubRequest(resource, API.v2, Method.GET);
-            _client.CallApiAsync<NetworkResult>(request,
-                                                r => callback(r.Data.Forks),
-                                                onError);
+            var resource = string.Format("/repos/{0}/{1}/forks", user, repo);
+            var request = new GitHubRequest(resource, API.v3, Method.GET);
+            GetRepositoriesAsyncInternal(resource, page, callback, onError);
         }
 
         public void WatchAsync(string user,
@@ -94,8 +85,8 @@ namespace NGitHub.Services {
             Requires.ArgumentNotNull(user, "user");
             Requires.ArgumentNotNull(repo, "repo");
 
-            var resource = string.Format("repos/watch/{0}/{1}", user, repo);
-            var request = new GitHubRequest(resource, API.v2, Method.POST);
+            var resource = string.Format("/user/watched/{0}/{1}", user, repo);
+            var request = new GitHubRequest(resource, API.v3, Method.PUT);
             _client.CallApiAsync<object>(request,
                                          r => callback(),
                                          onError);
@@ -108,8 +99,8 @@ namespace NGitHub.Services {
             Requires.ArgumentNotNull(user, "user");
             Requires.ArgumentNotNull(repo, "repo");
 
-            var resource = string.Format("repos/unwatch/{0}/{1}", user, repo);
-            var request = new GitHubRequest(resource, API.v2, Method.POST);
+            var resource = string.Format("/user/watched/{0}/{1}", user, repo);
+            var request = new GitHubRequest(resource, API.v3, Method.DELETE);
             _client.CallApiAsync<object>(request,
                                          r => callback(),
                                          onError);
@@ -123,50 +114,55 @@ namespace NGitHub.Services {
             Requires.ArgumentNotNull(repo, "repo");
 
 
-            // Hopefully API v3 will have dedicated resource for this functionality.
-            // For now we can just do a bit more work with API v2 methods...
-            _client.Users.GetAuthenticatedUserAsync(
-                authenticated => {
-                    _client.Users.GetWatchersAsync(
-                                    user,
-                                    repo,
-                                    w => callback(w.Where(u => u.Login == authenticated.Login).Count() > 0),
-                                    onError);
-                },
-                onError);
+            var resource = string.Format("/user/watched/{0}/{1}", user, repo);
+            var request = new GitHubRequest(resource, API.v3, Method.GET);
+
+            _client.CallApiAsync<object>(request,
+                                         r => {
+                                             Debug.Assert(false, "all responses should be errors");
+                                             callback(true);
+                                         },
+                                         e => {
+                                             if (e.Response.StatusCode == HttpStatusCode.NoContent) {
+                                                 callback(true);
+                                                 return;
+                                             }
+
+                                             if (e.Response.StatusCode == HttpStatusCode.NotFound) {
+                                                 callback(false);
+                                                 return;
+                                             }
+
+                                             onError(e);
+                                         });
         }
 
         public void GetBranchesAsync(string user,
                                      string repo,
+                                     int page,
                                      Action<IEnumerable<Branch>> callback,
                                      Action<GitHubException> onError) {
             Requires.ArgumentNotNull(user, "user");
             Requires.ArgumentNotNull(repo, "repo");
 
-            var resource = string.Format("/repos/show/{0}/{1}/branches", user, repo);
-            var request = new GitHubRequest(resource, API.v2, Method.GET);
-            _client.CallApiAsync<BranchesResult>(request,
-                                                 r => {
-                                                     var branches = new List<Branch>();
-                                                     foreach (var pair in r.Data.Branches) {
-                                                         branches.Add(new Branch {
-                                                             Name = pair.Key,
-                                                             Hash = pair.Value
-                                                         });
-                                                     }
-
-                                                     callback(branches);
-                                                 },
-                                                 onError);
+            var resource = string.Format("/repos/{0}/{1}/branches", user, repo);
+            var request = new GitHubRequest(resource, API.v3, Method.GET);
+            _client.CallApiAsync<List<Branch>>(request,
+                                               r => callback(r.Data),
+                                               onError);
         }
 
         private void GetRepositoriesAsyncInternal(string resource,
+                                                  int page,
                                                   Action<IEnumerable<Repository>> callback,
                                                   Action<GitHubException> onError) {
-            var request = new GitHubRequest(resource, API.v2, Method.GET);
-            _client.CallApiAsync<RepositoriesResult>(request,
-                                                     r => callback(r.Data.Repositories),
-                                                     onError);
+            var request = new GitHubRequest(resource,
+                                            API.v3,
+                                            Method.GET,
+                                            Parameter.Page(page));
+            _client.CallApiAsync<List<Repository>>(request,
+                                                   r => callback(r.Data),
+                                                   onError);
         }
     }
 }

@@ -9,11 +9,14 @@ namespace NGitHub.Models {
         [JsonIgnore]
         public List<string> Parents { get; set; }
 
-        [JsonProperty(PropertyName = "author")]
-        public User Author { get; set; }
+        [JsonProperty(PropertyName = "sha")]
+        public string Sha { get; set; }
 
         [JsonProperty(PropertyName = "url")]
         public string Url { get; set; }
+
+        [JsonProperty(PropertyName = "author")]
+        public User Author { get; set; }
 
         [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }

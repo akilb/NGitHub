@@ -5,19 +5,17 @@ using NGitHub.Web;
 
 namespace NGitHub.Services {
     public interface IUserService {
-        void SearchAsync(string query,
-                         Action<IEnumerable<User>> callback,
-                         Action<GitHubException> onError);
-
         void GetUserAsync(string user, Action<User> callback, Action<GitHubException> onError);
 
         void GetAuthenticatedUserAsync(Action<User> callback, Action<GitHubException> onError);
 
         void GetFollowersAsync(string user,
+                               int page,
                                Action<IEnumerable<User>> callback,
                                Action<GitHubException> onError);
 
         void GetFollowingAsync(string user,
+                               int page,
                                Action<IEnumerable<User>> callback,
                                Action<GitHubException> onError);
 
@@ -31,6 +29,7 @@ namespace NGitHub.Services {
 
         void GetWatchersAsync(string user,
                               string repo,
+                              int page,
                               Action<IEnumerable<User>> callback,
                               Action<GitHubException> onError);
     }

@@ -8,19 +8,15 @@ namespace NGitHub.Models {
         [JsonProperty(PropertyName = "login")]
         public string Login { get; set; }
 
-        //[JsonProperty(PropertyName = "id")]
-        // TODO: Ignoring Id for now since API V2 returns a string but API v3
-        // returns an int...
-        [JsonIgnore]
+        [JsonProperty(PropertyName = "1")]
         public int Id { get; set; }
 
         [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
 
-        [JsonProperty(PropertyName = "gravatar_url")]
-        public string GravatarUrl { get; set; }
+        [JsonProperty(PropertyName = "avatar_url")]
+        public string AvatarUrl { get; set; }
 
-        // NOTE: API V2 only uses gravatar id's
         [JsonProperty(PropertyName = "gravatar_id")]
         public string GravatarId { get; set; }
 
@@ -45,16 +41,16 @@ namespace NGitHub.Models {
         [JsonProperty(PropertyName = "bio")]
         public string Bio { get; set; }
 
-        [JsonProperty(PropertyName = "public_repo_count")]
+        [JsonProperty(PropertyName = "public_repos")]
         public int PublicRepos { get; set; }
 
         [JsonProperty(PropertyName = "public_gists")]
         public int PublicGists { get; set; }
 
-        [JsonProperty(PropertyName = "following_count")]
+        [JsonProperty(PropertyName = "following")]
         public int Following { get; set; }
 
-        [JsonProperty(PropertyName = "followers_count")]
+        [JsonProperty(PropertyName = "followers")]
         public int Followers { get; set; }
 
         [JsonProperty(PropertyName = "html_url")]
@@ -91,29 +87,5 @@ namespace NGitHub.Models {
 
         [JsonProperty(PropertyName = "plan")]
         public Plan Plan { get; set; }
-    }
-
-    [JsonObject]
-    public class UserResult {
-        [JsonProperty(PropertyName = "user")]
-        public User User { get; set; }
-    }
-
-    [JsonObject]
-    public class UsersResult {
-        [JsonProperty(PropertyName = "users")]
-        public List<User> Users { get; set; }
-    }
-
-    [JsonObject]
-    public class WatchersResult {
-        [JsonProperty(PropertyName = "watchers")]
-        public List<User> Watchers { get; set; }
-    }
-
-    [JsonObject]
-    public class OrganizationsResult {
-        [JsonProperty(PropertyName = "organizations")]
-        public List<User> Organizations { get; set; }
     }
 }

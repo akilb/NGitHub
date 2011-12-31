@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Diagnostics;
+using System.Net;
 using NGitHub.Models;
 using NGitHub.Utility;
 using NGitHub.Web;
@@ -15,33 +16,24 @@ namespace NGitHub.Services {
             _gitHubClient = gitHubClient;
         }
 
-        public void SearchAsync(string query,
-                                Action<IEnumerable<User>> callback,
-                                Action<GitHubException> onError) {
-            Requires.ArgumentNotNull(query, "query");
-
-            var resource = string.Format("/user/search/{0}", query.Replace(' ', '+'));
-            var request = new GitHubRequest(resource, API.v2, Method.GET);
-            _gitHubClient.CallApiAsync<UsersResult>(request,
-                                                    r => callback(r.Data.Users),
-                                                    onError);
-        }
-
-        public void GetUserAsync(string user, Action<User> callback, Action<GitHubException> onError) {
+        public void GetUserAsync(string user,
+                                 Action<User> callback,
+                                 Action<GitHubException> onError) {
             Requires.ArgumentNotNull(user, "user");
 
-            var resource = string.Format("/user/show/{0}", user);
-            var request = new GitHubRequest(resource, API.v2, Method.GET);
-            _gitHubClient.CallApiAsync<UserResult>(request,
-                                                   r => callback(r.Data.User),
-                                                   onError);
+            var resource = string.Format("/users/{0}", user);
+            var request = new GitHubRequest(resource, API.v3, Method.GET);
+            _gitHubClient.CallApiAsync<User>(request,
+                                             r => callback(r.Data),
+                                             onError);
         }
 
-        public void GetAuthenticatedUserAsync(Action<User> callback, Action<GitHubException> onError) {
-            var request = new GitHubRequest("/user/show/", API.v2, Method.GET);
-            _gitHubClient.CallApiAsync<UserResult>(request,
-                                                   r => callback(r.Data.User),
-                                                   onError);
+        public void GetAuthenticatedUserAsync(Action<User> callback,
+                                              Action<GitHubException> onError) {
+            var request = new GitHubRequest("/user", API.v3, Method.GET);
+            _gitHubClient.CallApiAsync<User>(request,
+                                             r => callback(r.Data),
+                                             onError);
         }
 
         public void IsFollowingAsync(string user,
@@ -49,15 +41,27 @@ namespace NGitHub.Services {
                                      Action<GitHubException> onError) {
             Requires.ArgumentNotNull(user, "user");
 
-            // API v3 has a dedicated resource for this functionality. For now
-            // we can just do a bit more work with API v2 methods...
-            GetAuthenticatedUserAsync(
-                authenticated => {
-                    GetFollowersAsync(user,
-                                      f => callback(f.Where(u => u.Login == authenticated.Login).Count() > 0),
-                                      onError);
-                },
-                onError);
+            var resource = string.Format("/user/following/{0}", user);
+            var request = new GitHubRequest(resource, API.v3, Method.GET);
+
+            _gitHubClient.CallApiAsync<object>(request,
+                                         r => {
+                                             Debug.Assert(false, "all responses should be errors");
+                                             callback(true);
+                                         },
+                                         e => {
+                                             if (e.Response.StatusCode == HttpStatusCode.NoContent) {
+                                                 callback(true);
+                                                 return;
+                                             }
+
+                                             if (e.Response.StatusCode == HttpStatusCode.NotFound) {
+                                                 callback(false);
+                                                 return;
+                                             }
+
+                                             onError(e);
+                                         });
         }
 
         public void FollowAsync(string user,
@@ -65,8 +69,8 @@ namespace NGitHub.Services {
                                 Action<GitHubException> onError) {
             Requires.ArgumentNotNull(user, "user");
 
-            var resource = string.Format("/user/follow/{0}", user);
-            var request = new GitHubRequest(resource, API.v2, Method.POST);
+            var resource = string.Format("/user/following/{0}", user);
+            var request = new GitHubRequest(resource, API.v3, Method.PUT);
             _gitHubClient.CallApiAsync<object>(request,
                                                s => callback(),
                                                onError);
@@ -75,48 +79,60 @@ namespace NGitHub.Services {
         public void UnfollowAsync(string user,
                                   Action callback,
                                   Action<GitHubException> onError) {
-            var resource = string.Format("/user/unfollow/{0}", user);
-            var request = new GitHubRequest(resource, API.v2, Method.POST);
+            var resource = string.Format("/user/unfollowing/{0}", user);
+            var request = new GitHubRequest(resource, API.v3, Method.DELETE);
             _gitHubClient.CallApiAsync<object>(request,
                                                s => callback(),
                                                onError);
         }
 
         public void GetFollowersAsync(string user,
+                                      int page,
                                       Action<IEnumerable<User>> callback,
                                       Action<GitHubException> onError) {
             Requires.ArgumentNotNull(user, "user");
 
-            var resource = string.Format("/user/show/{0}/followers?full=1", user);
-            var request = new GitHubRequest(resource, API.v2, Method.GET);
-            _gitHubClient.CallApiAsync<UsersResult>(request,
-                                                    r => callback(r.Data.Users),
-                                                    onError);
+            var resource = string.Format("/users/{0}/followers", user);
+            var request = new GitHubRequest(resource,
+                                            API.v3,
+                                            Method.GET,
+                                            Parameter.Page(page));
+            _gitHubClient.CallApiAsync<List<User>>(request,
+                                                   r => callback(r.Data),
+                                                   onError);
         }
 
         public void GetFollowingAsync(string user,
+                                      int page,
                                       Action<IEnumerable<User>> callback,
                                       Action<GitHubException> onError) {
             Requires.ArgumentNotNull(user, "user");
 
-            var resource = string.Format("/user/show/{0}/following?full=1", user);
-            var request = new GitHubRequest(resource, API.v2, Method.GET);
-            _gitHubClient.CallApiAsync<UsersResult>(request,
-                                                    r => callback(r.Data.Users),
-                                                    onError);
+            var resource = string.Format("/users/{0}/following", user);
+            var request = new GitHubRequest(resource,
+                                            API.v3,
+                                            Method.GET,
+                                            Parameter.Page(page));
+            _gitHubClient.CallApiAsync<List<User>>(request,
+                                                   r => callback(r.Data),
+                                                   onError);
         }
 
         public void GetWatchersAsync(string user,
                                      string repo,
+                                     int page,
                                      Action<IEnumerable<User>> callback,
                                      Action<GitHubException> onError) {
             Requires.ArgumentNotNull(user, "user");
             Requires.ArgumentNotNull(repo, "repo");
 
-            var resource = string.Format("/repos/show/{0}/{1}/watchers?full=1", user, repo);
-            var request = new GitHubRequest(resource, API.v2, Method.GET);
-            _gitHubClient.CallApiAsync<WatchersResult>(request,
-                                                       r => callback(r.Data.Watchers),
+            var resource = string.Format("/repos/{0}/{1}/watchers",
+                                         user,
+                                         repo,
+                                         Parameter.Page(page));
+            var request = new GitHubRequest(resource, API.v3, Method.GET);
+            _gitHubClient.CallApiAsync<List<User>>(request,
+                                                       r => callback(r.Data),
                                                        onError);
         }
     }

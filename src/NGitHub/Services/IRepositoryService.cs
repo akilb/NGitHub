@@ -5,16 +5,13 @@ using NGitHub.Web;
 
 namespace NGitHub.Services {
     public interface IRepositoryService {
-        void SearchAsync(string query,
-                         Action<IEnumerable<Repository>> callback,
-                         Action<GitHubException> onError);
-
         void GetRepositoryAsync(string user,
                                 string repo,
                                 Action<Repository> callback,
                                 Action<GitHubException> onError);
 
         void GetRepositoriesAsync(string user,
+                                  int page,
                                   Action<IEnumerable<Repository>> callback,
                                   Action<GitHubException> onError);
 
@@ -25,6 +22,7 @@ namespace NGitHub.Services {
 
         void GetForksAsync(string user,
                            string repo,
+                           int page,
                            Action<IEnumerable<Repository>> callback,
                            Action<GitHubException> onError);
 
@@ -39,6 +37,7 @@ namespace NGitHub.Services {
                           Action<GitHubException> onError);
 
         void GetWatchedRepositoriesAsync(string user,
+                                         int page,
                                          Action<IEnumerable<Repository>> callback,
                                          Action<GitHubException> onError);
 
@@ -49,6 +48,7 @@ namespace NGitHub.Services {
 
         void GetBranchesAsync(string user,
                               string repo,
+                              int page,
                               Action<IEnumerable<Branch>> callback,
                               Action<GitHubException> onError);
     }

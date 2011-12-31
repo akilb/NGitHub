@@ -7,17 +7,7 @@ namespace NGitHub.Models {
         [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
 
-        [JsonProperty(PropertyName = "hash")]
-        public string Hash { get; set; }
-    }
-
-    [JsonObject]
-    public class BranchesResult {
-        public BranchesResult() {
-            Branches = new Dictionary<string, string>();
-        }
-
-        [JsonProperty(PropertyName = "branches")]
-        public Dictionary<string, string> Branches { get; set; }
+        [JsonProperty(PropertyName = "commit")]
+        public Commit Commit { get; set; }
     }
 }
