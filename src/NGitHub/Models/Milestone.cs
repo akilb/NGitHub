@@ -32,6 +32,6 @@ namespace NGitHub.Models {
         public DateTime CreatedAt { get; set; }
 
         [JsonProperty(PropertyName = "due_on")]
-        public DateTime DueOn { get; set; }
+        public DateTime? DueOn { get; set; }
     }
 }

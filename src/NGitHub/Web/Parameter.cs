@@ -1,5 +1,6 @@
 ﻿using NGitHub.Models;
 using NGitHub.Utility;
+using System;
 
 namespace NGitHub.Web {
     public class Parameter {
@@ -40,6 +41,18 @@ namespace NGitHub.Web {
 
         public static Parameter OrderBy(OrderBy direction) {
             return new Parameter("direction", direction.GetText());
+        }
+
+        public static Parameter Filter(Filter filter) {
+            return new Parameter("filter", filter.GetText());
+        }
+
+        public static Parameter Since(DateTime since) {
+            return new Parameter("since", since.ToString("s"));
+        }
+
+        public static Parameter Comment(string comment) {
+            return new Parameter("comment", comment);
         }
     }
 }

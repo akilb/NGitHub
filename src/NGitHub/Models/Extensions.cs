@@ -5,6 +5,21 @@ using System.Text;
 
 namespace NGitHub.Models {
     public static class Extensions {
+        public static string GetText(this Filter filter) {
+            switch (filter) {
+                case Filter.Assigned:
+                    return "assigned";
+                case Filter.Created:
+                    return "created";
+                case Filter.Mentioned:
+                    return "mentioned";
+                case Filter.Subscribed:
+                    return "subscribed";
+                default:
+                    throw new InvalidOperationException();
+            }
+        }
+
         public static string GetText(this State state) {
             switch (state) {
                 case State.Open:

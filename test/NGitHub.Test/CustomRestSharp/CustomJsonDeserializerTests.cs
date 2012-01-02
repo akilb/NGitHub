@@ -14,7 +14,7 @@ namespace NGitHub.Test.CustomRestSharp {
             var serializer = new CustomJsonDeserializer();
             var issues = serializer.Deserialize<List<Issue>>(response);
 
-            Assert.AreEqual(default(DateTime), issues[0].ClosedAt);
+            Assert.IsNull(issues[0].ClosedAt);
         }
     }
 }

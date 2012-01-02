@@ -1,4 +1,11 @@
 ﻿namespace NGitHub.Models {
+    public enum Filter {
+        Assigned,
+        Created,
+        Mentioned,
+        Subscribed
+    }
+
     public enum State {
         Open,
         Closed

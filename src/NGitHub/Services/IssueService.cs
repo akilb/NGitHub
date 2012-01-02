@@ -16,32 +16,38 @@ namespace NGitHub.Services {
 
         public void GetIssueAsync(string user,
                                   string repo,
-                                  string issueId,
+                                  int issueNumber,
                                   Action<Issue> callback,
                                   Action<GitHubException> onError) {
             Requires.ArgumentNotNull(user, "user");
             Requires.ArgumentNotNull(repo, "repo");
-            Requires.ArgumentNotNull(issueId, "issueId");
 
-            var resource = string.Format("/issues/show/{0}/{1}/{2}", user, repo, issueId);
-            var request = new GitHubRequest(resource, API.v2, Method.GET);
-            _client.CallApiAsync<IssueResult>(request, r => callback(r.Data.Issue), onError);
+            var resource = string.Format("/repos/{0}/{1}/issues/{2}", user, repo, issueNumber);
+            var request = new GitHubRequest(resource, API.v3, Method.GET);
+            _client.CallApiAsync<Issue>(request,
+                                        r => callback(r.Data),
+                                        onError);
         }
 
         public void GetIssuesAsync(string user,
                                    string repo,
                                    State state,
+                                   int page,
                                    Action<IEnumerable<Issue>> callback,
                                    Action<GitHubException> onError) {
             Requires.ArgumentNotNull(user, "user");
             Requires.ArgumentNotNull(repo, "repo");
 
-            var resource = string.Format("/issues/list/{0}/{1}/{2}", user, repo, state.GetText());
-            var request = new GitHubRequest(resource, API.v2, Method.GET);
+            var resource = string.Format("/repos/{0}/{1}/issues", user, repo);
+            var request = new GitHubRequest(resource,
+                                            API.v3,
+                                            Method.GET,
+                                            Parameter.State(state),
+                                            Parameter.Page(page));
 
-            _client.CallApiAsync<IssuesResult>(request,
-                                               r => callback(r.Data.Issues),
-                                               onError);
+            _client.CallApiAsync<List<Issue>>(request,
+                                              r => callback(r.Data),
+                                              onError);
         }
 
         public void CreateCommentAsync(string user,
@@ -54,31 +60,40 @@ namespace NGitHub.Services {
             Requires.ArgumentNotNull(repo, "repo");
             Requires.ArgumentNotNull(comment, "comment");
 
-            var resource = string.Format("/issues/comment/{0}/{1}/{2}",
+            var resource = string.Format("/repos/{0}/{1}/issues/{2}/comments",
                                          user,
                                          repo,
                                          issueNumber);
-            var request = new GitHubRequest(resource, API.v2, Method.POST, new Parameter("comment", comment));
+            var request = new GitHubRequest(resource,
+                                            API.v3,
+                                            Method.POST,
+                                            Parameter.Comment(comment));
 
-            _client.CallApiAsync<CommentResult>(request, r => callback(r.Data.Comment), onError);
+            _client.CallApiAsync<Comment>(request,
+                                          r => callback(r.Data),
+                                          onError);
         }
 
         public void GetCommentsAsync(string user,
                                      string repo,
                                      int issueNumber,
+                                     int page,
                                      Action<IEnumerable<Comment>> callback,
                                      Action<GitHubException> onError) {
             Requires.ArgumentNotNull(user, "user");
             Requires.ArgumentNotNull(repo, "repo");
 
-            var resource = string.Format("/issues/comments/{0}/{1}/{2}",
+            var resource = string.Format("/repos/{0}/{1}/issues/{2}/comments",
                                          user,
                                          repo,
                                          issueNumber);
-            var request = new GitHubRequest(resource, API.v2, Method.GET);
-            _client.CallApiAsync<CommentsResult>(request,
-                                                 r => callback(r.Data.Comments),
-                                                 onError);
+            var request = new GitHubRequest(resource,
+                                            API.v3,
+                                            Method.GET,
+                                            Parameter.Page(page));
+            _client.CallApiAsync<List<Comment>>(request,
+                                                r => callback(r.Data),
+                                                onError);
         }
     }
 }
