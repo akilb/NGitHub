@@ -54,5 +54,9 @@ namespace NGitHub.Web {
         public static Parameter Comment(string comment) {
             return new Parameter("comment", comment);
         }
+
+        public static Parameter Sha(string shaOrBranch) {
+            return new Parameter("sha", shaOrBranch);
+        }
     }
 }

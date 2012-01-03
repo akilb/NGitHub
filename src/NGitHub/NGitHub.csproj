@@ -52,6 +52,9 @@
     <Compile Include="Authentication\NullAuthenticator.cs" />
     <Compile Include="Authentication\Scope.cs" />
     <Compile Include="CustomRestSharp\CustomHttp.Sync.cs" />
+    <Compile Include="Models\CommitDetails.cs" />
+    <Compile Include="Models\CommitUserSummary.cs" />
+    <Compile Include="Models\FileChanges.cs" />
     <Compile Include="Web\ErrorType.cs" />
     <Compile Include="GitHubException.cs" />
     <Compile Include="Services\CommitService.cs" />

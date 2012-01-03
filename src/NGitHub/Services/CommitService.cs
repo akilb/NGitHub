@@ -14,26 +14,44 @@ namespace NGitHub.Services {
             _client = gitHubClient;
         }
 
+        public void GetCommitAsync(string user,
+                                   string repo,
+                                   string sha,
+                                   Action<Commit> callback,
+                                   Action<GitHubException> onError) {
+            Requires.ArgumentNotNull(user, "user");
+            Requires.ArgumentNotNull(repo, "repo");
+            Requires.ArgumentNotNull(sha, "sha");
+
+            var resource = string.Format("/repos/{0}/{1}/commits/{2}", user, repo, sha);
+            var request = new GitHubRequest(resource,
+                                            API.v3,
+                                            Method.GET);
+            _client.CallApiAsync<Commit>(request,
+                                         r => callback(r.Data),
+                                         onError);
+        }
+
         public void GetCommitsAsync(string user,
                                     string repo,
                                     string branch,
-                                    int pageNo,
+                                    int page,
                                     Action<IEnumerable<Commit>> callback,
                                     Action<GitHubException> onError) {
             Requires.ArgumentNotNull(user, "user");
             Requires.ArgumentNotNull(repo, "repo");
             Requires.ArgumentNotNull(branch, "branch");
-            Requires.IsTrue(pageNo > 0, "page");
+            Requires.IsTrue(page > 0, "page");
 
-            var resource = string.Format("/commits/list/{0}/{1}/{2}?page={3}",
-                                         user,
-                                         repo,
-                                         branch,
-                                         pageNo);
-            var request = new GitHubRequest(resource, API.v2, Method.GET);
-            _client.CallApiAsync<CommitsResult>(request,
-                                                r => callback(r.Data.Commits),
-                                                onError);
+            var resource = string.Format("/repos/{0}/{1}/commits", user, repo);
+            var request = new GitHubRequest(resource,
+                                            API.v3,
+                                            Method.GET,
+                                            Parameter.Page(page),
+                                            Parameter.Sha(branch));
+            _client.CallApiAsync<List<Commit>>(request,
+                                               r => callback(r.Data),
+                                               onError);
         }
     }
 }
