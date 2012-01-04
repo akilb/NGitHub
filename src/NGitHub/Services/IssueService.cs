@@ -14,27 +14,27 @@ namespace NGitHub.Services {
             _client = gitHubClient;
         }
 
-        public void GetIssueAsync(string user,
-                                  string repo,
-                                  int issueNumber,
-                                  Action<Issue> callback,
-                                  Action<GitHubException> onError) {
+        public GitHubRequestAsyncHandle GetIssueAsync(string user,
+                                                      string repo,
+                                                      int issueNumber,
+                                                      Action<Issue> callback,
+                                                      Action<GitHubException> onError) {
             Requires.ArgumentNotNull(user, "user");
             Requires.ArgumentNotNull(repo, "repo");
 
             var resource = string.Format("/repos/{0}/{1}/issues/{2}", user, repo, issueNumber);
             var request = new GitHubRequest(resource, API.v3, Method.GET);
-            _client.CallApiAsync<Issue>(request,
-                                        r => callback(r.Data),
-                                        onError);
+            return _client.CallApiAsync<Issue>(request,
+                                               r => callback(r.Data),
+                                               onError);
         }
 
-        public void GetIssuesAsync(string user,
-                                   string repo,
-                                   State state,
-                                   int page,
-                                   Action<IEnumerable<Issue>> callback,
-                                   Action<GitHubException> onError) {
+        public GitHubRequestAsyncHandle GetIssuesAsync(string user,
+                                                       string repo,
+                                                       State state,
+                                                       int page,
+                                                       Action<IEnumerable<Issue>> callback,
+                                                       Action<GitHubException> onError) {
             Requires.ArgumentNotNull(user, "user");
             Requires.ArgumentNotNull(repo, "repo");
 
@@ -45,17 +45,17 @@ namespace NGitHub.Services {
                                             Parameter.State(state),
                                             Parameter.Page(page));
 
-            _client.CallApiAsync<List<Issue>>(request,
-                                              r => callback(r.Data),
-                                              onError);
+            return _client.CallApiAsync<List<Issue>>(request,
+                                                     r => callback(r.Data),
+                                                     onError);
         }
 
-        public void CreateCommentAsync(string user,
-                                       string repo,
-                                       int issueNumber,
-                                       string comment,
-                                       Action<Comment> callback,
-                                       Action<GitHubException> onError) {
+        public GitHubRequestAsyncHandle CreateCommentAsync(string user,
+                                                           string repo,
+                                                           int issueNumber,
+                                                           string comment,
+                                                           Action<Comment> callback,
+                                                           Action<GitHubException> onError) {
             Requires.ArgumentNotNull(user, "user");
             Requires.ArgumentNotNull(repo, "repo");
             Requires.ArgumentNotNull(comment, "comment");
@@ -69,17 +69,17 @@ namespace NGitHub.Services {
                                             Method.POST,
                                             Parameter.Comment(comment));
 
-            _client.CallApiAsync<Comment>(request,
-                                          r => callback(r.Data),
-                                          onError);
+            return _client.CallApiAsync<Comment>(request,
+                                                 r => callback(r.Data),
+                                                 onError);
         }
 
-        public void GetCommentsAsync(string user,
-                                     string repo,
-                                     int issueNumber,
-                                     int page,
-                                     Action<IEnumerable<Comment>> callback,
-                                     Action<GitHubException> onError) {
+        public GitHubRequestAsyncHandle GetCommentsAsync(string user,
+                                                         string repo,
+                                                         int issueNumber,
+                                                         int page,
+                                                         Action<IEnumerable<Comment>> callback,
+                                                         Action<GitHubException> onError) {
             Requires.ArgumentNotNull(user, "user");
             Requires.ArgumentNotNull(repo, "repo");
 
@@ -91,9 +91,9 @@ namespace NGitHub.Services {
                                             API.v3,
                                             Method.GET,
                                             Parameter.Page(page));
-            _client.CallApiAsync<List<Comment>>(request,
-                                                r => callback(r.Data),
-                                                onError);
+            return _client.CallApiAsync<List<Comment>>(request,
+                                                       r => callback(r.Data),
+                                                       onError);
         }
     }
 }

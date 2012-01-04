@@ -5,13 +5,13 @@ using NGitHub.Web;
 
 namespace NGitHub.Services {
     public interface IOrganizationService {
-        void GetMembersAsync(string organization,
-                             int page,
-                             Action<IEnumerable<User>> callback,
-                             Action<GitHubException> onError);
-        void GetOrganizationsAsync(string user,
-                                   int page,
-                                   Action<IEnumerable<User>> callback,
-                                   Action<GitHubException> onError);
+        GitHubRequestAsyncHandle GetMembersAsync(string organization,
+                                                 int page,
+                                                 Action<IEnumerable<User>> callback,
+                                                 Action<GitHubException> onError);
+        GitHubRequestAsyncHandle GetOrganizationsAsync(string user,
+                                                       int page,
+                                                       Action<IEnumerable<User>> callback,
+                                                       Action<GitHubException> onError);
     }
 }

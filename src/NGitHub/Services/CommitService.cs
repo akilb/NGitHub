@@ -14,11 +14,11 @@ namespace NGitHub.Services {
             _client = gitHubClient;
         }
 
-        public void GetCommitAsync(string user,
-                                   string repo,
-                                   string sha,
-                                   Action<Commit> callback,
-                                   Action<GitHubException> onError) {
+        public GitHubRequestAsyncHandle GetCommitAsync(string user,
+                                                       string repo,
+                                                       string sha,
+                                                       Action<Commit> callback,
+                                                       Action<GitHubException> onError) {
             Requires.ArgumentNotNull(user, "user");
             Requires.ArgumentNotNull(repo, "repo");
             Requires.ArgumentNotNull(sha, "sha");
@@ -27,17 +27,17 @@ namespace NGitHub.Services {
             var request = new GitHubRequest(resource,
                                             API.v3,
                                             Method.GET);
-            _client.CallApiAsync<Commit>(request,
-                                         r => callback(r.Data),
-                                         onError);
+            return _client.CallApiAsync<Commit>(request,
+                                                r => callback(r.Data),
+                                                onError);
         }
 
-        public void GetCommitsAsync(string user,
-                                    string repo,
-                                    string branch,
-                                    int page,
-                                    Action<IEnumerable<Commit>> callback,
-                                    Action<GitHubException> onError) {
+        public GitHubRequestAsyncHandle GetCommitsAsync(string user,
+                                                        string repo,
+                                                        string branch,
+                                                        int page,
+                                                        Action<IEnumerable<Commit>> callback,
+                                                        Action<GitHubException> onError) {
             Requires.ArgumentNotNull(user, "user");
             Requires.ArgumentNotNull(repo, "repo");
             Requires.ArgumentNotNull(branch, "branch");
@@ -49,9 +49,9 @@ namespace NGitHub.Services {
                                             Method.GET,
                                             Parameter.Page(page),
                                             Parameter.Sha(branch));
-            _client.CallApiAsync<List<Commit>>(request,
-                                               r => callback(r.Data),
-                                               onError);
+            return _client.CallApiAsync<List<Commit>>(request,
+                                                      r => callback(r.Data),
+                                                      onError);
         }
     }
 }

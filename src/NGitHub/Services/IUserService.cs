@@ -5,32 +5,39 @@ using NGitHub.Web;
 
 namespace NGitHub.Services {
     public interface IUserService {
-        void GetUserAsync(string user, Action<User> callback, Action<GitHubException> onError);
+        GitHubRequestAsyncHandle GetUserAsync(string user,
+                                              Action<User> callback,
+                                              Action<GitHubException> onError);
 
-        void GetAuthenticatedUserAsync(Action<User> callback, Action<GitHubException> onError);
+        GitHubRequestAsyncHandle GetAuthenticatedUserAsync(Action<User> callback,
+                                                           Action<GitHubException> onError);
 
-        void GetFollowersAsync(string user,
-                               int page,
-                               Action<IEnumerable<User>> callback,
-                               Action<GitHubException> onError);
+        GitHubRequestAsyncHandle GetFollowersAsync(string user,
+                                                   int page,
+                                                   Action<IEnumerable<User>> callback,
+                                                   Action<GitHubException> onError);
 
-        void GetFollowingAsync(string user,
-                               int page,
-                               Action<IEnumerable<User>> callback,
-                               Action<GitHubException> onError);
+        GitHubRequestAsyncHandle GetFollowingAsync(string user,
+                                                   int page,
+                                                   Action<IEnumerable<User>> callback,
+                                                   Action<GitHubException> onError);
 
-        void FollowAsync(string user, Action callback, Action<GitHubException> onError);
+        GitHubRequestAsyncHandle FollowAsync(string user,
+                                             Action callback,
+                                             Action<GitHubException> onError);
 
-        void UnfollowAsync(string user, Action callback, Action<GitHubException> onError);
+        GitHubRequestAsyncHandle UnfollowAsync(string user,
+                                               Action callback,
+                                               Action<GitHubException> onError);
 
-        void IsFollowingAsync(string user,
-                              Action<bool> callback,
-                              Action<GitHubException> onError);
+        GitHubRequestAsyncHandle IsFollowingAsync(string user,
+                                                  Action<bool> callback,
+                                                  Action<GitHubException> onError);
 
-        void GetWatchersAsync(string user,
-                              string repo,
-                              int page,
-                              Action<IEnumerable<User>> callback,
-                              Action<GitHubException> onError);
+        GitHubRequestAsyncHandle GetWatchersAsync(string user,
+                                                  string repo,
+                                                  int page,
+                                                  Action<IEnumerable<User>> callback,
+                                                  Action<GitHubException> onError);
     }
 }
