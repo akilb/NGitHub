@@ -12,8 +12,9 @@ namespace NGitHub {
 
         IAuthenticator Authenticator { get; set; }
 
-        void CallApiAsync<TResponseData>(GitHubRequest request,
-                                         Action<IGitHubResponse<TResponseData>> callback,
-                                         Action<GitHubException> onError) where TResponseData : new();
+        GitHubRequestAsyncHandle CallApiAsync<TResponseData>(
+                                    GitHubRequest request,
+                                    Action<IGitHubResponse<TResponseData>> callback,
+                                    Action<GitHubException> onError) where TResponseData : new();
     }
 }

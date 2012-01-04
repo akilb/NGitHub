@@ -77,9 +77,10 @@ namespace NGitHub {
             }
         }
 
-        public void CallApiAsync<TResponseData>(GitHubRequest request,
-                                                Action<IGitHubResponse<TResponseData>> callback,
-                                                Action<GitHubException> onError) where TResponseData : new() {
+        public GitHubRequestAsyncHandle CallApiAsync<TResponseData>(
+                                            GitHubRequest request,
+                                            Action<IGitHubResponse<TResponseData>> callback,
+                                            Action<GitHubException> onError) where TResponseData : new() {
             Requires.ArgumentNotNull(request, "request");
             Requires.ArgumentNotNull(callback, "callback");
             Requires.ArgumentNotNull(onError, "onError");
@@ -96,19 +97,21 @@ namespace NGitHub {
             var restClient = _factory.CreateRestClient(baseUrl);
             restClient.Authenticator = Authenticator;
 
-            restClient.ExecuteAsync<TResponseData>(
-                restRequest,
-                (r, h) => {
-                    var response = new GitHubResponse<TResponseData>(r);
+            var handle = restClient.ExecuteAsync<TResponseData>(
+                            restRequest,
+                            (r, h) => {
+                                var response = new GitHubResponse<TResponseData>(r);
 
-                    GitHubException ex = null;
-                    if (_processor.TryProcessResponseErrors(response, out ex)) {
-                        onError(ex);
-                        return;
-                    }
+                                GitHubException ex = null;
+                                if (_processor.TryProcessResponseErrors(response, out ex)) {
+                                    onError(ex);
+                                    return;
+                                }
 
-                    callback(response);
-                });
+                                callback(response);
+                            });
+
+            return new GitHubRequestAsyncHandle(request, handle);
         }
     }
 }

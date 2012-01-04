@@ -9,6 +9,7 @@ using NGitHub.Models;
 using System.Net;
 using NGitHub.Web;
 using NGitHub.Services;
+using NGitHub.Test.Helpers;
 
 namespace NGitHub.Test.Services {
     [TestClass]
@@ -28,7 +29,8 @@ namespace NGitHub.Test.Services {
                                 Action<IGitHubResponse<object>>,
                                 Action<GitHubException>>((req, c, e) => {
                                     e(new GitHubException(mockResponse.Object, ErrorType.Unknown));
-                                });
+                                })
+                      .Returns(TestHelpers.CreateTestHandle());
             var userService = new UserService(mockClient.Object);
 
             var isFollowing = false;
@@ -54,7 +56,8 @@ namespace NGitHub.Test.Services {
                                 Action<IGitHubResponse<object>>,
                                 Action<GitHubException>>((req, c, e) => {
                                     e(new GitHubException(mockResponse.Object, ErrorType.ResourceNotFound));
-                                });
+                                })
+                      .Returns(TestHelpers.CreateTestHandle());
             var userService = new UserService(mockClient.Object);
 
             var isFollowing = true;
@@ -82,7 +85,8 @@ namespace NGitHub.Test.Services {
                                 Action<IGitHubResponse<object>>,
                                 Action<GitHubException>>((req, c, e) => {
                                     e(expectedException);
-                                });
+                                })
+                      .Returns(TestHelpers.CreateTestHandle());
             var userService = new UserService(mockClient.Object);
 
             GitHubException actualException = null;
