@@ -50,9 +50,15 @@
     <Compile Include="Authentication\NullAuthenticator.cs" />
     <Compile Include="Authentication\Scope.cs" />
     <Compile Include="GitHubRequestAsyncHandle.cs" />
+    <Compile Include="Models\CommitComment.cs" />
     <Compile Include="Models\CommitDetails.cs" />
+    <Compile Include="Models\CommitRange.cs" />
     <Compile Include="Models\CommitUserSummary.cs" />
     <Compile Include="Models\FileChanges.cs" />
+    <Compile Include="Models\Link.cs" />
+    <Compile Include="Models\PullRequestLinks.cs" />
+    <Compile Include="Services\IPullRequestService.cs" />
+    <Compile Include="Services\PullRequestService.cs" />
     <Compile Include="Web\ErrorType.cs" />
     <Compile Include="GitHubException.cs" />
     <Compile Include="Services\CommitService.cs" />

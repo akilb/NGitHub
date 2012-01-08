@@ -8,6 +8,7 @@ namespace NGitHub {
         IIssueService Issues                { get; }
         IUserService Users                  { get; }
         IRepositoryService Repositories     { get; }
+        IPullRequestService PullRequests    { get; }
         IOrganizationService Organizations  { get; }
 
         IAuthenticator Authenticator { get; set; }

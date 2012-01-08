@@ -58,5 +58,13 @@ namespace NGitHub.Web {
         public static Parameter Sha(string shaOrBranch) {
             return new Parameter("sha", shaOrBranch);
         }
+
+        public static Parameter Body(string body) {
+            return new Parameter("body", body);
+        }
+
+        public static Parameter CommitId(string commitId) {
+            return new Parameter("commitid", commitId);
+        }
     }
 }

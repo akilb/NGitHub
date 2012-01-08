@@ -1,19 +1,16 @@
 ﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Net;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using NGitHub.Web;
 using NGitHub.Services;
 using NGitHub.Test.Helpers;
+using NGitHub.Web;
 
 namespace NGitHub.Test.Services {
     [TestClass]
-    public class RepositoryServiceTests {
+    public class PullRequestServiceTests {
         [TestMethod]
-        public void IsWatchingAsync_ShouldCallbackWithTrue_WhenResponseIsNoContent() {
+        public void IsPullRequestMergedAsync_ShouldCallbackWithTrue_WhenResponseIsNoContent() {
             var mockResponse = new Mock<IGitHubResponse<object>>(MockBehavior.Strict);
             var mockClient = new Mock<IGitHubClient>(MockBehavior.Strict);
             mockResponse.Setup(r => r.ErrorException)
@@ -29,19 +26,20 @@ namespace NGitHub.Test.Services {
                                     e(new GitHubException(mockResponse.Object, ErrorType.Unknown));
                                 })
                       .Returns(TestHelpers.CreateTestHandle());
-            var repoService = new RepositoryService(mockClient.Object);
+            var pullReqSvc = new PullRequestService(mockClient.Object);
 
-            var isWatched = false;
-            repoService.IsWatchingAsync("akilb",
-                                        "ngithub",
-                                        fl => isWatched = fl,
-                                        e => { });
+            var isMerged = false;
+            pullReqSvc.IsPullRequestMergedAsync("akilb",
+                                                "ngithub",
+                                                6,
+                                                fl => isMerged = fl,
+                                                e => { });
 
-            Assert.IsTrue(isWatched);
+            Assert.IsTrue(isMerged);
         }
 
         [TestMethod]
-        public void IsWatchingAsync_ShouldCallbackWithFalse_WhenResponseIsNotFound() {
+        public void IsPullRequestMergedAsync_ShouldCallbackWithFalse_WhenResponseIsNotFound() {
             var mockResponse = new Mock<IGitHubResponse<object>>(MockBehavior.Strict);
             var mockClient = new Mock<IGitHubClient>(MockBehavior.Strict);
             mockResponse.Setup(r => r.ErrorException)
@@ -57,19 +55,20 @@ namespace NGitHub.Test.Services {
                                     e(new GitHubException(mockResponse.Object, ErrorType.ResourceNotFound));
                                 })
                       .Returns(TestHelpers.CreateTestHandle());
-            var repoService = new RepositoryService(mockClient.Object);
+            var pullReqSvc = new PullRequestService(mockClient.Object);
 
-            var isWatched = true;
-            repoService.IsWatchingAsync("akilb",
-                                        "ngithub",
-                                        fl => isWatched = fl,
-                                        e => { });
+            var isMerged = true;
+            pullReqSvc.IsPullRequestMergedAsync("akilb",
+                                                "ngithub",
+                                                16,
+                                                fl => isMerged = fl,
+                                                e => { });
 
-            Assert.IsFalse(isWatched);
+            Assert.IsFalse(isMerged);
         }
 
         [TestMethod]
-        public void IsWatchingAsync_ShouldCallbackWithError_WhenResponseIsSomeRandomError() {
+        public void IsPullRequestMergedAsync_ShouldCallbackWithError_WhenResponseIsSomeRandomError() {
             var mockResponse = new Mock<IGitHubResponse<object>>(MockBehavior.Strict);
             var mockClient = new Mock<IGitHubClient>(MockBehavior.Strict);
             mockResponse.Setup(r => r.ErrorException)
@@ -87,13 +86,14 @@ namespace NGitHub.Test.Services {
                                     e(expectedException);
                                 })
                       .Returns(TestHelpers.CreateTestHandle());
-            var repoService = new RepositoryService(mockClient.Object);
+            var pullReqSvc = new PullRequestService(mockClient.Object);
 
             GitHubException actualException = null;
-            repoService.IsWatchingAsync("akilb",
-                                        "ngithub",
-                                        c => { },
-                                        e => actualException = e);
+            pullReqSvc.IsPullRequestMergedAsync("akilb",
+                                                "ngithub",
+                                                1,
+                                                c => { },
+                                                e => actualException = e);
 
             Assert.AreSame(expectedException, actualException);
         }

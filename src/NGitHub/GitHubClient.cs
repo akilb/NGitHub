@@ -15,6 +15,7 @@ namespace NGitHub {
         private readonly ICommitService _commits;
         private readonly IOrganizationService _organizations;
         private readonly IRepositoryService _repositories;
+        private readonly IPullRequestService _pullRequests;
 
         private IAuthenticator _authenticator;
 
@@ -35,6 +36,7 @@ namespace NGitHub {
             _issues = new IssueService(this);
             _commits = new CommitService(this);
             _repositories = new RepositoryService(this);
+            _pullRequests = new PullRequestService(this);
             _organizations = new OrganizationService(this);
         }
 
@@ -65,6 +67,12 @@ namespace NGitHub {
         public IRepositoryService Repositories {
             get {
                 return _repositories;
+            }
+        }
+
+        public IPullRequestService PullRequests {
+            get {
+                return _pullRequests;
             }
         }
 
