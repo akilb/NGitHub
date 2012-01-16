@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NGitHub.Services;
 using Moq;
 using NGitHub.Models;
+using NGitHub.Services;
 using NGitHub.Test.Helpers;
-using RestSharp;
 
 namespace NGitHub.Test.Services {
     [TestClass]

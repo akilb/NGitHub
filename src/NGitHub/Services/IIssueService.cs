@@ -5,6 +5,16 @@ using NGitHub.Web;
 
 namespace NGitHub.Services {
     public interface IIssueService {
+        GitHubRequestAsyncHandle CreateIssueAsync(string user,
+                                                  string repo,
+                                                  string title,
+                                                  string body,
+                                                  string assignee,
+                                                  string mileStone,
+                                                  string[] labels,
+                                                  Action<Issue> callback,
+                                                  Action<GitHubException> onError);
+
         GitHubRequestAsyncHandle GetIssueAsync(string user,
                                                string repo,
                                                int issueNumber,

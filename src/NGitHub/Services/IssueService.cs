@@ -14,6 +14,35 @@ namespace NGitHub.Services {
             _client = gitHubClient;
         }
 
+        public GitHubRequestAsyncHandle CreateIssueAsync(string user,
+                                                         string repo,
+                                                         string title,
+                                                         string body,
+                                                         string assignee,
+                                                         string mileStone,
+                                                         string[] labels,
+                                                         Action<Issue> callback,
+                                                         Action<GitHubException> onError) {
+            Requires.ArgumentNotNull("user", user);
+            Requires.ArgumentNotNull("repo", repo);
+            Requires.ArgumentNotNull("title", title);
+
+            var resource = string.Format("/repos/{0}/{1}/issues", user, repo);
+            var request = new GitHubRequest(resource,
+                                            API.v3,
+                                            Method.POST,
+                                            new {
+                                                title = title,
+                                                body = body,
+                                                assignee = assignee,
+                                                mileStone = mileStone,
+                                                labels = labels
+                                            });
+            return _client.CallApiAsync<Issue>(request,
+                                               r => callback(r.Data),
+                                               onError);
+        }
+
         public GitHubRequestAsyncHandle GetIssueAsync(string user,
                                                       string repo,
                                                       int issueNumber,
