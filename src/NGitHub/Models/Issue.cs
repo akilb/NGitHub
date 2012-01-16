@@ -29,9 +29,7 @@ namespace NGitHub.Models {
         [JsonProperty(PropertyName = "user")]
         public User User { get; set; }
 
-        // TODO: deserialize this.
-        //[JsonProperty(PropertyName = "labels")]
-        [JsonIgnore]
+        [JsonProperty(PropertyName = "labels")]
         public List<Label> Labels { get; set; }
 
         [JsonProperty("assignee")]
