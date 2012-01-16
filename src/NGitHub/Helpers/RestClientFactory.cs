@@ -15,9 +15,9 @@ namespace NGitHub.Helpers {
             // RestSharp uses a json deserializer that does not use attribute-
             // based deserialization by default. Therefore, we substitute our
             // own deserializer here...
-            restClient.AddHandler(Constants.JsonApplicationContent, new CustomJsonDeserializer());
-            restClient.AddHandler(Constants.JsonTextContent, new CustomJsonDeserializer());
-            restClient.AddHandler(Constants.XJsonTextContent, new CustomJsonDeserializer());
+            restClient.AddHandler(Constants.JsonApplicationContent, new CustomJsonSerializer());
+            restClient.AddHandler(Constants.JsonTextContent, new CustomJsonSerializer());
+            restClient.AddHandler(Constants.XJsonTextContent, new CustomJsonSerializer());
 
             return restClient;
         }

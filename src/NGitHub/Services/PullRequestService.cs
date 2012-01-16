@@ -169,11 +169,13 @@ namespace NGitHub.Services {
                                                            string commitId,
                                                            string body,
                                                            string path,
-                                                           string position,
+                                                           int position,
                                                            Action<CommitComment> callback,
                                                            Action<GitHubException> onError) {
             Requires.ArgumentNotNull(user, "user");
             Requires.ArgumentNotNull(repo, "repo");
+            Requires.ArgumentNotNull(body, "body");
+            Requires.ArgumentNotNull(path, "path");
 
             var resource = string.Format("/repos/{0}/{1}/pulls/{2}/comments",
                                          user,
@@ -182,11 +184,15 @@ namespace NGitHub.Services {
             var request = new GitHubRequest(resource,
                                             API.v3,
                                             Method.POST,
-                                            Parameter.CommitId(commitId),
-                                            Parameter.Body(body),
-                                            new Parameter("path", path),
-                                            new Parameter("position", position));
-            throw new NotImplementedException();
+                                            new {
+                                                commit_id = commitId,
+                                                body = body,
+                                                path = path,
+                                                position = position
+                                            });
+            return _client.CallApiAsync<CommitComment>(request,
+                                                       r => callback(r.Data),
+                                                       onError);
         }
 
         public GitHubRequestAsyncHandle CreateCommentAsync(string user,
@@ -196,7 +202,24 @@ namespace NGitHub.Services {
                                                            string body,
                                                            Action<CommitComment> callback,
                                                            Action<GitHubException> onError) {
-            throw new NotImplementedException();
+            Requires.ArgumentNotNull(user, "user");
+            Requires.ArgumentNotNull(repo, "repo");
+            Requires.ArgumentNotNull(body, "body");
+
+            var resource = string.Format("/repos/{0}/{1}/pulls/{2}/comments",
+                                         user,
+                                         repo,
+                                         pullRequestId);
+            var request = new GitHubRequest(resource,
+                                            API.v3,
+                                            Method.POST,
+                                            new {
+                                                body = body,
+                                                in_reply_to = commentIdToReplyTo
+                                            });
+            return _client.CallApiAsync<CommitComment>(request,
+                                                       r => callback(r.Data),
+                                                       onError);
         }
     }
 }

@@ -56,7 +56,7 @@ namespace NGitHub.Services {
                                                     string commitId,
                                                     string body,
                                                     string path,
-                                                    string position,
+                                                    int position,
                                                     Action<CommitComment> callback,
                                                     Action<GitHubException> onError);
 

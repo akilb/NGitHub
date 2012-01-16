@@ -63,7 +63,7 @@
     <Compile Include="GitHubException.cs" />
     <Compile Include="Services\CommitService.cs" />
     <Compile Include="Constants.cs" />
-    <Compile Include="CustomRestSharp\CustomJsonDeserializer.cs" />
+    <Compile Include="CustomRestSharp\CustomJsonSerializer.cs" />
     <Compile Include="Web\Extensions.cs" />
     <Compile Include="GitHubClient.cs" />
     <Compile Include="GitHubRequest.cs" />

@@ -8,17 +8,27 @@ namespace NGitHub {
         private readonly string _resource;
         private readonly API _version;
         private readonly Method _method;
+        private readonly object _body;
         private readonly ReadOnlyCollection<Parameter> _parameters;
 
         public GitHubRequest(string resource,
                              API version,
                              Method method,
+                             params Parameter[] parameters)
+            : this(resource, version, method, /*body:*/null, parameters) {
+        }
+
+        public GitHubRequest(string resource,
+                             API version,
+                             Method method,
+                             object body,
                              params Parameter[] parameters) {
             Requires.ArgumentNotNull(resource, "resource");
 
             _resource = resource;
             _version = version;
             _method = method;
+            _body = body;
             _parameters = (parameters == null) ? new ReadOnlyCollection<Parameter>(new List<Parameter>()) :
                                                  new ReadOnlyCollection<Parameter>(parameters);
         }
@@ -38,6 +48,12 @@ namespace NGitHub {
         public Method Method {
             get {
                 return _method;
+            }
+        }
+
+        public object Body {
+            get {
+                return _body;
             }
         }
 

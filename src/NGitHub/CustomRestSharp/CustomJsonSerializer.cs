@@ -2,18 +2,20 @@
 using NGitHub.Utility;
 using RestSharp;
 using RestSharp.Deserializers;
+using RestSharp.Serializers;
 
 namespace NGitHub.CustomRestSharp {
     /// <summary>
-    /// Simple RestSharp-compliant wrapper around Json.Net deserialization.
+    /// Simple RestSharp-compliant wrapper around Json.Net serialization/deserialization.
     /// </summary>
-    internal class CustomJsonDeserializer : IDeserializer {
+    internal class CustomJsonSerializer : IDeserializer, ISerializer {
         private readonly JsonSerializerSettings _settings;
 
-        public CustomJsonDeserializer() {
+        public CustomJsonSerializer() {
             _settings = new JsonSerializerSettings {
                             NullValueHandling = NullValueHandling.Ignore
                         };
+            ContentType = "application/json";
         }
 
         public string DateFormat { get; set; }
@@ -26,6 +28,13 @@ namespace NGitHub.CustomRestSharp {
             Requires.ArgumentNotNull(response, "response");
 
             return JsonConvert.DeserializeObject<T>(response.Content, _settings);
+        }
+
+        public string ContentType { get; set; }
+
+        public string Serialize(object obj) {
+            var json = JsonConvert.SerializeObject(obj);
+            return json;
         }
     }
 }

@@ -67,7 +67,7 @@ namespace NGitHub.Services {
             var request = new GitHubRequest(resource,
                                             API.v3,
                                             Method.POST,
-                                            Parameter.Comment(comment));
+                                            new { body = comment });
 
             return _client.CallApiAsync<Comment>(request,
                                                  r => callback(r.Data),

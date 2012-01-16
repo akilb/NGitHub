@@ -1,5 +1,6 @@
 ﻿using System;
 using NGitHub.Authentication;
+using NGitHub.CustomRestSharp;
 using NGitHub.Helpers;
 using NGitHub.Services;
 using NGitHub.Utility;
@@ -95,10 +96,16 @@ namespace NGitHub {
 
             var restRequest = new RestRequest {
                 Resource = request.Resource,
-                Method = request.Method.ToRestSharpMethod()
+                Method = request.Method.ToRestSharpMethod(),
+                RequestFormat = DataFormat.Json,
+                JsonSerializer = new CustomJsonSerializer(),
             };
             foreach (var p in request.Parameters) {
                 restRequest.AddParameter(p.Name, p.Value);
+            }
+
+            if (request.Body != null) {
+                restRequest.AddBody(request.Body);
             }
 
             var baseUrl = (request.Version == API.v3) ? Constants.ApiV3Url : Constants.ApiV2Url;

@@ -11,7 +11,7 @@ namespace NGitHub.Test.CustomRestSharp {
         [TestMethod]
         public void Deserialize_ShouldBeAbleToHandle_NullDateTimeValues() {
             var response = new RestResponse { Content = "[{\"closed_at\":null}]" };
-            var serializer = new CustomJsonDeserializer();
+            var serializer = new CustomJsonSerializer();
             var issues = serializer.Deserialize<List<Issue>>(response);
 
             Assert.IsNull(issues[0].ClosedAt);
