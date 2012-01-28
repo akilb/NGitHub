@@ -61,7 +61,6 @@
     <Compile Include="Services\PullRequestService.cs" />
     <Compile Include="Web\ErrorType.cs" />
     <Compile Include="GitHubException.cs" />
-    <Compile Include="Services\CommitService.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="CustomRestSharp\CustomJsonSerializer.cs" />
     <Compile Include="Web\Extensions.cs" />
@@ -69,7 +68,6 @@
     <Compile Include="GitHubRequest.cs" />
     <Compile Include="GitHubResponse.cs" />
     <Compile Include="GitHubResponseBase.cs" />
-    <Compile Include="Services\ICommitService.cs" />
     <Compile Include="IGitHubClient.cs" />
     <Compile Include="IGitHubResponse.cs" />
     <Compile Include="Services\IIssueService.cs" />

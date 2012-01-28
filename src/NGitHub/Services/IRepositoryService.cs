@@ -51,5 +51,17 @@ namespace NGitHub.Services {
                                                   int page,
                                                   Action<IEnumerable<Branch>> callback,
                                                   Action<GitHubException> onError);
+
+        GitHubRequestAsyncHandle GetCommitAsync(string user,
+                                                string repo,
+                                                string sha,
+                                                Action<Commit> callback,
+                                                Action<GitHubException> onError);
+        GitHubRequestAsyncHandle GetCommitsAsync(string user,
+                                                 string repo,
+                                                 string branch,
+                                                 int page,
+                                                 Action<IEnumerable<Commit>> callback,
+                                                 Action<GitHubException> onError);
     }
 }

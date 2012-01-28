@@ -13,7 +13,6 @@ namespace NGitHub {
         private readonly IResponseProcessor _processor;
         private readonly IUserService _users;
         private readonly IIssueService _issues;
-        private readonly ICommitService _commits;
         private readonly IOrganizationService _organizations;
         private readonly IRepositoryService _repositories;
         private readonly IPullRequestService _pullRequests;
@@ -35,7 +34,6 @@ namespace NGitHub {
             Authenticator = new NullAuthenticator();
             _users = new UserService(this);
             _issues = new IssueService(this);
-            _commits = new CommitService(this);
             _repositories = new RepositoryService(this);
             _pullRequests = new PullRequestService(this);
             _organizations = new OrganizationService(this);
@@ -56,12 +54,6 @@ namespace NGitHub {
         public IIssueService Issues {
             get {
                 return _issues;
-            }
-        }
-
-        public ICommitService Commits {
-            get {
-                return _commits;
             }
         }
 
