@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata schemaVersion="2">
     <id>NGitHub</id>
-    <version>0.5.1</version>
+    <version>0.5.2</version>
     <title>NGitHub</title>
     <authors>Akil Burgess</authors>
     <owners>Akil Burgess</owners>
@@ -14,7 +14,11 @@
     <language>en-US</language>
     <tags>GITHUB GIT</tags>
     <dependencies>
-      <dependency id="RestSharp" version="102.5" />
+      <!-- RestSharp does not specify the version range of its Newtonsoft.Json
+           properly so we explicity define a dependency here to make sure we pick
+           up the correct version of Json.Net -->
+      <dependency id="Newtonsoft.Json" version="[4.0.5]" />
+      <dependency id="RestSharp" version="[102.6]" />
     </dependencies>
     <frameworkAssemblies>
       <!-- NOOP to work-around NuGet bug -->
