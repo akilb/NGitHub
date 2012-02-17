@@ -75,5 +75,8 @@ namespace NGitHub.Models {
 
         [JsonProperty(PropertyName = "base")]
         public CommitRange Base { get; set; }
+
+        [JsonProperty(PropertyName = "user")]
+        public User User { get; set; }
     }
 }

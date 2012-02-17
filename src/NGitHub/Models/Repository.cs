@@ -38,6 +38,9 @@ namespace NGitHub.Models {
         [JsonProperty(PropertyName = "description")]
         public string Description { get; set; }
 
+        [JsonProperty(PropertyName = "has_issues")]
+        public bool HasIssues { get; set; }
+
         // TODO: Remove this property...
         [JsonIgnore]
         private const int ShortDescriptionLength = 100;
