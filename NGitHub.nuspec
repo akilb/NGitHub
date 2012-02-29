@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata schemaVersion="2">
     <id>NGitHub</id>
-    <version>0.5.3</version>
+    <version>0.5.4</version>
     <title>NGitHub</title>
     <authors>Akil Burgess</authors>
     <owners>Akil Burgess</owners>
@@ -12,18 +12,10 @@
     <description>Simple GitHub API Wrapper for .NET, Silverlight and Windows Phone</description>
     <summary />
     <language>en-US</language>
-    <tags>GITHUB GIT</tags>
+    <tags>GITHUB GIT NGITHUB VCS BITBUCKET</tags>
     <dependencies>
-      <!-- RestSharp does not specify the version range of its Newtonsoft.Json
-           properly so we explicity define a dependency here to make sure we pick
-           up the correct version of Json.Net -->
-      <dependency id="Newtonsoft.Json" version="[4.0.5]" />
-      <dependency id="RestSharp" version="[102.6]" />
+      <dependency id="RestSharp" version="102.7" />
     </dependencies>
-    <frameworkAssemblies>
-      <!-- NOOP to work-around NuGet bug -->
-      <frameworkAssembly assemblyName="System.Core.dll" targetFramework="sl3-wp" />
-    </frameworkAssemblies>
   </metadata>
 
   <files>
