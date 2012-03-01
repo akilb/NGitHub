@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using NGitHub.Models;
+using NGitHub.Models.Dto;
 using NGitHub.Utility;
 using NGitHub.Web;
 
@@ -31,12 +32,12 @@ namespace NGitHub.Services {
             var request = new GitHubRequest(resource,
                                             API.v3,
                                             Method.POST,
-                                            new {
-                                                title = title,
-                                                body = body,
-                                                assignee = assignee,
-                                                mileStone = mileStone,
-                                                labels = labels
+                                            new IssueDto {
+                                                Title = title,
+                                                Body = body,
+                                                Assignee = assignee,
+                                                Milestone = mileStone,
+                                                Labels = labels
                                             });
             return _client.CallApiAsync<Issue>(request,
                                                r => callback(r.Data),
@@ -96,7 +97,7 @@ namespace NGitHub.Services {
             var request = new GitHubRequest(resource,
                                             API.v3,
                                             Method.POST,
-                                            new { body = comment });
+                                            new CommentDto { Body = comment });
 
             return _client.CallApiAsync<Comment>(request,
                                                  r => callback(r.Data),

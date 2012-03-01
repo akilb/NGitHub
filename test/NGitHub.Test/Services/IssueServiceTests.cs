@@ -4,6 +4,7 @@ using Moq;
 using NGitHub.Models;
 using NGitHub.Services;
 using NGitHub.Test.Helpers;
+using NGitHub.Models.Dto;
 
 namespace NGitHub.Test.Services {
     [TestClass]
@@ -24,7 +25,7 @@ namespace NGitHub.Test.Services {
 
             svc.CreateCommentAsync("foo", "bar", 1, expectedBody, c => { }, e => { });
 
-            var actualBody = ((dynamic)requestBody).body;
+            var actualBody = ((CommentDto)requestBody).Body;
             Assert.AreSame(expectedBody, actualBody);
         }
     }

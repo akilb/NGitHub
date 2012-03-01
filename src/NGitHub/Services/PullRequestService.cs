@@ -5,6 +5,7 @@ using System.Net;
 using NGitHub.Models;
 using NGitHub.Utility;
 using NGitHub.Web;
+using NGitHub.Models.Dto;
 
 namespace NGitHub.Services {
     public class PullRequestService : IPullRequestService {
@@ -184,11 +185,11 @@ namespace NGitHub.Services {
             var request = new GitHubRequest(resource,
                                             API.v3,
                                             Method.POST,
-                                            new {
-                                                commit_id = commitId,
-                                                body = body,
-                                                path = path,
-                                                position = position
+                                            new CommitCommentDto {
+                                                CommitId = commitId,
+                                                Body = body,
+                                                Path = path,
+                                                Position = position
                                             });
             return _client.CallApiAsync<CommitComment>(request,
                                                        r => callback(r.Data),
@@ -213,9 +214,9 @@ namespace NGitHub.Services {
             var request = new GitHubRequest(resource,
                                             API.v3,
                                             Method.POST,
-                                            new {
-                                                body = body,
-                                                in_reply_to = commentIdToReplyTo
+                                            new ReplyCommentDto {
+                                                Body = body,
+                                                InReplyTo = commentIdToReplyTo
                                             });
             return _client.CallApiAsync<CommitComment>(request,
                                                        r => callback(r.Data),
