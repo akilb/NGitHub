@@ -174,20 +174,19 @@ namespace NGitHub.Services {
         public GitHubRequestAsyncHandle GetCommitsAsync(string user,
                                                         string repo,
                                                         string branch,
-                                                        int page,
+                                                        string lastSha,
                                                         Action<IEnumerable<Commit>> callback,
                                                         Action<GitHubException> onError) {
             Requires.ArgumentNotNull(user, "user");
             Requires.ArgumentNotNull(repo, "repo");
             Requires.ArgumentNotNull(branch, "branch");
-            Requires.IsTrue(page > 0, "page");
 
             var resource = string.Format("/repos/{0}/{1}/commits", user, repo);
             var request = new GitHubRequest(resource,
                                             API.v3,
                                             Method.GET,
-                                            Parameter.Page(page),
-                                            Parameter.Sha(branch));
+                                            new Parameter("last_sha", lastSha ?? string.Empty),
+                                            new Parameter("top", branch));
             return _client.CallApiAsync<List<Commit>>(request,
                                                       r => callback(r.Data),
                                                       onError);

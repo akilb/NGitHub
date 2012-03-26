@@ -60,7 +60,7 @@ namespace NGitHub.Services {
         GitHubRequestAsyncHandle GetCommitsAsync(string user,
                                                  string repo,
                                                  string branch,
-                                                 int page,
+                                                 string lastSha,
                                                  Action<IEnumerable<Commit>> callback,
                                                  Action<GitHubException> onError);
     }
