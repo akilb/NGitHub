@@ -31,6 +31,8 @@ namespace NGitHub.Web {
                     return ResponseStatus.None;
                 case RestSharp.ResponseStatus.TimedOut:
                     return ResponseStatus.TimedOut;
+                case RestSharp.ResponseStatus.Aborted:
+                    return ResponseStatus.Aborted;
                 default:
                     throw new InvalidOperationException();
             }

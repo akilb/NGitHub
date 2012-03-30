@@ -4,5 +4,6 @@
         Completed,
         Error,
         TimedOut,
+        Aborted
     }
 }
