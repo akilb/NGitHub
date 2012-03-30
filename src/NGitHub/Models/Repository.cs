@@ -62,6 +62,12 @@ namespace NGitHub.Models {
         [JsonProperty(PropertyName = "fork")]
         public bool IsFork { get; set; }
 
+        [JsonProperty(PropertyName = "source")]
+        public Repository Source { get; set; }
+
+        [JsonProperty(PropertyName = "parent")]
+        public Repository Parent { get; set; }
+
         [JsonProperty(PropertyName = "open_issues")]
         public int OpenIssues { get; set; }
 
