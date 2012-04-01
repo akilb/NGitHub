@@ -127,11 +127,8 @@ namespace NGitHub.Services {
             Requires.ArgumentNotNull(user, "user");
             Requires.ArgumentNotNull(repo, "repo");
 
-            var resource = string.Format("/repos/{0}/{1}/watchers",
-                                         user,
-                                         repo,
-                                         Parameter.Page(page));
-            var request = new GitHubRequest(resource, API.v3, Method.GET);
+            var resource = string.Format("/repos/{0}/{1}/watchers", user, repo);
+            var request = new GitHubRequest(resource, API.v3, Method.GET, Parameter.Page(page));
             return _gitHubClient.CallApiAsync<List<User>>(request,
                                                           r => callback(r.Data),
                                                           onError);
