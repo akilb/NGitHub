@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>NGitHub</id>
-    <version>0.5.8</version>
+    <version>0.6.0</version>
     <title>NGitHub</title>
     <authors>Akil Burgess</authors>
     <owners>Akil Burgess</owners>
