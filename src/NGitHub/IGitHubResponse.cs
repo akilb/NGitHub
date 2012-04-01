@@ -8,6 +8,7 @@ namespace NGitHub {
     }
 
     public interface IGitHubResponse {
+        string Content                  { get; }
         string ErrorMessage             { get; }
         Exception ErrorException        { get; }
         HttpStatusCode StatusCode       { get; }

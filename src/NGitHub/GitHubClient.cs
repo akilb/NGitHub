@@ -77,10 +77,42 @@ namespace NGitHub {
             }
         }
 
+
+        public GitHubRequestAsyncHandle CallApiAsync(
+                                            GitHubRequest request,
+                                            Action<IGitHubResponse> callback,
+                                            Action<GitHubException> onError) {
+            return CallApiAsync<IGitHubResponse, RestResponse>(
+                        request,
+                        r => new GitHubResponse(r),
+                        (client, req, processResponse) => client.ExecuteAsync(req, processResponse),
+                        callback,
+                        onError);
+        }
+
         public GitHubRequestAsyncHandle CallApiAsync<TResponseData>(
                                             GitHubRequest request,
                                             Action<IGitHubResponse<TResponseData>> callback,
                                             Action<GitHubException> onError) where TResponseData : new() {
+            return CallApiAsync<IGitHubResponse<TResponseData>, RestResponse<TResponseData>>(
+                        request,
+                        r => new GitHubResponse<TResponseData>(r),
+                        (client, req, processResponse) => client.ExecuteAsync<TResponseData>(req,processResponse),
+                        callback,
+                        onError);
+        }
+
+        private GitHubRequestAsyncHandle CallApiAsync<TGitHubResponse, TRestResponse>(
+                                            GitHubRequest request,
+                                            Func<TRestResponse, TGitHubResponse> responseFactory,
+                                            Func<IRestClient,
+                                                 RestRequest,
+                                                 Action<TRestResponse, RestRequestAsyncHandle>,
+                                                 RestRequestAsyncHandle> restClientExecFunc,
+                                            Action<TGitHubResponse> callback,
+                                            Action<GitHubException> onError)
+            where TGitHubResponse : IGitHubResponse
+            where TRestResponse : IRestResponse {
             Requires.ArgumentNotNull(request, "request");
             Requires.ArgumentNotNull(callback, "callback");
             Requires.ArgumentNotNull(onError, "onError");
@@ -102,10 +134,11 @@ namespace NGitHub {
             var restClient = _factory.CreateRestClient(baseUrl);
             restClient.Authenticator = Authenticator;
 
-            var handle = restClient.ExecuteAsync<TResponseData>(
+            var handle = restClientExecFunc(
+                            restClient,
                             restRequest,
                             (r, h) => {
-                                var response = new GitHubResponse<TResponseData>(r);
+                                var response = responseFactory(r);
 
                                 GitHubException ex = null;
                                 if (_processor.TryProcessResponseErrors(response, out ex)) {

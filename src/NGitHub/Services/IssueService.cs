@@ -4,6 +4,8 @@ using NGitHub.Models;
 using NGitHub.Models.Dto;
 using NGitHub.Utility;
 using NGitHub.Web;
+using Newtonsoft.Json;
+using System.Net;
 
 namespace NGitHub.Services {
     public class IssueService : IIssueService {
@@ -75,9 +77,33 @@ namespace NGitHub.Services {
                                             Parameter.State(state),
                                             Parameter.Page(page));
 
-            return _client.CallApiAsync<List<Issue>>(request,
-                                                     r => callback(r.Data),
-                                                     onError);
+            // We can't just deserialize every response as a List<Issue> because
+            // repos that do not support issues will return: 
+            //  { "message": "Issues are disabled for this repo" }
+            // 
+            return _client.CallApiAsync(
+                        request,
+                        r => {
+                            List<Issue> issues = null;
+                            try {
+                                issues = JsonConvert.DeserializeObject<List<Issue>>(r.Content);
+                            }
+                            catch {
+                                onError(new GitHubException(r, ErrorType.Unknown));
+                                return;
+                            }
+
+                            callback(issues);
+                        },
+                        e => {
+                            if (e.Response.StatusCode == HttpStatusCode.Gone) {
+                                // This is the code that is returned when issues are disabled.
+                                callback(new Issue[] { });
+                                return;
+                            }
+
+                            onError(e);
+                        });
         }
 
         public GitHubRequestAsyncHandle CreateCommentAsync(string user,
