@@ -5,6 +5,7 @@ using System.Net;
 using NGitHub.Models;
 using NGitHub.Utility;
 using NGitHub.Web;
+using Newtonsoft.Json;
 
 namespace NGitHub.Services {
     public class RepositoryService : IRepositoryService {
@@ -187,9 +188,34 @@ namespace NGitHub.Services {
                                             Method.GET,
                                             new Parameter("last_sha", lastSha ?? string.Empty),
                                             new Parameter("top", branch));
-            return _client.CallApiAsync<List<Commit>>(request,
-                                                      r => callback(r.Data),
-                                                      onError);
+
+            // We can't just deserialize every response as a List<Commit> because
+            // repos that has no commits will return: 
+            //  { "message": "The repository is empty." }
+            //
+            return _client.CallApiAsync(
+                        request,
+                        r => {
+                            List<Commit> issues = null;
+                            try {
+                                issues = JsonConvert.DeserializeObject<List<Commit>>(r.Content);
+                            }
+                            catch {
+                                onError(new GitHubException(r, ErrorType.Unknown));
+                                return;
+                            }
+
+                            callback(issues);
+                        },
+                        e => {
+                            if (e.Response.StatusCode == HttpStatusCode.Conflict) {
+                                // This is the code that is returned when a repo is empty.
+                                callback(new Commit[] { });
+                                return;
+                            }
+
+                            onError(e);
+                        });
         }
 
         private GitHubRequestAsyncHandle GetRepositoriesAsyncInternal(
