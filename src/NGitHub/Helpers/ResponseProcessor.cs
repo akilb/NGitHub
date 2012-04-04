@@ -14,7 +14,8 @@ namespace NGitHub.Helpers {
             Requires.ArgumentNotNull(response, "response");
 
             if (response.StatusCode == HttpStatusCode.OK ||
-                response.StatusCode == HttpStatusCode.Created) {
+                response.StatusCode == HttpStatusCode.Created ||
+                response.StatusCode == HttpStatusCode.Accepted) {
                 exception = null;
                 return false;
             }

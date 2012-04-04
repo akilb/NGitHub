@@ -88,9 +88,20 @@ namespace NGitHub.Services {
 
             var resource = string.Format("/user/watched/{0}/{1}", user, repo);
             var request = new GitHubRequest(resource, API.v3, Method.PUT);
-            return _client.CallApiAsync<object>(request,
-                                                r => callback(),
-                                                onError);
+            return _client.CallApiAsync<object>(
+                        request,
+                        r => {
+                            Debug.Assert(false, "all responses should be errors");
+                            callback();
+                        },
+                        ex => {
+                            if (ex.Response.StatusCode == HttpStatusCode.NoContent) {
+                                callback();
+                                return;
+                            }
+
+                            onError(ex);
+                        });
         }
 
         public GitHubRequestAsyncHandle UnwatchAsync(string user,
@@ -102,9 +113,20 @@ namespace NGitHub.Services {
 
             var resource = string.Format("/user/watched/{0}/{1}", user, repo);
             var request = new GitHubRequest(resource, API.v3, Method.DELETE);
-            return _client.CallApiAsync<object>(request,
-                                                r => callback(),
-                                                onError);
+            return _client.CallApiAsync<object>(
+                        request,
+                        r => {
+                            Debug.Assert(false, "all responses should be errors");
+                            callback();
+                        },
+                        ex => {
+                            if (ex.Response.StatusCode == HttpStatusCode.NoContent) {
+                                callback();
+                                return;
+                            }
+
+                            onError(ex);
+                        });
         }
 
         public GitHubRequestAsyncHandle IsWatchingAsync(string user,

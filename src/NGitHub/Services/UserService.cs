@@ -72,19 +72,41 @@ namespace NGitHub.Services {
 
             var resource = string.Format("/user/following/{0}", user);
             var request = new GitHubRequest(resource, API.v3, Method.PUT);
-            return _gitHubClient.CallApiAsync<object>(request,
-                                                      s => callback(),
-                                                      onError);
+            return _gitHubClient.CallApiAsync<object>(
+                        request,
+                        r => {
+                            Debug.Assert(false, "all responses should be errors");
+                            callback();
+                        },
+                        ex => {
+                            if (ex.Response.StatusCode == HttpStatusCode.NoContent) {
+                                callback();
+                                return;
+                            }
+
+                            onError(ex);
+                        });
         }
 
         public GitHubRequestAsyncHandle UnfollowAsync(string user,
                                                       Action callback,
                                                       Action<GitHubException> onError) {
-            var resource = string.Format("/user/unfollowing/{0}", user);
+            var resource = string.Format("/user/following/{0}", user);
             var request = new GitHubRequest(resource, API.v3, Method.DELETE);
-            return _gitHubClient.CallApiAsync<object>(request,
-                                                      s => callback(),
-                                                      onError);
+            return _gitHubClient.CallApiAsync<object>(
+                        request,
+                        r => {
+                            Debug.Assert(false, "all responses should be errors");
+                            callback();
+                        },
+                        ex => {
+                            if (ex.Response.StatusCode == HttpStatusCode.NoContent) {
+                                callback();
+                                return;
+                            }
+
+                            onError(ex);
+                        });
         }
 
         public GitHubRequestAsyncHandle GetFollowersAsync(string user,
