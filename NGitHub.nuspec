@@ -2,14 +2,13 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>NGitHub</id>
-    <version>0.6.2</version>
+    <version>0.6.3</version>
     <title>NGitHub</title>
     <authors>Akil Burgess</authors>
-    <owners>Akil Burgess</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
     <projectUrl>https://github.com/akilb/NGitHub</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Simple GitHub API Wrapper for .NET, Silverlight and Windows Phone</description>
+    <description>A lightweight GitHub API Library for .NET, Silverlight and Windows Phone</description>
     <summary />
     <language>en-US</language>
     <tags>GITHUB GIT NGITHUB VCS BITBUCKET</tags>

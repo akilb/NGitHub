@@ -16,7 +16,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NGitHub.WindowsPhone", "src
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NGitHub.SL4", "src\NGitHub.SL4\NGitHub.SL4.csproj", "{EB41006F-AE14-42B6-8C1F-186EA6C0A348}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{4E7A8D2B-4CB1-4C2E-86B0-A4953C733DAA}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuspec", ".nuspec", "{4E7A8D2B-4CB1-4C2E-86B0-A4953C733DAA}"
 	ProjectSection(SolutionItems) = preProject
 		NGitHub.nuspec = NGitHub.nuspec
 	EndProjectSection

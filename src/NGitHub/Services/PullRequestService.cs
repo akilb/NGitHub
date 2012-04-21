@@ -43,7 +43,11 @@ namespace NGitHub.Services {
             Requires.ArgumentNotNull(repo, "repo");
 
             var resource = string.Format("/repos/{0}/{1}/pulls", user, repo);
-            var request = new GitHubRequest(resource, API.v3, Method.GET, Parameter.State(state));
+            var request = new GitHubRequest(resource,
+                                            API.v3,
+                                            Method.GET,
+                                            Parameter.State(state),
+                                            Parameter.Page(page));
 
             return _client.CallApiAsync<List<PullRequest>>(request,
                                                            r => callback(r.Data),
