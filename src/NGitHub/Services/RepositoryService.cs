@@ -246,6 +246,19 @@ namespace NGitHub.Services {
                                             int page,
                                             Action<IEnumerable<Repository>> callback,
                                             Action<GitHubException> onError) {
+                return GetRepositoriesAsyncInternal(resource,
+                                                    page,
+                                                    _defaultPageSize,
+                                                    callback,
+                                                    onError);
+        }
+
+        private GitHubRequestAsyncHandle GetRepositoriesAsyncInternal(
+                                        string resource,
+                                        int page,
+                                        int take,
+                                        Action<IEnumerable<Repository>> callback,
+                                        Action<GitHubException> onError) {
             var request = new GitHubRequest(resource,
                                             API.v3,
                                             Method.GET,
