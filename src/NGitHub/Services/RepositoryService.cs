@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 namespace NGitHub.Services {
     public class RepositoryService : IRepositoryService {
         private readonly IGitHubClient _client;
+        private const int _defaultPageSize = 30;
 
         public RepositoryService(IGitHubClient gitHubClient) {
             Requires.ArgumentNotNull(gitHubClient, "gitHubClient");
