@@ -36,10 +36,18 @@ namespace NGitHub.Services {
                                                              int page,
                                                              Action<IEnumerable<Repository>> callback,
                                                              Action<GitHubException> onError) {
+            return GetRepositoriesAsync(user, page, _defaultPageSize, callback, onError);
+        }
+
+        public GitHubRequestAsyncHandle GetRepositoriesAsync(string user,
+                                                             int page,
+                                                             int take,
+                                                             Action<IEnumerable<Repository>> callback,
+                                                             Action<GitHubException> onError) {
             Requires.ArgumentNotNull(user, "user");
 
             var resource = string.Format("/users/{0}/repos", user);
-            return GetRepositoriesAsyncInternal(resource, page, callback, onError);
+            return GetRepositoriesAsyncInternal(resource, page, take, callback, onError);
         }
 
         public GitHubRequestAsyncHandle GetWatchedRepositoriesAsync(string user,
