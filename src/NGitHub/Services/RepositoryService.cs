@@ -270,7 +270,8 @@ namespace NGitHub.Services {
             var request = new GitHubRequest(resource,
                                             API.v3,
                                             Method.GET,
-                                            Parameter.Page(page));
+                                            Parameter.Page(page),
+                                            Parameter.Take(take));
             return _client.CallApiAsync<List<Repository>>(request,
                                                           r => callback(r.Data),
                                                           onError);
