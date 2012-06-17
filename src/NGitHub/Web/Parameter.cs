@@ -63,8 +63,14 @@ namespace NGitHub.Web {
             return new Parameter("body", body);
         }
 
-        public static Parameter CommitId(string commitId) {
+        public static Parameter CommitId(string commitId)
+        {
             return new Parameter("commitid", commitId);
+        }
+
+        public static Parameter Take(int count)
+        {
+            return new Parameter("per_page", count.ToString());
         }
     }
 }

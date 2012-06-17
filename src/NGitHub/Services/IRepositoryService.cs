@@ -15,6 +15,12 @@ namespace NGitHub.Services {
                                                       Action<IEnumerable<Repository>> callback,
                                                       Action<GitHubException> onError);
 
+        GitHubRequestAsyncHandle GetRepositoriesAsync(string user,
+                                                      int page,
+                                                      int take,
+                                                      Action<IEnumerable<Repository>> callback,
+                                                      Action<GitHubException> onError);
+
         GitHubRequestAsyncHandle ForkAsync(string user,
                                            string repo,
                                            Action<Repository> callback,
