@@ -19,7 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuspec", ".nuspec", "{4E7A
 		NGitHub.nuspec = NGitHub.nuspec
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NGitHub.WindowsPhone.Mango", "src\NGitHub.WindowsPhone.Mango\NGitHub.WindowsPhone.Mango.csproj", "{E614C3B9-7BF4-4C75-9142-09AC057B6F46}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NGitHub.WindowsPhone", "src\NGitHub.WindowsPhone\NGitHub.WindowsPhone.csproj", "{E614C3B9-7BF4-4C75-9142-09AC057B6F46}"
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
