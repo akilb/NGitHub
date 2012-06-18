@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>NGitHub</id>
-    <version>0.6.4</version>
+    <version>0.7.0-alpha</version>
     <title>NGitHub</title>
     <authors>Akil Burgess</authors>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
@@ -13,10 +13,15 @@
     <language>en-US</language>
     <tags>GITHUB GIT NGITHUB VCS BITBUCKET</tags>
     <dependencies>
-      <dependency id="RestSharp" version="102.7" />
+      <dependency id="RestSharp" version="103.0" />
+      <dependency id="Newtonsoft.Json" version="4.5.0" />
     </dependencies>
     <releaseNotes>
-      0.6.4 - Added overloads to pageable IRepositoryService functions that allow the page size to be modified.
+      0.7.0 
+        - Remove WP7.0 support (7.1 Mango remains)
+        - Added explicit dependency to Newtonsoft.Json
+      0.6.4 
+        - Added overloads to pageable IRepositoryService functions that allow the page size to be modified.
     </releaseNotes>
   </metadata>
 

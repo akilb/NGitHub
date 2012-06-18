@@ -82,7 +82,7 @@ namespace NGitHub {
                                             GitHubRequest request,
                                             Action<IGitHubResponse> callback,
                                             Action<GitHubException> onError) {
-            return CallApiAsync<IGitHubResponse, RestResponse>(
+            return CallApiAsync<IGitHubResponse, IRestResponse>(
                         request,
                         r => new GitHubResponse(r),
                         (client, req, processResponse) => client.ExecuteAsync(req, processResponse),
@@ -94,7 +94,7 @@ namespace NGitHub {
                                             GitHubRequest request,
                                             Action<IGitHubResponse<TResponseData>> callback,
                                             Action<GitHubException> onError) where TResponseData : new() {
-            return CallApiAsync<IGitHubResponse<TResponseData>, RestResponse<TResponseData>>(
+            return CallApiAsync<IGitHubResponse<TResponseData>, IRestResponse<TResponseData>>(
                         request,
                         r => new GitHubResponse<TResponseData>(r),
                         (client, req, processResponse) => client.ExecuteAsync<TResponseData>(req,processResponse),
@@ -106,7 +106,7 @@ namespace NGitHub {
                                             GitHubRequest request,
                                             Func<TRestResponse, TGitHubResponse> responseFactory,
                                             Func<IRestClient,
-                                                 RestRequest,
+                                                 IRestRequest,
                                                  Action<TRestResponse, RestRequestAsyncHandle>,
                                                  RestRequestAsyncHandle> restClientExecFunc,
                                             Action<TGitHubResponse> callback,

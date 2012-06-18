@@ -27,7 +27,7 @@ namespace NGitHub.Helpers {
                 NullValueHandling = NullValueHandling.Ignore
             };
 
-            public T Deserialize<T>(RestResponse response) where T : new() {
+            public T Deserialize<T>(IRestResponse response) {
                 var result = JsonConvert.DeserializeObject<T>(response.Content, _settings);
 
                 return result;
