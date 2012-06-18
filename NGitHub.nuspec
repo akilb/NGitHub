@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>NGitHub</id>
-    <version>0.6.3</version>
+    <version>0.6.4</version>
     <title>NGitHub</title>
     <authors>Akil Burgess</authors>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
@@ -15,17 +15,18 @@
     <dependencies>
       <dependency id="RestSharp" version="102.7" />
     </dependencies>
+    <releaseNotes>
+      0.6.4 - Added overloads to pageable IRepositoryService functions that allow the page size to be modified.
+    </releaseNotes>
   </metadata>
 
   <files>
     <file src="src\NGitHub\bin\Release\NGitHub.dll" target="lib\net40"/>
     <file src="src\NGitHub.SL4\bin\Release\NGitHub.Silverlight.dll" target="lib\sl4"/>
-    <file src="src\NGitHub.WindowsPhone\bin\Release\NGitHub.WindowsPhone.dll" target="lib\sl3-wp"/>
     <file src="src\NGitHub.WindowsPhone.Mango\bin\Release\NGitHub.WindowsPhone.dll" target="lib\sl4-wp"/>
       
     <file src="src\NGitHub\bin\Release\NGitHub.pdb" target="lib\net40"/>
     <file src="src\NGitHub.SL4\bin\Release\NGitHub.Silverlight.pdb" target="lib\sl4"/>
-    <file src="src\NGitHub.WindowsPhone\bin\Release\NGitHub.WindowsPhone.pdb" target="lib\sl3-wp"/>
     <file src="src\NGitHub.WindowsPhone.Mango\bin\Release\NGitHub.WindowsPhone.pdb" target="lib\sl4-wp"/>
 
     <file src="src\NGitHub\**\*.cs" target="src"/>
