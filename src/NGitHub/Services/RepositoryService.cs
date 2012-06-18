@@ -10,7 +10,6 @@ using Newtonsoft.Json;
 namespace NGitHub.Services {
     public class RepositoryService : IRepositoryService {
         private readonly IGitHubClient _client;
-        private const int _defaultPageSize = 30;
 
         public RepositoryService(IGitHubClient gitHubClient) {
             Requires.ArgumentNotNull(gitHubClient, "gitHubClient");
@@ -36,18 +35,18 @@ namespace NGitHub.Services {
                                                              int page,
                                                              Action<IEnumerable<Repository>> callback,
                                                              Action<GitHubException> onError) {
-            return GetRepositoriesAsync(user, page, _defaultPageSize, callback, onError);
+            return GetRepositoriesAsync(user, page, Constants.DefaultPerPage, callback, onError);
         }
 
         public GitHubRequestAsyncHandle GetRepositoriesAsync(string user,
                                                              int page,
-                                                             int take,
+                                                             int perPage,
                                                              Action<IEnumerable<Repository>> callback,
                                                              Action<GitHubException> onError) {
             Requires.ArgumentNotNull(user, "user");
 
             var resource = string.Format("/users/{0}/repos", user);
-            return GetRepositoriesAsyncInternal(resource, page, take, callback, onError);
+            return GetRepositoriesAsyncInternal(resource, page, perPage, callback, onError);
         }
 
         public GitHubRequestAsyncHandle GetWatchedRepositoriesAsync(string user,
@@ -256,22 +255,22 @@ namespace NGitHub.Services {
                                             Action<GitHubException> onError) {
                 return GetRepositoriesAsyncInternal(resource,
                                                     page,
-                                                    _defaultPageSize,
+                                                    Constants.DefaultPerPage,
                                                     callback,
                                                     onError);
         }
 
         private GitHubRequestAsyncHandle GetRepositoriesAsyncInternal(
-                                        string resource,
-                                        int page,
-                                        int take,
-                                        Action<IEnumerable<Repository>> callback,
-                                        Action<GitHubException> onError) {
+                                            string resource,
+                                            int page,
+                                            int perPage,
+                                            Action<IEnumerable<Repository>> callback,
+                                            Action<GitHubException> onError) {
             var request = new GitHubRequest(resource,
                                             API.v3,
                                             Method.GET,
                                             Parameter.Page(page),
-                                            Parameter.Take(take));
+                                            Parameter.PerPage(perPage));
             return _client.CallApiAsync<List<Repository>>(request,
                                                           r => callback(r.Data),
                                                           onError);

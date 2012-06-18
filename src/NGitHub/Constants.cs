@@ -11,6 +11,7 @@ namespace NGitHub {
 
         public const SortBy DefaultSortBy = SortBy.Created;
         public const OrderBy DefaultOrderBy = OrderBy.Descending;
+        public const int DefaultPerPage = 30;
 
         public const string JsonApplicationContent = "application/json";
         public const string JsonTextContent = "text/json";
