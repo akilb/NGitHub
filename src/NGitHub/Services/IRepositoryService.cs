@@ -32,6 +32,13 @@ namespace NGitHub.Services {
                                                Action<IEnumerable<Repository>> callback,
                                                Action<GitHubException> onError);
 
+        GitHubRequestAsyncHandle GetForksAsync(string user,
+                                               string repo,
+                                               int page,
+                                               int perPage,
+                                               Action<IEnumerable<Repository>> callback,
+                                               Action<GitHubException> onError);
+
         GitHubRequestAsyncHandle WatchAsync(string user,
                                             string repo,
                                             Action callback,
@@ -47,6 +54,12 @@ namespace NGitHub.Services {
                                                              Action<IEnumerable<Repository>> callback,
                                                              Action<GitHubException> onError);
 
+        GitHubRequestAsyncHandle GetWatchedRepositoriesAsync(string user,
+                                                             int page,
+                                                             int perPage,
+                                                             Action<IEnumerable<Repository>> callback,
+                                                             Action<GitHubException> onError);
+
         GitHubRequestAsyncHandle IsWatchingAsync(string user,
                                                  string repo,
                                                  Action<bool> callback,
@@ -54,7 +67,6 @@ namespace NGitHub.Services {
 
         GitHubRequestAsyncHandle GetBranchesAsync(string user,
                                                   string repo,
-                                                  int page,
                                                   Action<IEnumerable<Branch>> callback,
                                                   Action<GitHubException> onError);
 
@@ -63,6 +75,7 @@ namespace NGitHub.Services {
                                                 string sha,
                                                 Action<Commit> callback,
                                                 Action<GitHubException> onError);
+
         GitHubRequestAsyncHandle GetCommitsAsync(string user,
                                                  string repo,
                                                  string branch,

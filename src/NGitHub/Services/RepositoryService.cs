@@ -53,10 +53,18 @@ namespace NGitHub.Services {
                                                                     int page,
                                                                     Action<IEnumerable<Repository>> callback,
                                                                     Action<GitHubException> onError) {
+            return GetWatchedRepositoriesAsync(user, page, Constants.DefaultPerPage, callback, onError);
+        }
+
+        public GitHubRequestAsyncHandle GetWatchedRepositoriesAsync(string user,
+                                                                    int page,
+                                                                    int perPage,
+                                                                    Action<IEnumerable<Repository>> callback,
+                                                                    Action<GitHubException> onError) {
             Requires.ArgumentNotNull(user, "user");
 
             var resource = string.Format("/users/{0}/watched", user);
-            return GetRepositoriesAsyncInternal(resource, page, callback, onError);
+            return GetRepositoriesAsyncInternal(resource, page, perPage, callback, onError);
         }
 
         public GitHubRequestAsyncHandle ForkAsync(string user,
@@ -79,12 +87,21 @@ namespace NGitHub.Services {
                                                       int page,
                                                       Action<IEnumerable<Repository>> callback,
                                                       Action<GitHubException> onError) {
+            return GetForksAsync(user, repo, page, Constants.DefaultPerPage, callback, onError);
+        }
+
+        public GitHubRequestAsyncHandle GetForksAsync(string user,
+                                                      string repo,
+                                                      int page,
+                                                      int perPage,
+                                                      Action<IEnumerable<Repository>> callback,
+                                                      Action<GitHubException> onError) {
             Requires.ArgumentNotNull(user, "user");
             Requires.ArgumentNotNull(repo, "repo");
 
             var resource = string.Format("/repos/{0}/{1}/forks", user, repo);
             var request = new GitHubRequest(resource, API.v3, Method.GET);
-            return GetRepositoriesAsyncInternal(resource, page, callback, onError);
+            return GetRepositoriesAsyncInternal(resource, page, perPage, callback, onError);
         }
 
         public GitHubRequestAsyncHandle WatchAsync(string user,
@@ -171,7 +188,6 @@ namespace NGitHub.Services {
 
         public GitHubRequestAsyncHandle GetBranchesAsync(string user,
                                                          string repo,
-                                                         int page,
                                                          Action<IEnumerable<Branch>> callback,
                                                          Action<GitHubException> onError) {
             Requires.ArgumentNotNull(user, "user");
@@ -246,18 +262,6 @@ namespace NGitHub.Services {
 
                             onError(e);
                         });
-        }
-
-        private GitHubRequestAsyncHandle GetRepositoriesAsyncInternal(
-                                            string resource,
-                                            int page,
-                                            Action<IEnumerable<Repository>> callback,
-                                            Action<GitHubException> onError) {
-                return GetRepositoriesAsyncInternal(resource,
-                                                    page,
-                                                    Constants.DefaultPerPage,
-                                                    callback,
-                                                    onError);
         }
 
         private GitHubRequestAsyncHandle GetRepositoriesAsyncInternal(
