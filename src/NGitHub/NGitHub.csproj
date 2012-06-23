@@ -52,6 +52,7 @@
     <Compile Include="Authentication\NullAuthenticator.cs" />
     <Compile Include="Authentication\Scope.cs" />
     <Compile Include="GitHubRequestAsyncHandle.cs" />
+    <Compile Include="Helpers\JsonSerializer.cs" />
     <Compile Include="Models\CommitComment.cs" />
     <Compile Include="Models\CommitDetails.cs" />
     <Compile Include="Models\CommitRange.cs" />

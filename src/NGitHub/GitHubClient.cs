@@ -120,7 +120,8 @@ namespace NGitHub {
             var restRequest = new RestRequest {
                 Resource = request.Resource,
                 Method = request.Method.ToRestSharpMethod(),
-                RequestFormat = DataFormat.Json
+                RequestFormat = DataFormat.Json,
+                JsonSerializer = new JsonSerializer()
             };
 
             foreach (var p in request.Parameters) {

@@ -15,27 +15,11 @@ namespace NGitHub.Helpers {
 
             // Just use a lightweight wrapper around Newtonsoft deserialization since
             // we've had problems with RestSharp deserializers in the past.
-            restClient.AddHandler(Constants.JsonApplicationContent, new CustomJsonDeserializer());
-            restClient.AddHandler(Constants.JsonTextContent, new CustomJsonDeserializer());
-            restClient.AddHandler(Constants.XJsonTextContent, new CustomJsonDeserializer());
+            restClient.AddHandler(Constants.JsonApplicationContent, new JsonSerializer());
+            restClient.AddHandler(Constants.JsonTextContent, new JsonSerializer());
+            restClient.AddHandler(Constants.XJsonTextContent, new JsonSerializer());
 
             return restClient;
-        }
-
-        private class CustomJsonDeserializer : IDeserializer {
-            private readonly JsonSerializerSettings _settings = new JsonSerializerSettings {
-                NullValueHandling = NullValueHandling.Ignore
-            };
-
-            public T Deserialize<T>(IRestResponse response) {
-                var result = JsonConvert.DeserializeObject<T>(response.Content, _settings);
-
-                return result;
-            }
-
-            public string DateFormat { get; set; }
-            public string Namespace { get; set; }
-            public string RootElement { get; set; }
         }
     }
 }
