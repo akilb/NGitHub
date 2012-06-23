@@ -122,9 +122,20 @@ namespace NGitHub {
                 Method = request.Method.ToRestSharpMethod(),
                 RequestFormat = DataFormat.Json
             };
+
             foreach (var p in request.Parameters) {
                 restRequest.AddParameter(p.Name, p.Value);
             }
+
+#if WINDOWS_PHONE
+            if (restRequest.Method == RestSharp.Method.GET) {
+                // The implementation of HttpWebRequest in WP7 automatically caches all
+                // all responses. Therefore, we add a query param with a unique value
+                // to each request to ensure that we always GET fresh data.
+                // see http://bit.ly/e3JNzE
+                restRequest.AddParameter("ngithub_wp7_nocache", DateTime.UtcNow.Ticks);
+            }
+#endif
 
             if (request.Body != null) {
                 restRequest.AddBody(request.Body);
